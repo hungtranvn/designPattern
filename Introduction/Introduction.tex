@@ -20,6 +20,7 @@
 \usepackage{multicol}
 \usepackage{tikz}
 \usepackage{tikz-uml}
+%\usepackage{pgf-umlcd}
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
@@ -337,13 +338,15 @@
 \end{frame}
 
 \begin{frame}{i. Single Responsibility Principle}
-	\textcolor{blue}{\textbf{A class should have only one reason to change}}
+	\begin{center}
+		\textcolor{blue}{\textbf{A class should have only one reason to change}}
+	\end{center}
 	\begin{itemize}
 		\item Should have only one responsibility
 		\item Class with multiple responsibilities break when changed
 		\item Put each responsibility in a separate class
 	\end{itemize}
-	\textbf{Example}                                        
+	\textbf{Example}:                                        
 % Notes class stores notes (simple text). This class only manages notes and should not responsible for display them. Notes can be displayed in any form. This implementation violates the single responsibility principle. We should separate them in different classes. 
 	\begin{center}
 	\tikzumlset{fill class=red!20, fill template=violet!10, font=\bfseries\footnotesize}
@@ -360,20 +363,28 @@
 \end{frame}
 
 \begin{frame}{ii. Open-Closed Principle}
-	\textcolor{blue}{\textbf{Modules should be open for extension but closed for modification}}
+	\begin{center}
+		\textcolor{blue}{\textbf{Modules should be open for extension but closed for 						modification}}
+	\end{center}
+	
 	\begin{itemize}
+		\setlength\itemsep{1em} 
 		\item Modification to existing code leads to bugs and causes the software to break
 		\item It should be possible to change behaviour of existing code without modification
 		\item Instead the behaviour should be changed by adding new code
 		\item Cornerstone of good design
 	\end{itemize}            
 % able to change behaviour in the future by adding new code. Good design is that adding new feature by adding new code not modifying existing code. (using design pattern)
-	\textbf{Example: openClosePrin.cpp}
+	\textbf{Example}: openClosePrin.cpp
 \end{frame}
 
 \begin{frame}{iii. Liskov-Substitution Principle}
-	\textcolor{blue}{\textbf{Subtypes must be substitutable for their base types}}
+	\begin{center}
+		\textcolor{blue}{\textbf{Subtypes must be substitutable for their base types}}
+	\end{center}
+	
 	\begin{itemize}
+		\setlength\itemsep{1em}
 		\item Applies to inheritance relationship
 		\item The inheritance relationship should be based on behavior
 		\item A subclass must have all the behaviors of its base type and must not remove or change its parent behavior
@@ -384,27 +395,51 @@
 % This way code uses the functionality of the hierarchy to the base class will continue working if the childs pass to it.
 % This allows the addition of new classes in the future
 % Automatically folow open-closed principle
-	\textbf{Example: liskovsubPrin.cpp}
+	\textbf{Example}: liskovsubPrin.cpp
 \end{frame}
 
 \begin{frame}{iv. Interface Segregation Principle}
-	\textcolor{blue}{\textbf{Clients should not be forced to depend on methods they do not use}}
+	\begin{center}
+		\textcolor{blue}{\textbf{Clients should not be forced to depend on methods they do not 			use}}
+	\end{center}
+	
 	\begin{itemize}
+		\setlength\itemsep{1em}
 		\item An interface with too many methods will be complex to use (fat interface).
 		\item Some clients may not use all the methods but will be forced to depend on them.
 		\item Separate the interface and put methods based on the client usage.
 	\end{itemize}
-\textbf{Example: interfacesergregationPrin.cpp }
+	\textbf{Example}: interfacesergregationPrin.cpp
 \end{frame}
 
 \begin{frame}{v. Dependency Inversion Principle}
-	\textcolor{blue}{\textbf{Abstractions should not depend on details. Details should depend on abstractions}}
+	\begin{center}
+		\textcolor{blue}{\textbf{Abstractions should not depend on details. Details should 				depend on abstractions}}
+	\end{center}
+	
 	\begin{itemize}
+		\setlength\itemsep{1em}
 		\item Abstraction means an interface and details mean classes.
-		\item Using a concrete class directly creates a dependency, software becomes difficult to 			  modify.
+		\item Using a concrete class directly creates a dependency, software becomes difficult 			to modify.
 		\item Invert the dependency by using an interface rather a concrete class.
 	\end{itemize}
-\textbf{Example: dependencyinversionPrin.cpp}
+	\textbf{Example}: dependencyinversionPrin.cpp
+\end{frame}
+
+\begin{frame}{Creational Pattern Overview}
+	\begin{center}
+		\textcolor{blue}{\textbf{Construction process of an object.}}
+	\end{center}
+	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item \textbf{Singleton}: Ensure only one instance.
+		\item \textbf{Factory Method}: Create instance without depending on its concrete type.
+		\item \textbf{Object pool}: Reuse existing instances.
+		\item \textbf{Abstract factory}: Create instances from a specific family.
+		\item \textbf{Prototype}: Clone existing objects from a prototype.
+		\item \textbf{Builder}: Construct a complex object step by step.
+	\end{itemize}
 \end{frame}
 
 \section{Singleton}
@@ -414,44 +449,14 @@
 \begin{tikzpicture}
 \begin{umlpackage}{p}
 \begin{umlpackage}{sp1}
-\umlclass[template=T]{A}{
-  n : uint \\ t : float
-}{}
-\umlclass[y=-3]{B}{
-  d : double
-}{
-  \umlvirt{setB(b : B) : void} \\ getB() : B}
+\umlclass[y=2, template=T]{A}{n : uint \\ t : float}{}
+\umlclass[y=-1]{B}{  d : double}{  \umlvirt{setB(b : B) : void} \\ getB() : B}
 \end{umlpackage}
-\begin{umlpackage}[x=10,y=-6]{sp2}
-\umlinterface{C}{
-  n : uint \\ s : string
-}{}
+\begin{umlpackage}[x=6,y=-2]{sp2}
+\umlinterface[y=1]{C}{  n : uint \\ s : string}{}
 \end{umlpackage}
-\umlclass[x=2,y=-10]{D}{
-  n : uint
-  }{}
+\umlclass[x=6,y=3]{D}{  n : uint  }{}
 \end{umlpackage}
-
-\umlassoc[geometry=-|-, arg1=tata, mult1=*, pos1=0.3, arg2=toto, mult2=1, pos2=2.9, align2=left]{C}{B}
-\umlunicompo[geometry=-|, arg=titi, mult=*, pos=1.7, stereo=vector]{D}{C}
-\umlimport[geometry=|-, anchors=90 and 50, name=import]{sp2}{sp1}
-\umlaggreg[arg=tutu, mult=1, pos=0.8, angle1=30, angle2=60, loopsize=2cm]{D}{D}
-\umlinherit[geometry=-|]{D}{B}
-\umlnote[x=2.5,y=-6, width=3cm]{B}{Je suis une note qui concerne la classe B}
-\umlnote[x=7.5,y=-2]{import-2}{Je suis une note qui concerne la relation d'import}
-\end{tikzpicture}
-\end{center}
-\end{frame}
-\section{Factory Method}
-\begin{frame}
-\textcolor{blue}{\textbf{Upcoming presentation}}
-\begin{center}
-\begin{tikzpicture}
-\umlclass[x=2,y=-10]{Account}{}{}
-\umlclass[x=0,y=-12]{Savings}{}{}
-\umlclass[x=4,y=-12]{Current}{}{}
-\umlinherit[geometry=-|]{Savings}{Account}
-\umlinherit[geometry=-|]{Current}{Account}
 \end{tikzpicture}
 \end{center}
 \end{frame}

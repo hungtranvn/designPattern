@@ -1,7 +1,6 @@
 \babel@toc {english}{}
 \beamer@sectionintoc {1}{Introduction}{3}{0}{1}
-\beamer@sectionintoc {2}{Singleton}{18}{0}{2}
-\beamer@sectionintoc {3}{Factory Method}{19}{0}{3}
-\beamer@sectionintoc {4}{Object Pool}{20}{0}{4}
-\beamer@sectionintoc {5}{Abstract Factory}{21}{0}{5}
-\beamer@sectionintoc {6}{Builder}{22}{0}{6}
+\beamer@sectionintoc {2}{Singleton}{19}{0}{2}
+\beamer@sectionintoc {3}{Object Pool}{20}{0}{3}
+\beamer@sectionintoc {4}{Abstract Factory}{21}{0}{4}
+\beamer@sectionintoc {5}{Builder}{22}{0}{5}
