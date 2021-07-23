@@ -1,0 +1,101 @@
+Course content
+
+Section 1: Introduction
+1. Course Introduction
+2. Introduction to Patterns
+3. Overview of UML Class Diagram
+4. S.O.L.I.D. Principles - I
+5. S.O.L.I.D. Principles - II
+6. S.O.L.I.D. Principles - III
+7. Creational Patterns Overview
+8. Course Material (Slide Deck)
+
+Section 2: Singleton
+9. Code
+10. Introduction
+11. Basic Example
+12. Logger Class - I
+13. Logger Class - II
+14. Lazy Instantiation
+15. Destruction Policies
+16. Multithreading Issues
+17. Why DCLP Fails
+18. Meyer's Singleton
+19. Using std::call_once
+20. CRTP Idiom
+21. Clock Class
+22. Monostate Pattern
+23. Singleton Vs Monostate
+24. Singleton Issues
+25. Registry Of Singletons - I
+26. Registry Of Singletons - II
+
+Section 3: Factory Method
+28. Code
+29. Introduction
+30. Basic Implementation - I
+31. Basic Implementation - II
+32. Application Framework Discussion
+33. Application Framework Implementation
+34. Application Framework with Factory Method
+35. Parameterised Factory Method
+36. std::unique_ptr
+37. std::shared_ptr
+
+Section 4: Object Pool
+39. Source Code
+40. Introduction
+41. Basic Example
+42. Pooling Game Objects - I
+43. Pooling Game Objects - II
+44. Multiple Actors - I
+45. Multiple Actors - II
+46. Multiple Actors - III
+47. Generic Pool - I
+48. Generic Pool - II
+49. Pros & Cons
+
+Section 5: Abstract Factory
+50. Code
+51. Introduction
+52. Basic Example
+53. Basic Implementation with Abstract Factory
+54. Database Framework Introduction
+55. Database Framework Implementation
+56. SqlServer Database Classes
+57. MySql Database Classes
+58. Database Framework Usage
+59. Using Factory Method
+60. Using Abstract Factory
+
+Section 6: Prototype
+62. Code
+63. Introduction
+64. Cloning Types
+65. Basic Example
+66. Game Introduction
+67. Game implementation - I
+68. Game implementation - II
+69. Game implementation - III
+70. Cloning Example
+71. Prototype Implementation - I
+72. Prototype Implementation - II
+73. Prototype Implementation - III
+74. Class Vs Object
+75. Varying State
+76. Prototype Manager - I
+77. Prototype Manager - II
+78. Pros & Cons
+
+Section 7: Builder
+79. Code
+80. Introduction
+81. Basic Implementation
+82. File Example Introduction
+83. Memory Management
+84. Issues
+85. Builder Implementation
+86. Construction Using Builder
+87. Modern Implementation
+88. Fluent Builder
+89. Pros & Cons
