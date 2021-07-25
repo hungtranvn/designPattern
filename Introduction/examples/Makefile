@@ -1,18 +1,14 @@
-# the compiler: gcc for C program, define as g++ for C++
-CC = g++
+CXXFLAGS += -g -Wall -std=c++17
 
-# compiler flags:
-#  -g    adds debugging information to the executable file
-#  -Wall turns on most, but not all, compiler warnings
-CFLAGS  = -g -Wall -std=c++17
+NAME = liskov2
+TARGET = $(NAME).exe
 
-# the build target executable:
-TARGET = liskov2
+OBJECTS = main.o $(NAME).o 
 
 all: $(TARGET)
 
-$(TARGET): $(TARGET).cpp
-	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).cpp
-
+$(TARGET): $(OBJECTS)
+	$(CXX) $(OBJECTS) -o $(TARGET)
+    
 clean:
-	$(RM) $(TARGET)
+	-rm -f *.o $(TARGET)
