@@ -1,0 +1,12 @@
+content.txt
+docs/
+*.o
+*.exe
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.gz
+*.toc
+*.pptx
