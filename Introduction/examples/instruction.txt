@@ -1,0 +1,42 @@
+1. Introduction design pattern
+    DP become populer after the book of element of reusable OO software
+    ...
+2. Pattern?
+    coined by building architect, building were constructed with a common
+    pattern.
+    patterns => solve some common problem
+    
+    => software?
+    pattern will not give you direct solution because patterns do not know
+    your language, environment, lib, framework or platform. 
+    => give you generic solution.
+3. Classification of design pattern
+    2 ways for classification: scope or purpose
+
+4. UML overview
+    Pattern give you generic solution by suggesting an arrangement of one
+    or more classes. This arrangement is the structure of the pattern and
+    show the relationship between the classes.
+    This relationship helps us to understand and to create the final
+    solution. So we need some kind of notations.
+
+    UML: Show relationship between the classes that are part of the
+    pattern.
+    => To understand the patterns, it is important to know the different
+    kinds of relationships that class can have.
+
+    a. Class: rectangle, attributes, methods
+    b. Inheritance: generalization arrow
+    c. Abstrat class: pure virtual function (pureVirtualFunc.cpp)
+       names of class and method are italic
+    d. Composition: means part of relationship
+        button is part of a window or window contains button.
+        if window destroyed, button could destroy.
+        If you have a window, you close window => button destroyed
+    e. Aggregation:
+        container destroyed but elements may not be destroyed
+    f. association:
+        application use database but it does not mean application owns
+        database.
+        drivers drive the car but it does not own the car.
+

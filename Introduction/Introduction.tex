@@ -139,13 +139,13 @@
 \begin{columns}[T]
 \begin{column}{.5\textwidth}                                          
 	\begin{itemize}
-		\setlength\itemsep{1em}  
+		\setlength\itemsep{1em}
 		\item Published in 1995.
 		\item Known as gang of four design pattern.
 		\item Describes solutions to common object oriented design problems.
 		\item Examples in small talk and C++.
 		\item Implemented directly in some languages.
-	\end{itemize}                                
+	\end{itemize}
 \end{column}
 
 \begin{column}{.5\textwidth}                                              
@@ -156,12 +156,13 @@
 
 \begin{frame}{What is Design Pattern?}
 	\begin{itemize}
-		\item Language and domain independent strategies for solving common object-oriented design 					  problems.
+	\setlength\itemsep{1em}
+		\item Language and domain independent strategies for solving common object-oriented 				design problems.
 		\item These problems are recurring and can appear in all kinds of applications.
-		\item Describes solutions to common object oriented design problems, irrespective of their 					  language or platform.
+		\item Describes solutions to common object oriented design problems, irrespective of 				their language or platform.
 		\item Patterns provide suggestions - different ways to solve these common problems.
-		\item Developers can use these suggestions as guidelines to create solution for their 						  problems.
-		%\item The proposed solution can nave different implementation alternative, depending on the 					  programming language, framework or specific platform.
+		\item \textbf{Developers can use these suggestions as guidelines to create solution for 			their own problems.}
+		%\item The proposed solution can have different implementation alternative, depending on 		the 	programming language, framework or specific platform.
 	\end{itemize}
 \end{frame}
 
@@ -171,7 +172,7 @@
     \caption{Design Pattern Classification}
     \begin{tabular}{|c|c|c|c|} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
 		\hline      
-      	\textbf{Scope} & \textbf{Creational} & \textbf{Structural} & \textbf{Behavioral}\\
+      	\textbf{Scope} & \textcolor{red}{\textbf{Creational}} & \textbf{Structural} & \textbf{Behavioral}\\
 		\hline	  	
 	  	Class & Factory Method & Adapter & Interpreter \\
 	  		& 				& 		  & Template\\
@@ -306,7 +307,7 @@
 	\begin{tikzpicture}
 	\umlclass[x=0,y=-12]{Application}{}{}
 	\umlclass[x=4,y=-12]{Data}{}{}
-	\umlassoc[geometry=-|]{Application}{Data}
+	\umlassoc[geometry=-|, arg1=uses]{Application}{Data}
 	
 	\umlclass[x=0,y=-14]{Driver}{}{}
 	\umlclass[x=4,y=-14]{Car}{}{}
