@@ -38,5 +38,6 @@
     f. association:
         application use database but it does not mean application owns
         database.
-        drivers drive the car but it does not own the car.
+        drivers drive the car but it does not mean that drivers own 
+        the car.
 

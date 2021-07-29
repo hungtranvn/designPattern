@@ -375,7 +375,7 @@
 
 \begin{frame}{ii. Open-Closed Principle}
 	\begin{center}
-		\textcolor{blue}{\textbf{Modules should be open for extension but closed for 						modification}}
+		\textcolor{blue}{\textbf{Modules should be open for extension but closed 				for 	modification}}
 	\end{center}
 	
 	\begin{itemize}
@@ -387,6 +387,30 @@
 	\end{itemize}            
 % able to change behaviour in the future by adding new code. Good design is that adding new feature by adding new code not modifying existing code. (using design pattern)
 	\textbf{Example}: openClosePrin.cpp
+\end{frame}
+
+\begin{frame}{ii. Open-Closed Principle}
+\begin{columns}[T]
+\begin{column}{.5\textwidth}
+\lstinputlisting[language=c++]{./examples/openClose0_0.cpp}
+\end{column}
+\begin{column}{.5\textwidth}
+\textbf{Before}
+\lstinputlisting[language=c++]{./examples/openClose0_1.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{ii. Open-Closed Principle}
+\begin{columns}[T]
+\begin{column}{.5\textwidth}
+\lstinputlisting[language=c++]{./examples/openClose1_0.cpp}
+\end{column}
+\begin{column}{.5\textwidth}
+\textbf{After}
+\lstinputlisting[language=c++]{./examples/openClose1_1.cpp}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{iii. Liskov-Substitution Principle}
@@ -423,21 +447,60 @@
 	\textbf{Example}: interfacesergregationPrin.cpp
 \end{frame}
 
+\begin{frame}{iv. Interface Segregation Principle}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\textbf{Before}
+\lstinputlisting[language=c++]{./examples/interface1.cpp}
+\end{column}
+\begin{column}{.48\textwidth}
+\textbf{After}
+\lstinputlisting[language=c++]{./examples/interface2.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
 \begin{frame}{v. Dependency Inversion Principle}
 	\begin{center}
-		\textcolor{blue}{\textbf{Abstractions should not depend on details. Details should 				depend on abstractions}}
+		\textcolor{blue}{\textbf{Abstractions should not depend on details. Details should depend on abstractions}}
 	\end{center}
 	
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Abstraction means an interface and details mean classes.
+		\item Abstraction means an interface and details mean concrete classes.
 		\item Using a concrete class directly creates a dependency, software becomes difficult 			to modify.
 		\item Invert the dependency by using an interface rather a concrete class.
 	\end{itemize}
 	\textbf{Example}: dependencyinversionPrin.cpp
 \end{frame}
 
-\begin{frame}{Creational Pattern Overview}
+\begin{frame}{v. Dependency Inversion Principle}
+\textbf{Before}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\lstinputlisting[language=c++]{./examples/dependency0_0.cpp}
+\lstinputlisting[language=c++]{./examples/dependency0_1.cpp}
+\end{column}
+\begin{column}{.48\textwidth}
+\lstinputlisting[language=c++]{./examples/dependency0_2.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{v. Dependency Inversion Principle}
+\textbf{After}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\lstinputlisting[language=c++]{./examples/dependency0_0.cpp}
+\lstinputlisting[language=c++]{./examples/dependency0_1.cpp}
+\end{column}
+\begin{column}{.48\textwidth}
+\lstinputlisting[language=c++]{./examples/dependency1_0.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Further presentations: Creational Pattern Overview}
 	\begin{center}
 		\textcolor{blue}{\textbf{Construction process of an object.}}
 	\end{center}
@@ -451,6 +514,12 @@
 		\item \textbf{Prototype}: Clone existing objects from a prototype.
 		\item \textbf{Builder}: Construct a complex object step by step.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}%%     2
+\begin{center}
+{\fontsize{40}{50}\selectfont Thank You!}
+\end{center}
 \end{frame}
 
 \section{Singleton}

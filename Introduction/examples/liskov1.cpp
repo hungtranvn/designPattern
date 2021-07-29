@@ -3,12 +3,16 @@
 class Operation {
 public:
     virtual int ResultOf(int *begin, int *end){
-        //implementation
+        int r = 0;
+        for(auto it = begin; it != end; ++it)
+            r += *it;
+        return r;
     }
 };
 
+// Client can create new class and override ResultOf method
+
 void Operate(Operation *op) {
-    
     using namespace std;
     
     int arr[5]{};
@@ -16,6 +20,7 @@ void Operate(Operation *op) {
     std::cout << result;
 }
 
+// If we want to add for supporting boolean operation
 class BoolOperation : public Operation {
     // return bool
     int ResultOf(int *begin, int *end) override {
@@ -31,7 +36,7 @@ void Operate(Operation *op) {
     int arr[5]{};
     auto result = op->ResultOf(begin(arr), end(arr));
     
-    if(typeid(*op) == typeid(BoolOPeration)) {
+    if(typeid(*op) == typeid(BoolOperation)) {
         //assume bool
     }
     else {
