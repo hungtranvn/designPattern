@@ -363,6 +363,26 @@
 	\tikzumlset{fill class=red!20, fill template=violet!10, font=\bfseries\footnotesize}
 	\begin{tikzpicture}
 	%\draw[blue, very thick] (0,0) rectangle (3,2);
+	\umlclass[x=0,y=-12]{Notes}{}{void Add() \\ void Remove()  \\ void Display()}
+	\end{tikzpicture}	
+	\end{center}
+\end{frame}
+
+\begin{frame}{i. Single Responsibility Principle}
+	\begin{center}
+		\textcolor{blue}{\textbf{A class should have only one reason to change}}
+	\end{center}
+	\begin{itemize}
+		\item Should have only one responsibility
+		\item Class with multiple responsibilities break when changed
+		\item Put each responsibility in a separate class
+	\end{itemize}
+	\textbf{Example}:                                        
+% Notes class stores notes (simple text). This class only manages notes and should not responsible for display them. Notes can be displayed in any form. This implementation violates the single responsibility principle. We should separate them in different classes. 
+	\begin{center}
+	\tikzumlset{fill class=red!20, fill template=violet!10, font=\bfseries\footnotesize}
+	\begin{tikzpicture}
+	%\draw[blue, very thick] (0,0) rectangle (3,2);
 	\textbf{	\umlclass[x=0,y=-12]{Notes}{}{void Add() \\ void Remove()  \\ void Display()}
 	\umlnote[y=-14]{Notes}{before}
 	\umlclass[x=4,y=-12]{Notes}{}{ void Add() \\ void Remove()}
