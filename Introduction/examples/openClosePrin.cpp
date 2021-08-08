@@ -1,8 +1,8 @@
 class Notes {
 public:
-    void Add() {}
-    void Remove() {}
-    void Display() {}
+  void Add() {}
+  void Remove() {}
+  void Display() {}
 };
 
 /*We want to modify Add function because we want to add a functionality.
@@ -14,19 +14,19 @@ public:
 // the condition.
 class Notes {
 public:
-    void Add() {
-        // if (contains('!')){
-        // ...
-        // }
-    }
-    
-    void Remove() {
-    
-    }
+  void Add() {
+    // if (contains('!')){
+    // ...
+    // }
+  }
+  
+  void Remove() {
+  
+  }
 
-    void Display() {
+  void Display() {
 
-    }
+  }
 };
 //The above implementation violates open-closed principle.
 
@@ -37,19 +37,19 @@ public:
 // Add() function.
 class Notes {
 public:
-    virtual void Add() {}
+  virtual void Add() {}
 
-    void Remove() {}
+  void Remove() {}
 
-    void Display() {}
+  void Display() {}
 };
 
 class TaggedNotes : public Notes {
 public:
-    void Add() override {
-        // if (contains('!'))
-        // {
-        // 
-        // }
-    }
+  void Add() override {
+    // if (contains('!'))
+    // {
+    // 
+    // }
+  }
 };

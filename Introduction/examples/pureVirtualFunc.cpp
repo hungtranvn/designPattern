@@ -3,23 +3,23 @@ using namespace std;
  
 class Base
 {
-   int x;
+  int x;
 public:
-    virtual void fun() = 0;
-    int getX() { return x; }
+  virtual void fun() = 0;
+  int getX() { return x; }
 };
  
 // This class inherits from Base and implements fun()
 class Derived: public Base
 {
-    int y;
+  int y;
 public:
-    void fun() { cout << "fun() called"; }
+  void fun() { cout << "fun() called"; }
 };
  
 int main(void)
 {
-    Derived d;
-    d.fun();
-    return 0;
+  Derived d;
+  d.fun();
+  return 0;
 }

@@ -1,18 +1,18 @@
 class ImageReader {
 public:
-    virtual void Decode() = 0;
-    virtual ~ImageReader() = default;
+  virtual void Decode() = 0;
+  virtual ~ImageReader() = default;
 };
 
 class BitmapReader : public ImageReader {
 public:
-    void Decode() {}
+  void Decode() {}
 };
 
 class ImageViewer {
-    BitmapReader *m_Reader{};
+  BitmapReader *m_Reader{};
 public:
-    void Display(){}
+  void Display(){}
 };
 
 /*
@@ -28,9 +28,9 @@ public:
  * */
 
 class ImageViewer {
-    ImageReader *m_Reader{};
+  ImageReader *m_Reader{};
 public:
-    void Display(){}
+  void Display(){}
 };
 
 /*

@@ -79,33 +79,33 @@ void Operate(Operation *op) {
 using ReturnType = std::variant<int, bool>;
 
 struct IOperation {
-    virtual ReturnType ResultOf(int *begin, int *end) = 0;
-    virtual ~Operation() = default;
+  virtual ReturnType ResultOf(int *begin, int *end) = 0;
+  virtual ~Operation() = default;
 }
 
 /*We will inherit Operation and BoolOperation from the interface
  * */
 class Operation : public IOperation {
 public:
-    virtual ReturnType ResultOf(int *begin, int *end) {
-        //implementation 
-    }
+  virtual ReturnType ResultOf(int *begin, int *end) {
+    //implementation 
+  }
     // returned type should be integer
 }
 
 class BoolOperation : public IOperation {
 public:
-    ReturnType ResultOf(int *begin, int *end) override {
-        //implementation
-    }
-    // Returned type should be boolean
+  ReturnType ResultOf(int *begin, int *end) override {
+    //implementation
+  }
+  // Returned type should be boolean
 }
 
 // Client code use the above design
 void Operate(IOperation *op) {
-    using namespace std;
-    int arr[5]{};
-    auto result = op->ResultOf(begin(arr), end(arr))
+  using namespace std;
+  int arr[5]{};
+  auto result = op->ResultOf(begin(arr), end(arr))
 }
 
 // using visitation for type safe access. Client does not have to know what

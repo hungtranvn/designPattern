@@ -1,8 +1,8 @@
 class Notes {
 public:
-    virtual void Add() {}
+  virtual void Add() {}
 
-    void Remove() {}
+  void Remove() {}
 
-    void Display() {}
+  void Display() {}
 };

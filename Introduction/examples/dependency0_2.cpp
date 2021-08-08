@@ -1,5 +1,5 @@
 class ImageViewer {
-    BitmapReader *m_Reader{};
+  BitmapReader *m_Reader{};
 public:
-    void Display(){}
+  void Display(){}
 };

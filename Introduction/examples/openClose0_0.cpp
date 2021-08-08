@@ -1,6 +1,6 @@
 class Notes {
 public:
-    void Add() {}
-    void Remove() {}
-    void Display() {}
+  void Add() {}
+  void Remove() {}
+  void Display() {}
 };

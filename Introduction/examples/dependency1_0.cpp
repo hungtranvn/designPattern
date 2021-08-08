@@ -1,5 +1,5 @@
 class ImageViewer {
-    ImageReader *m_Reader{};
+  ImageReader *m_Reader{};
 public:
-    void Display(){}
+  void Display(){}
 };
