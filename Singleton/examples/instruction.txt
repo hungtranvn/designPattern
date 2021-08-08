@@ -1,0 +1,355 @@
+1.Basics:
+    How to implement singleton design pattern.
+
+2.Loger class
+    
+    (*) Logger1
+    
+    The class used to log the different states of the application as it
+    execute.
+    
+    If the application crashes, we can examine the logs and we can find out
+    which part of application caused the crash.
+
+    a. change "r" to "w" mode
+    b. Run app
+    c. Creat an other instace in OpenConnection()
+    d. Call that method in main and see in applog.txt
+        The problem: Two instances are created and constructor of each
+        instance attempts to open the file in write mode.
+        The stream is already open. When another instance tries to open it,
+        it may either fail or succeed. We dont know, the behavior is
+        undefined.
+        => Need to ensure that there is only one instance of the logger.
+
+        The other way is that we can create a global instance of the logger
+        and have the obligation, use it everywhere. That may work, but it
+        will not prevent the user from creating multiple instances of the
+        logger.
+        => Need to prevent the user from creating instances of this class.
+    
+    (*) Logger2
+
+    To prevent the user from creating instances of this class.
+    
+    a. Make constructor private
+    b. Creat the static Logger instance
+    c. Creat the static method to give static instance to the clients.
+    (static method for static instance)
+    d. In cpp file: initilize the instance
+    e. In main.cpp: creat the instance by static method
+    f. Run the application
+
+    What if the users do not use the reference to get instance of Logger?
+    
+    lg is a concreate object and it is initialized through a copy
+    constructor.
+    
+    The Instance() method return an instance of the Logger that gets copied
+    into the lg object.
+    
+    And We have not implementated a copy constructor. That is why the
+    compiler will synthesize its own copy constructor that will perform a
+    shallow copy.
+    
+    Therefore the m_pStream pointer will be copied into the lg object.
+    
+    And There are now two objects that are sharing the same stream pointer.
+    
+    At the end of scope of OpenConnection() the local object lg was
+    destroyed and the destructor will close the stream and the stream
+    pointer in the local object is left dangling (point to stream had
+    closed.)
+
+    (*) Logger3
+
+    So, We need to prevent the users from creating copied of the object.
+    => declare the constructor with delete modifier.
+    => similary to assignment operator because using assignment can create
+    a copy of existing object.
+    or, you can do this by declaration of these functions in the private
+    section.
+
+    a. Run with copied lg instance. See an error of copy constructor
+    (deleted or private) => the users can not create a copy object.
+
+    We can avoid the above problem by returning a pointer from the instance
+    method.
+
+    The thing is that if we return a pointer, then it is possible for the
+    caller to call delete on it.
+    Secondly, if you pass the pointer around in different functions, then
+    the functions will have to implement if condition that checks the
+    pointer is null or not. Since references can never be null, we don not
+    have to perform any null check.
+    One more thing is that you could dereference the pointer and try to
+    create a copy.
+
+    The rule of three: in the ownweship semantics (class have pointer,
+    reference), it should implement a copy constructor, assignment operator
+    and a destructor. There are two more functions that have to implement:
+    the move constructor and move assignment. => rule of five. But in this
+    class we do not need move semantic because this class instance is
+    going to be global. 
+    
+    (*) Logger4 
+    
+    Try with instance method will return a pointer?
+
+3.Lazy Instance Singleton
+    
+    (*) Lazy1
+    
+    In the above implementation, the instance is created as soon as the
+    program is loaded (before main() get invoked). This kind of instance
+    called eager instance.
+    
+    If you do not need stream to be open as soon as the program starts, we
+    can use lazy instance. The lazy instance only created after Instance()
+    method invoked.
+    
+    a. Need a pointer variable: change m_pInstance to *m_pInstance 
+    b. In Instance() method, implement return a pointer of m_pInstance
+    c. To avoid multiple instances, should put if condition for null check
+    in Instance() method.
+    d. Create reference object and build and run. In this way, Logger
+    instance only created when Instance() method invoked.
+    
+    (*) Lazy2
+    
+    But there are a couple of issues in the implementation: 
+    By logging the call of the constructor and the destructor, we do not see
+    the destructor called.
+
+    The reason is that we can not delete the m_pInstance in Instance()
+    method at the end of the main().
+        first: We do not have a pointer point to the instance
+        second: We can get the pointer from lg object in main(), but it is
+        bad idea to call delete on a non pointer.
+    So, calling delete at the end of the Main is out of question.
+    We need to ensure that the instance is deleted only after main()
+    return.
+
+4.Destruction Policies
+    
+    In the privious lecture, we can not delete the instance manually on the
+    Logger because it may use in different parts of the application.
+
+    And how to ensure that the instance will be delete after the main()
+    retured by invoking the destructor?
+    
+    In this example, the destructor only call fclose(m_pStream). Consider
+    that when the application terminates, the destructor will not get
+    involved. But the application will flush the the file buffer and close
+    all the file handles. So there is no problem here. 
+    => we dont really need to call delete on the Logger instance.
+
+    But this will lead to a memory leak? The Logger instance has to be
+    available throughout the program, so its lifetime will be same as the
+    program. So that why even if we do not call delete on the Logger
+    instance, it is not a memory leak.
+    
+    But assume the destructor is releasing some important resource (setting
+    an event or a semaphore) and other applications are waiting on these
+    objects. In the particular case, if the destructor is not invoked,
+    these resources will not be released and other applications will get
+    blocked.
+    => that is why we may have to ensure that the destructor is invoked
+    somehow and it can be invoked only when you delete the Logger instance.
+
+    There are two ways to which you can delete the Logger instance.
+        -first, using smart pointer.
+        (*) smartPtr
+        What happend if user create a pointer to lg and delete it? The
+        behavior is undefined.
+        We can prevent users from creating new object of lg by making
+        destructor private. This implementation prevents user call delete
+        on the Logger instance. So unique_ptr can not call delete on Logger
+        instance.
+        
+        We can do one thing here. We can write our own deleter.
+
+        -second, using atexit function in constructor
+        (*) atexitFunc
+        when main() returns, the c run time will automatically invoke this
+        lambda and the deletye statement will get executed. This will
+        delete the instance and also invoke the destructor of the Logger.
+
+    (*) Note:
+    static initialization fiasco
+    https://isocpp.org/wiki/faq/ctors#static-init-order
+
+5. Multithreading Issues
+    (*) multithreading
+
+    a.Create two threads in main() function => two threads called
+    Instance() method at the same time (data race).
+    solution: using lock in the method => instance method is now thread
+    safe.
+    
+    b.Perform the null check before lock() because if m_pInstance not null,
+    thread do not perform creating new instance (double-check locking
+    pattern). => multiple threads have not to wait.
+    => But the above pattern may not allway work.
+    
+    c.Assume that multiple threads call Instance() method at the same time?
+    They will check that instance is not null and will simply return
+    existing function.
+    Look at the code, we are able to modify the instance in critical
+    condition (lock() and unlock()). What happen if one thread is modifying
+    the instance and the other reading from it? The operations on the
+    instance pointer are not atomic, that is, they do not execute as a
+    single stick.
+
+    => While one thread is modifying this instance variable, the other
+    thread may readfrom it, it is posible that the first thread has not
+    finished writing to this variable and the other reads from it.
+    Therefore, there is a possibility the thread may read an invalid value
+    which is not null. When any method is called on the instance that has
+    the invalid value, the application may crash.
+    
+    => next lecture
+
+6. Why DCLP (double-check locking pattern) fails
+    
+    (*)
+
+    the statement: m_pInstance = new Logger{}; is performed in three steps:
+        1. Memory is allocated
+        2. It is initialized
+        3. Memory address is assigned
+    So, the first thread is executing the above statement, the other thread
+    may read from it and get invalid result.
+    => double-check pattern may fail.
+    
+    Break the above statement in three steps (in code) => still work fine.
+    But this case, the compiler can reorder these instructons.
+    
+    However in case of multiple threads and multiple CPUs, there are two
+    things to consider:
+        a. The compiler will reorder the instructions.
+        b. At runtime the CPU may reorder the reads and writes to a memory
+        location.
+
+        If this reordering is not considered by the programmer during
+        implementation, then the application is undefined behavior at run
+        time.
+    
+    Let reorder the three steps statements:
+        1. Memory is allocated
+        2. It is initialized
+        3. Memory address is assigned
+    => program may crash!
+
+7. Meyer's Singleton
+    
+    (*) meyerSingleton
+    
+    Create static instance of the class inside the Instance() method.
+    Created only when Instance() method was invoked.
+    No need to call delete on the instance because it is not allocated on
+    the heap.
+    
+    => static construction is thread safe.
+
+    (*note):
+        Eager instance: is thread safe, dont worry about deleting the
+        instance.
+
+        Dont afford an Eager instance because the instance to be
+        initialized with runtime data => Lazy instance => Meyer Singleton
+        (thread safe and initialize with run-time data)
+
+8. call_once method
+    call_one is thread safe.
+    meyer and callone? => meyer because more efficient.
+
+9. Curiously Recurring Template Pattern
+    In sone apps, you may want multiple classes to behave as Singletons, so
+    you will have to implement the singular behavior in all the classes.
+    
+    The effort to implement all classes as Singleton is reduced by
+    employing the basic inheritance and the concept of curiously recurring
+    template pattern.
+
+10. Clock class
+  Implement the singular behavior of the class without Singleton Pattern
+
+  (*) clock class
+  => We know that even if multiple instances of the clock are created, all
+  of them will have the same state.
+  => There is no point in creating multiple instances
+
+11. Clocke class 2
+  (*) Clock 2  
+  Imagine that if we create hundreds of instances of the Clock class. In
+  the earlier implementation, each instance will have own copy of the
+  attributes.
+  But in this case, hundreads of instances will share the same copy of the
+  atributes.
+  
+  Confusion
+  However, if we allow the user to create multiple instances of the CLock
+  class, it may give a false indication that every object will have a
+  different state => example of a bad API.
+
+12. Monostate
+  (*) Clock 3
+  - Constructor is private
+  - Static methods
+  => Singular class
+
+  Monostate pattern enforces singularity through behaviori. There is no
+  Instance method and the user can access any method through the class
+  name.
+  
+  Singleton pattern enforces singularity through structure. It prevents the
+  user from creating instances of the class and the instance is accessible
+  only through the Instance method.
+
+13. Singleton and Monostate
+  Singleton: Enforces singular instance through structure
+             Only one instance can exist at a time
+             Support lazy instantiation
+             Requires static instance method
+             Can support inheritance and polymorphism
+             Existing classes can be made singletons
+             Flexible
+  Monostate: Enforces singular instance through behaviour
+             CLass may or may not be instantiated
+             No support for lazy instantiation
+             All attributes are statics (methods may be static)
+             Static methods can not overridden
+             Difficult to change existing classes to monostate
+             Inflexible
+
+14. Singleton Issues
+  Many people against Singleton pattern due to its name used directly =>
+  violate the dependency inversion principle because Interface not to
+  implementation.
+  
+  The name of class can not replace => unit testing difficult.
+  
+  (*) printer1: Testing issues
+  We can see that we are directly using the name of the class in different
+  parts of code. => violate the dependency inversion principle.
+  
+  In the future, we want to replace the local printer with a network
+  printer, we will not able to do so.
+
+  In case of unit testing, we would like to replace local printer with mock
+  object, but we can not do that.
+
+  => Avoiding to use the name of class directly by inheriting from some
+  class and use it through that class.
+  
+  (*) printer2: solution
+  We can use other printer classes without depending on their concreate
+  types. => make unit testing easy
+
+15. Registry Singleton
+  It is obvious that we will modify the existing code (GetIntance() method
+  in Printer class) if we want to introduce a new class in the future.
+  => violate open-close principle
+
+
