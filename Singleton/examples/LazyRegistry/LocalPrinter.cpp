@@ -4,13 +4,13 @@
 #include "PrinterProvider.h"
 
 PrinterPtr LocalPrinter::GetInstance() {
-	/*static LocalPrinter instance ;
+	/*static LocalPrinter instance;
 	return instance ;*/
-	std::cout << "LocalPrinter instance created\n" ;
-	return std::shared_ptr<LocalPrinter>{new LocalPrinter{}} ;
+	std::cout << "LocalPrinter instance created\n";
+	return std::shared_ptr<LocalPrinter>{new LocalPrinter{}};
 }
 
 void LocalPrinter::Print(const std::string& data) {
-	std::cout << "[LOCALPRINTER]" << data << '\n' ;
+	std::cout << "[LOCALPRINTER]" << data << '\n';
 }
 

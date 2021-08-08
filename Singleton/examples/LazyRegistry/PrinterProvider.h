@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PRINTER_PROVIDER_H
+#define PRINTER_PROVIDER_H
 #include <functional>
 #include <mutex>
 #include <unordered_map>
@@ -20,4 +21,4 @@ public:
 	static void RegisterCreator(const std::string &key, Creator creator) ;
 	static PrinterPtr GetPrinter(const std::string &key) ;
 };
-
+#endif

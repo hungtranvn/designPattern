@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PRINTER_H
+#define PRINTER_H
 #include <memory>
 #include <string>
 
@@ -13,4 +14,4 @@ public:
 	virtual void Print(const std::string &data)=0 ;
 };
 using PrinterPtr = std::shared_ptr<Printer> ;
-
+#endif
