@@ -1,2 +1,1 @@
-[] Thread 1 has started!
 [] Thread 2 has started!

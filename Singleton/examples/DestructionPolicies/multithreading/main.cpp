@@ -7,20 +7,20 @@ void OpenConnection() {
 }
 
 int main() {
-    std::thread t1{[](){
-        Logger &lg = Logger::Instance();
-        lg.WriteLog("Thread 1 has started!");
-        }
-    };
-    
-    std::thread t2{[](){
-        Logger &lg = Logger::Instance();
-        lg.WriteLog("Thread 2 has started!");
-        }
-    };
+  std::thread t1{[](){
+    Logger &lg = Logger::Instance();
+    lg.WriteLog("Thread 1 has started!");
+    }
+  };
+  
+  std::thread t2{[](){
+    Logger &lg = Logger::Instance();
+    lg.WriteLog("Thread 2 has started!");
+    }
+  };
 
-    t1.join();
-    t2.join();
+  t1.join();
+  t2.join();
 
-    return 0;
+  return 0;
 }

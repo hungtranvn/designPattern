@@ -612,6 +612,66 @@ main.cpp
 %\url{https://isocpp.org/wiki/faq/ctors#static-init-order}
 \end{frame}
 
+\begin{frame}{Multiplethreads issue}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/multithreading/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/multithreading/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Multiplethreads issue}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/multithreading/main.cpp}
+\textbf{Static initialization fiasco?}
+\end{frame}
+
+\begin{frame}{Pros and Cons}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+	\begin{center}
+	\textcolor{blue}{\textbf{Pros}}
+	\end{center}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Class itself control the instantiation process.
+		\item Can allow multiple instances.
+		\item Better than global variable.
+		\item Can be subclassed.
+	\end{itemize}
+\end{column}
+\begin{column}{.48\textwidth}
+	\begin{center}
+	\textcolor{blue}{\textbf{Cons}}
+	\end{center}
+		\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Testing is difficult
+		\item DCLP is defective
+		\item Lazy destruction is complex
+	\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Where to use?}
+	\textcolor{blue}{When only one instance should be use because:}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item multiple instances cause data corruption.
+		\item managing global state or shared state.
+		\item multiple instances are not required.
+	\end{itemize}
+\end{frame}
 \section{Factory Method}
 
 \end{document}
