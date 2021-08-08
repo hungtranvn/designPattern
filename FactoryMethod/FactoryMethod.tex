@@ -1,0 +1,677 @@
+\documentclass[13pt]{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{CambridgeUS}     % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{beaver} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\usepackage{hyperref}
+
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{myCustomCppStyle}{
+  language=C++,
+  numbers=left,
+  stepnumber=1,
+  numbersep=9pt,
+  tabsize=2,
+  showspaces=false,
+  showstringspaces=false
+}
+
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=1
+}
+
+\lstset{style=mystyle}
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{shapes.geometric, arrows, positioning, calc, matrix}
+
+\tikzset{
+  basic box/.style={
+    shape=rectangle, rounded corners, align=center,
+    draw=#1, fill=#1!25},
+  header node/.style={
+    Minimum Width=header nodes,
+    font=\strut\Large\ttfamily,
+    text depth=+0pt,
+    fill=white, draw},
+  header/.style={%
+    inner ysep=+1.5em,
+    append after command={
+      \pgfextra{\let\TikZlastnode\tikzlastnode}
+      node [header node] (header-\TikZlastnode) at (\TikZlastnode.north) {#1}
+      node [span=(\TikZlastnode)(header-\TikZlastnode)] at (fit bounding box) (h-\TikZlastnode) {}
+    }
+  },
+  hv/.style={to path={-|(\tikztotarget)\tikztonodes}},
+  vh/.style={to path={|-(\tikztotarget)\tikztonodes}},
+  fat blue line/.style={ultra thick, blue}
+}
+
+\definecolor{mygray}{RGB}{208,208,208}
+\definecolor{mymagenta}{RGB}{226,0,116}
+\newcommand*{\mytextstyle}{\sffamily\Large\bfseries\color{black!85}}
+\newcommand{\arcarrow}[3]{%
+   % inner radius, middle radius, outer radius, start angle,
+   % end angle, tip protusion angle, options, text
+   \pgfmathsetmacro{\rin}{1.7}
+   \pgfmathsetmacro{\rmid}{2.2}
+   \pgfmathsetmacro{\rout}{2.7}
+   \pgfmathsetmacro{\astart}{#1}
+   \pgfmathsetmacro{\aend}{#2}
+   \pgfmathsetmacro{\atip}{5}
+   \fill[mygray, very thick] (\astart+\atip:\rin)
+                         arc (\astart+\atip:\aend:\rin)
+      -- (\aend-\atip:\rmid)
+      -- (\aend:\rout)   arc (\aend:\astart+\atip:\rout)
+      -- (\astart:\rmid) -- cycle;
+   \path[
+      decoration = {
+         text along path,
+         text = {|\mytextstyle|#3},
+         text align = {align = center},
+         raise = -1.0ex
+      },
+      decorate
+   ](\astart+\atip:\rmid) arc (\astart+\atip:\aend+\atip:\rmid);
+}
+\title[Design Pattern]{Creational Design Pattern}
+\author{Hung Tran}
+\institute{Fpt software}
+\date{\today}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Creational Pattern Overview}
+
+\begin{frame}{Creational Pattern Overview}
+	\begin{center}
+	\textcolor{blue}{\textbf{Construction process of an object.}}
+	\end{center}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item \textbf{Singleton}: Ensure only one instance.
+		\item \textbf{Factory Method}: Create instance without depending on its concrete type.
+		\item \textbf{Object pool}: Reuse existing instances.
+		\item \textbf{Abstract factory}: Create instances from a specific family.
+		\item \textbf{Prototype}: Clone existing objects from a prototype.
+		\item \textbf{Builder}: Construct a complex object step by step.
+	\end{itemize}
+\end{frame}
+
+\section{Singleton pattern}
+
+\begin{frame}{Why we need Singleton Design Pattern}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item A component manages the underlying resources such as database connection, 					application configuration.
+		\item The class should have only one instance.
+		\item Multiple instances will store its own state. When one instance modifies resource, 			the other instances will not know about it. 
+		\item The state of underlying resource may get corrupted or may fail to provide the 				service
+	\end{itemize}
+	\begin{center}
+	\textcolor{red}{\textbf{That class should have only one instance.}}
+	\end{center}
+\end{frame}
+
+\begin{frame}{The Intent of Singleton Design Pattern}
+	\begin{center}
+	\textcolor{red}{\textbf{Ensure a class only has one instance, and provide a global point of 		access to it.}}\\
+	\textcolor{blue}{\textbf{Singleton instance behaves like global variable? Yes!}}
+	\end{center}
+\end{frame}
+
+\begin{frame}{How to Implement of Singleton Design Pattern?}
+	\begin{itemize}
+		\setlength\itemsep{2em}
+		\item The class is made responsible for its own instance.
+		\item It intercepts the call for construction and returns a single instance.
+		\item Same instance is returned every time
+		\item A direct construction of object is disabled.
+		\item The class creates its own instance which is provided to the clients.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Singleton pattern?}
+	\begin{center}
+	\begin{tikzpicture}
+	\umlclass[x=0,y=0]{Singleton}{static uniqueInstance \\ singletonData}
+	{static Instance() \\ SingletonOperation() \\ GetSingletonData()}
+	\umlnote[x=4,y=-1, width=100]{Singleton}{return uniqueInstance}
+	%\umlnote[x=4,y=4, width=100]{Singleton}{Attribute section: state of class}
+	\end{tikzpicture}	
+	\end{center}
+\end{frame}
+
+\begin{frame}{Basic implementation}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Singleton.h
+\lstinputlisting{./examples/Basic/Singleton.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Singleton.cpp
+\lstinputlisting{./examples/Basic/Singleton.cpp}
+main.cpp
+\lstinputlisting{./examples/Basic/main.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Logger1 class: Creating two instance}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Logger.h
+\lstinputlisting{./examples/Logger/Logger1/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Logger.cpp
+\lstinputlisting{./examples/Logger/Logger1/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Logger1 class: Creating two instance}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger1/main.cpp}
+\end{frame}
+
+\begin{frame}{Logger1 class: Problem}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item \textbf{Problem}: Two instances are created and constructor of each instance attempts to open the file in write mode. The stream is already open. When another instance tries to open it, it may either fail or succeed. We do not know, the behavior is undefined.
+
+\item \textbf{Solution}:
+
+\item \textcolor{blue}{Need to ensure that there is only one instance of the logger.}
+
+\item \textcolor{blue}{Need to prevent the user from creating instances of this class.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solution for Logger1 class}
+\begin{itemize}
+\item Make constructor private
+
+\item Create the static Logger instance
+
+\item Create the static method
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Logger2 class: solve the Logger1 class's problem}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger2/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger2/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Logger2 class: solve the Logger1 class's problem}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger2/main.cpp}
+\end{frame}
+
+\begin{frame}{Logger2 class: Problem}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item What if the users do not use the reference to get the instance of class?
+
+\item "lg" is a concrete object so it is initialized through copy constructor.
+
+\item The compiler will synthesize its own copy constructor that will perform a shallow copy.
+
+\item Therefore the mpStream pointer will be copied into the lg object.
+
+\item There are now two objects that are sharing the same stream pointer.
+
+\item At the end of scope of OpenConnection() the local object lg was         
+    destroyed and the destructor will close the stream and the stream       
+    pointer in the local object is left dangling (point to stream had       
+    closed.)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Shadow copy}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item A copy is created by copying the state of the object.
+
+\item Programming languages support this feature through cloning/copy constructor.
+
+\item The default implementation of these methods will copy the references in the object instead of copying the actual data.
+
+\item This called shadow copy
+
+\end{itemize}
+\end{frame}
+
+\tikzstyle{object} = [attribute, anchor=west, text width=6em, fill=red!20, minimum height=6em]
+\tikzstyle{attribute}=[draw, anchor=west, fill=green!20, text width=6em, text centered, minimum height=2em]
+\tikzstyle{address}=[draw, anchor=west, fill=yellow!20, text width=4em, text centered, minimum height=2em]
+\tikzstyle{value}=[draw, anchor=west, fill=pink!20, text width=4em, text centered, minimum height=2em]
+\tikzstyle{ann} = [above, text width=5em]
+
+\begin{frame}{Shadow copy}
+\begin{tikzpicture}[>=stealth]
+\node (obj1) at (0em,0em) [object] {};
+\node (name1) at (0em,2em) [attribute] {Object1};
+\node (ref1) at (0em,0em) [attribute] {ref};
+\node (val1) at (0em,-2em) [attribute] {val};
+
+\node (obj2) at (25em,0em) [object] {};
+\node (name1) at (25em,2em) [attribute] {ObjectClone};
+\node (ref2) at (25em,0em) [attribute] {ref};
+\node (val2) at (25em,-2em) [attribute] {val};
+
+\node (add1) at (8em,-6em) [value] {100};
+\node (add0) at (13em,-6em) [address] {0x123};
+\node (add2) at (18em,-6em) [value] {100};
+
+\node (obj0) at (12em,-13em) [object] {};
+\node (name1) at (12em,-11em) [attribute] {AnOtherObject};
+
+\path [draw, ->, red] (ref1) -| (add0);
+\path [draw, ->, red] (ref2) -| (add0);
+\path [draw, ->, red] (add0) -- (obj0);
+\path [draw, ->] (val1) -| (add1);
+\path [draw, ->] (val2) -| (add2);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Deep copy}
+\begin{tikzpicture}[>=stealth]
+\node (obj1) at (0em,0em) [object] {};
+\node (name1) at (0em,2em) [attribute] {Object1};
+\node (ref1) at (0em,0em) [attribute] {ref};
+\node (val1) at (0em,-2em) [attribute] {val};
+
+\node (obj2) at (25em,0em) [object] {};
+\node (name1) at (25em,2em) [attribute] {ObjectClone};
+\node (ref2) at (25em,0em) [attribute] {ref};
+\node (val2) at (25em,-2em) [attribute] {val};
+
+\node (add1) at (6em,-6em) [value] {100};
+\node (add0) at (11em,-6em) [address] {0x123};
+\node (add3) at (16em,-6em) [address] {0x789};
+\node (add2) at (21em,-6em) [value] {100};
+
+\node (obj3) at (8em,-13em) [object] {};
+\node (name1) at (8em,-11em) [attribute] {OtherObject1};
+
+\node (obj4) at (17em,-13em) [object] {};
+\node (name1) at (17em,-11em) [attribute] {OtherObject2};
+
+\path [draw, ->, red] (ref1) -| (add0);
+\path [draw, ->, blue] (ref2) -| (add3);
+\path [draw, ->, red] (add0) -- (obj3);
+\path [draw, ->, blue] (add3) -- (obj4);
+\path [draw, ->] (val1) -| (add1);
+\path [draw, ->] (val2) -| (add2);
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Solution for Logger2 class}
+    So, We need to prevent the users from creating copied of the object.    
+    => declare the constructor with delete modifier.                        
+    => similary to assignment operator because using assignment can create  
+    a copy of existing object.                                              
+    or, you can do this by declaration of these functions in the private    
+    section.                                                                
+            
+\end{frame}
+
+\begin{frame}{Logger3 class: Prevent user from creating a copy instance}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger3/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger3/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Logger3 class: Prevent user from creating a copy instance}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/Logger/Logger3/main.cpp}
+\end{frame}
+
+\begin{frame}{Logger3 class: Problem}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item If the user try to create a copy of instance, error prone due to copy constructor
+
+\item How to avoid that problem?
+
+\item Returning a pointer?
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Problem of returning a pointer}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item The user can make a copy by dereference operator
+
+\item Implement "if" condition for check "null" pointer
+
+\item Rule of Three: copy constructor, assignment operator, destructor
+
+\item Rule of Five: move constructor, move assignment but we do not need?
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lazy Singleton}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item The above implementations, the instance is created before main invoked. 
+
+\item The above instances called eager instances.
+
+\item We need instance created when we want, after the instance method invoked?
+
+\item Using lazy instance
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{How to implement lazy instance?}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item Need a pointer variable
+
+\item In Instance() method, implement return a pointer
+
+\item To avoid multiple instances, should put if condition for null check in Instance() method.
+
+\item Using lazy instance
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lazy1 class}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item Need a pointer variable
+
+\item In Instance() method, implement return a pointer
+
+\item To avoid multiple instances, should put if condition for null check in Instance() method.
+
+\item Using lazy instance
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lazy1 class}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item Need a pointer variable
+
+\item In Instance() method, implement return a pointer
+
+\item To avoid multiple instances, should put if condition for null check in Instance() method.
+
+\item Using lazy instance
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lazy class}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item Need a pointer variable
+
+\item In Instance() method, implement return a pointer
+
+\item To avoid multiple instances, should put if condition for null check in Instance() method.
+
+\item Using lazy instance
+\end{itemize}
+\end{frame}
+
+\begin{frame}{lazy class}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/LazySingleton/lazy1/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/LazySingleton/lazy1/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{lazy class}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/LazySingleton/lazy1/main.cpp}
+\end{frame}
+
+\begin{frame}{Lazy class: Problem}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item We did not see the destructor called.
+
+\item We can not delete the \textbf{m\_pInstance} in Instance() method at the end of the main function.
+
+\item We do not have a pointer to the instance
+
+\item We can get a pointer to lg object in main but it is bad idea to call delete on none pointer.
+
+\item \textcolor{red}{How to ensure that the instance will be deleted after the main returned.}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Destruction Policies}
+\begin{itemize}
+\setlength\itemsep{1em}
+
+\item There are two ways:
+
+\item First, using the smart pointer, if the user create a pointer to lg and delete it, the behavior is undefined. Instead we can write our own deleter.
+
+\item Second, we can use atexit() function.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Using smart pointer}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/smartPrt/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/smartPrt/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Using smart pointer}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/smartPrt/main.cpp}
+\end{frame}
+
+\begin{frame}{Using atexit}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/atexitFunc/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/atexitFunc/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Using atexit}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/atexitFunc/main.cpp}
+\textbf{Static initialization fiasco?}
+%\url{https://isocpp.org/wiki/faq/ctors#static-init-order}
+\end{frame}
+
+\begin{frame}{Multiplethreads issue}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/multithreading/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/multithreading/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Multiplethreads issue}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/multithreading/main.cpp}
+\textbf{Static initialization fiasco?}
+\end{frame}
+
+\begin{frame}{Pros and Cons}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+	\begin{center}
+	\textcolor{blue}{\textbf{Pros}}
+	\end{center}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Class itself control the instantiation process.
+		\item Can allow multiple instances.
+		\item Better than global variable.
+		\item Can be subclassed.
+	\end{itemize}
+\end{column}
+\begin{column}{.48\textwidth}
+	\begin{center}
+	\textcolor{blue}{\textbf{Cons}}
+	\end{center}
+		\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Testing is difficult
+		\item DCLP is defective
+		\item Lazy destruction is complex
+	\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Where to use?}
+	\textcolor{blue}{When only one instance should be use because:}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item multiple instances cause data corruption.
+		\item managing global state or shared state.
+		\item multiple instances are not required.
+	\end{itemize}
+\end{frame}
+\section{Factory Method}
+
+\end{document}
