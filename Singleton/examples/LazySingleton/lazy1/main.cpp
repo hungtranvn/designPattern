@@ -1,19 +1,17 @@
 #include "Logger.h"
-
+#include <iostream>
 void OpenConnection() {
 	Logger &lg = Logger::Instance() ;
 	lg.WriteLog("Attempting to open a connection") ;
 }
 
 int main() {
-	Logger &lg = Logger::Instance() ;
+	std::cout << "main() called" << std::endl;
+  Logger &lg = Logger::Instance() ;
 	lg.SetTag("192.168.1.101") ;
 	lg.WriteLog("Application has started") ;
 	
   OpenConnection() ;
 	lg.WriteLog("Application is shutting down");
-  Logger* ptrLogger;
-  ptrLogger = &lg;
-  delete ptrLogger;
   return 0;
 }

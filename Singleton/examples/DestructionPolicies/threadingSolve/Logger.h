@@ -2,15 +2,15 @@
 #define LOGGER_H
 #include <cstdio>
 #include <string>
-
+#include <mutex>
 class Logger
-{   
+{
+  static std::mutex m_Mtx;
   FILE *m_pStream;
 	std::string m_Tag;
 	Logger();
 	static Logger *m_pInstance;
 	~Logger();
-
 public:
 	Logger(const Logger&) = delete;
 	Logger & operator =(const Logger &) =delete;

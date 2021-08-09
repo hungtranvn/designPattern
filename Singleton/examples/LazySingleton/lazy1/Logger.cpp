@@ -1,8 +1,9 @@
 #include "Logger.h"
-
+#include <iostream>
 Logger *Logger::m_pInstance;
 
 Logger::Logger() {
+  std::cout << "Logger::Logger()" << std::endl;
   m_pStream = fopen("applog.txt", "w");
 }
 
@@ -13,7 +14,8 @@ Logger& Logger::Instance() {
 }
 
 Logger::~Logger() {
-	fclose(m_pStream);
+	std::cout << "Logger::~Logger()" << std::endl;
+  fclose(m_pStream);
 }
 
 void Logger::WriteLog(const char* pMessage) {

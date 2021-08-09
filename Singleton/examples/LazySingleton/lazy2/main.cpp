@@ -10,5 +10,7 @@ int main() {
 	lg.WriteLog("Application has started");
 	OpenConnection();
 	lg.WriteLog("Application is shutting down");
+  Logger *ptrLogger = &lg;
+  delete ptrLogger;
   return 0;
 }

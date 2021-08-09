@@ -153,13 +153,13 @@
 
 \section{Singleton pattern}
 
-\begin{frame}{Why we need Singleton Design Pattern}
+\begin{frame}{Why we need Singleton Design Pattern?}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item A component manages the underlying resources such as database connection, 					application configuration.
+		\item A component manages the underlying resources such as database connection, application configuration.
 		\item The class should have only one instance.
-		\item Multiple instances will store its own state. When one instance modifies resource, 			the other instances will not know about it. 
-		\item The state of underlying resource may get corrupted or may fail to provide the 				service
+		\item Multiple instances will store its own state. When one instance modifies resource, the other instances will not know about it. 
+		\item The state of underlying resource may get corrupted or may fail to provide the service.
 	\end{itemize}
 	\begin{center}
 	\textcolor{red}{\textbf{That class should have only one instance.}}
@@ -168,23 +168,23 @@
 
 \begin{frame}{The Intent of Singleton Design Pattern}
 	\begin{center}
-	\textcolor{red}{\textbf{Ensure a class only has one instance, and provide a global point of 		access to it.}}\\
+	\textcolor{red}{\textbf{Ensure a class only has one instance, and provide a global point of access to it.}}\\
 	\textcolor{blue}{\textbf{Singleton instance behaves like global variable? Yes!}}
 	\end{center}
 \end{frame}
 
-\begin{frame}{How to Implement of Singleton Design Pattern?}
+\begin{frame}{How to implement Singleton Design Pattern?}
 	\begin{itemize}
 		\setlength\itemsep{2em}
 		\item The class is made responsible for its own instance.
 		\item It intercepts the call for construction and returns a single instance.
-		\item Same instance is returned every time
+		\item Same instance is returned every time.
 		\item A direct construction of object is disabled.
 		\item The class creates its own instance which is provided to the clients.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Structure of Singleton pattern?}
+\begin{frame}{Structure of Singleton Pattern}
 	\begin{center}
 	\begin{tikzpicture}
 	\umlclass[x=0,y=0]{Singleton}{static uniqueInstance \\ singletonData}
@@ -239,7 +239,7 @@ main.cpp
 \begin{itemize}
 \setlength\itemsep{1em}
 
-\item \textbf{Problem}: Two instances are created and constructor of each instance attempts to open the file in write mode. The stream is already open. When another instance tries to open it, it may either fail or succeed. We do not know, the behavior is undefined.
+\item \textbf{Problem}: Two instances are created and constructor of each instance attempts to open the file in write mode. The stream is already open. When another instance tries to open it, it may either fail or succeed. We do not know, \textbf{the behavior is undefined}.
 
 \item \textbf{Solution}:
 
@@ -251,6 +251,7 @@ main.cpp
 
 \begin{frame}{Solution for Logger1 class}
 \begin{itemize}
+\setlength\itemsep{2em}
 \item Make constructor private
 
 \item Create the static Logger instance
@@ -285,20 +286,17 @@ main.cpp
 \begin{itemize}
 \setlength\itemsep{1em}
 
-\item What if the users do not use the reference to get the instance of class?
+\item What if the users \textbf{do not use the reference} to get the instance of class?
 
-\item "lg" is a concrete object so it is initialized through copy constructor.
+\item \textit{lg} is a concrete object so it is initialized through \textbf{the copy constructor}.
 
-\item The compiler will synthesize its own copy constructor that will perform a shallow copy.
+\item The compiler will synthesize its own copy constructor that will perform a \textbf{shallow copy}.
 
-\item Therefore the mpStream pointer will be copied into the lg object.
+\item Therefore the m\_pStream pointer will be copied into the \textit{lg} object.
 
-\item There are now two objects that are sharing the same stream pointer.
+\item There are now two objects that are sharing \textbf{the same stream pointer}.
 
-\item At the end of scope of OpenConnection() the local object lg was         
-    destroyed and the destructor will close the stream and the stream       
-    pointer in the local object is left dangling (point to stream had       
-    closed.)
+\item At the end of scope of OpenConnection() the local object \textit{lg} was       destroyed and the destructor will close the stream and the stream pointer in the local object is left dangling.
 \end{itemize}
 \end{frame}
 
@@ -383,13 +381,13 @@ main.cpp
 \end{frame}
 
 \begin{frame}{Solution for Logger2 class}
-    So, We need to prevent the users from creating copied of the object.    
-    => declare the constructor with delete modifier.                        
-    => similary to assignment operator because using assignment can create  
-    a copy of existing object.                                              
-    or, you can do this by declaration of these functions in the private    
-    section.                                                                
-            
+\begin{itemize}
+\setlength\itemsep{1em}
+	\item We need to \textbf{prevent} the users from creating copied of the object.
+	\item Declare the constructor with \textbf{delete} modifier.
+	\item Similarly to assignment operator because using assignment can create a copy of existing object.
+	\item Or, you can do this by declaration of these functions in the private section.
+\end{itemize}                                                                        
 \end{frame}
 
 \begin{frame}{Logger3 class: Prevent user from creating a copy instance}
@@ -472,51 +470,7 @@ main.cpp
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Lazy1 class}
-\begin{itemize}
-\setlength\itemsep{1em}
-
-\item Need a pointer variable
-
-\item In Instance() method, implement return a pointer
-
-\item To avoid multiple instances, should put if condition for null check in Instance() method.
-
-\item Using lazy instance
-
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Lazy1 class}
-\begin{itemize}
-\setlength\itemsep{1em}
-
-\item Need a pointer variable
-
-\item In Instance() method, implement return a pointer
-
-\item To avoid multiple instances, should put if condition for null check in Instance() method.
-
-\item Using lazy instance
-
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Lazy class}
-\begin{itemize}
-\setlength\itemsep{1em}
-
-\item Need a pointer variable
-
-\item In Instance() method, implement return a pointer
-
-\item To avoid multiple instances, should put if condition for null check in Instance() method.
-
-\item Using lazy instance
-\end{itemize}
-\end{frame}
-
-\begin{frame}{lazy class}
+\begin{frame}{Lazy Singleton (lazy1 class)}
 \begin{columns}[T]
 \begin{column}{.48\textwidth}
 Logger.h
@@ -532,13 +486,13 @@ Logger.cpp
 \end{columns}
 \end{frame}
 
-\begin{frame}{lazy class}
+\begin{frame}{Lazy Singleton (lazy1 class)}
 main.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/LazySingleton/lazy1/main.cpp}
 \end{frame}
 
-\begin{frame}{Lazy class: Problem}
+\begin{frame}{lazy1 class: Problem}
 \begin{itemize}
 \setlength\itemsep{1em}
 
@@ -560,9 +514,9 @@ main.cpp
 
 \item There are two ways:
 
-\item First, using the smart pointer, if the user create a pointer to lg and delete it, the behavior is undefined. Instead we can write our own deleter.
+\item First, using \textbf{the smart pointer}, if the user create a pointer to lg and delete it, the behavior is undefined. Instead we can write our own deleter.
 
-\item Second, we can use atexit() function.
+\item Second, we can use \textbf{atexit()} function.
 \end{itemize}
 \end{frame}
 
@@ -604,7 +558,7 @@ Logger.cpp
 \end{columns}
 \end{frame}
 
-\begin{frame}{Using atexit}
+\begin{frame}{Using atexit()}
 main.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/atexitFunc/main.cpp}

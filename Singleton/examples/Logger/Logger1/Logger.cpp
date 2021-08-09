@@ -2,11 +2,12 @@
 #include <iostream>
 Logger::Logger() {
   m_pStream = fopen("applog.txt", "w");
-  std::cout << "Logger::Logger" << std::endl;
+  std::cout << "Logger::Logger()" << std::endl;
 }
 
 Logger::~Logger() {
   fclose(m_pStream);
+  std::cout << "Logger::~Logger()" << std::endl;
 }
 
 void Logger::WriteLog(const char* pMessage) {
