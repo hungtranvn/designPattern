@@ -589,6 +589,28 @@ main.cpp
 \textbf{Static initialization fiasco?}
 \end{frame}
 
+\begin{frame}{Using mutex::lock}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+Logger.h
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/threadingSolve/Logger.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/threadingSolve/Logger.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Using mutex::lock}
+main.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/threadingSolve/main.cpp}
+\end{frame}
+
 \begin{frame}{Pros and Cons}
 \begin{columns}[T]
 \begin{column}{.48\textwidth}
