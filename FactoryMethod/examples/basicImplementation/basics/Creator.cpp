@@ -3,7 +3,7 @@
 //#include "ConcreteProduct.h"
 
 void Creator::AnOperation() {
-	//m_pProduct = new ConcreteProduct{} ;
-	m_pProduct = Create() ;
-	m_pProduct->Operation() ;
+	//m_pProduct = new ConcreteProduct{};
+	m_pProduct = Create();
+	m_pProduct->Operation();
 }

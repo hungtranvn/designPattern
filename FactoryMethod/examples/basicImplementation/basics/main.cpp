@@ -3,6 +3,6 @@
 #include "ConcreteCreator2.h"
 
 int main() {
-	ConcreteCreator2 ct ;
-	ct.AnOperation() ;
+	ConcreteCreator2 ct;
+	ct.AnOperation();
 }

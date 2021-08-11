@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CONCRETE_PRODUCT2_H
+#define CONCRETE_PRODUCT2_H
 #include "Product.h"
 class ConcreteProduct2 :
 	public Product
@@ -7,4 +8,4 @@ class ConcreteProduct2 :
 public:
 	void Operation() override;
 };
-
+#endif

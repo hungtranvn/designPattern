@@ -2,5 +2,5 @@
 #include "ConcreteProduct2.h"
 
 Product* ConcreteCreator2::Create() {
-	return new ConcreteProduct2{} ;
+	return new ConcreteProduct2{};
 }

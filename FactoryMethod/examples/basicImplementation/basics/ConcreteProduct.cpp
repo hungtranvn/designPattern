@@ -2,5 +2,5 @@
 #include <iostream>
 
 void ConcreteProduct::Operation() {
-	std::cout << __FUNCSIG__ << std::endl; 
+	std::cout << "ConcreteProduct::Operation()" << std::endl; 
 }

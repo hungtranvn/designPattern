@@ -165,6 +165,7 @@
 		\item Need name of class
 		\item Tightly coupled with the name
 		\item Add new class, modify the existing code
+		\item Compiler does not know which instance created at compile time or an instance has to be created at runtime?
 	\end{itemize}
 \end{column}
 \end{columns}
@@ -182,14 +183,15 @@
 		\item Different ways to implement
 		\item An overridable method is provide that returns an instance of a class
 		\item This method can be overridden to return instance of a subclass
-		\item Behave likes constructor
+		\item Behave likes \textbf{constructor}
 		\item However, the constructor always returns the same instance
 		\item The factory method can returns any sub-type 
-		\item The factory method also called virtual constructor 
+		\item The factory method also called \textbf{virtual constructor}
+		\item C++ language does not allow virtual constructor
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Structure of Singleton pattern?}
+\begin{frame}{Structure of Factory Method Design Pattern}
 	\begin{center}
 	\begin{tikzpicture}
 	\umlemptyclass[type=abstract,x=0,y=0]{Product}
@@ -207,20 +209,21 @@
 \end{frame}
 
 \begin{frame}{Basic implementation}
-	\begin{center}
-	\begin{tikzpicture}
-	\umlemptyclass[type=abstract,x=0,y=0]{Product}
-	\umlemptyclass[x=0,y=-3]{ConcreteProduct}
-	\umlinherit{ConcreteProduct}{Product}
-	
-	\umlclass[type=abstract,x=4,y=0]{Creator}{}{\umlvirt{FactoryMethod()} \\ AnOperation()}
-	\umlclass[x=4,y=-3]{ConcreteCreator}{}{FactoryMethod()}
-	\umlinherit{ConcreteCreator}{Creator}
-	\umlimport[geometry = -|-, weight = 0.3]{ConcreteCreator}{ConcreteProduct}
-	\umlnote[x=8, y=-1, width = 4.2cm]{Creator}{product = FactoryMethod()}
-	\umlnote[x=8, y=-4, width = 3.5cm]{ConcreteCreator}{return new concrete product}
-	\end{tikzpicture}	
-	\end{center}
+\begin{columns}[T]
+\begin{column}{.48\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Singleton.h
+\lstinputlisting{./examples/Basic/Singleton.h}
+\end{column}
+
+\begin{column}{.48\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Singleton.cpp
+\lstinputlisting{./examples/Basic/Singleton.cpp}
+main.cpp
+\lstinputlisting{./examples/Basic/main.cpp}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Pros and Cons}
