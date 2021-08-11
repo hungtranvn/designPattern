@@ -1,9 +1,9 @@
 CXXFLAGS += -g -Wall -std=c++17
 
-NAME = factory
+NAME = app
 TARGET = $(NAME).exe
 
-OBJECTS = main.o Creator.o ConcreteProduct.o
+OBJECTS = main.o Application.o TextDocument.o
 
 all: $(TARGET)
 

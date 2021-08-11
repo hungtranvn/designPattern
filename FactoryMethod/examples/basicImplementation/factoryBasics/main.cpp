@@ -1,8 +1,7 @@
 #include "Creator.h"
 #include "ConcreteCreator.h"
-#include "ConcreteCreator2.h"
-
+#include "ConcreteCreator1.h"
 int main() {
-	ConcreteCreator2 ct;
+	ConcreteCreator1 ct;
 	ct.AnOperation();
 }

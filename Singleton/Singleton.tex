@@ -20,6 +20,7 @@
 \usepackage{multicol}
 \usepackage{tikz}
 \usepackage{tikz-uml}
+\tikzumlset{font=\footnotesize\ttfamily}
 \usepackage{hyperref}
 
 \usepackage{listings}
@@ -197,13 +198,13 @@
 
 \begin{frame}{Basic implementation}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 Singleton.h
 \lstinputlisting{./examples/Basic/Singleton.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 Singleton.cpp
 \lstinputlisting{./examples/Basic/Singleton.cpp}
@@ -215,13 +216,13 @@ main.cpp
 
 \begin{frame}{Logger1 class: Creating two instance}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 Logger.h
 \lstinputlisting{./examples/Logger/Logger1/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 Logger.cpp
 \lstinputlisting{./examples/Logger/Logger1/Logger.cpp}
@@ -262,13 +263,13 @@ main.cpp
 
 \begin{frame}{Logger2 class: solve the Logger1 class's problem}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/Logger/Logger2/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/Logger/Logger2/Logger.cpp}
@@ -392,13 +393,13 @@ main.cpp
 
 \begin{frame}{Logger3 class: Prevent user from creating a copy instance}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/Logger/Logger3/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/Logger/Logger3/Logger.cpp}
@@ -470,13 +471,13 @@ main.cpp
 
 \begin{frame}{Lazy Singleton (lazy1 class)}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/LazySingleton/lazy1/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/LazySingleton/lazy1/Logger.cpp}
@@ -520,13 +521,13 @@ main.cpp
 
 \begin{frame}{Using smart pointer}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/smartPrt/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/smartPrt/Logger.cpp}
@@ -542,13 +543,13 @@ main.cpp
 
 \begin{frame}{Using atexit()}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/atexitFunc/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/atexitFunc/Logger.cpp}
@@ -566,13 +567,13 @@ main.cpp
 
 \begin{frame}{Multiplethreads issue}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/multithreading/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/multithreading/Logger.cpp}
@@ -589,13 +590,13 @@ main.cpp
 
 \begin{frame}{Using mutex::lock}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.h
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/threadingSolve/Logger.h}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/threadingSolve/Logger.cpp}
@@ -627,7 +628,7 @@ Logger.cpp
 
 \begin{frame}{Pros and Cons}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 	\begin{center}
 	\textcolor{blue}{\textbf{Pros}}
 	\end{center}
@@ -639,7 +640,7 @@ Logger.cpp
 		\item Can be subclassed.
 	\end{itemize}
 \end{column}
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 	\begin{center}
 	\textcolor{blue}{\textbf{Cons}}
 	\end{center}

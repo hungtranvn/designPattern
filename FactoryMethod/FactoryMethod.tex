@@ -20,6 +20,7 @@
 \usepackage{multicol}
 \usepackage{tikz}
 \usepackage{tikz-uml}
+\tikzumlset{font=\footnotesize\ttfamily, class width=6ex}
 \usepackage{hyperref}
 
 \usepackage{listings}
@@ -151,7 +152,7 @@
 	\end{itemize}
 \end{frame}
 
-\section{Factory Method pattern}
+\section{Factory Method Pattern}
 
 \begin{frame}{"new" operator problem}
 \begin{columns}[T]
@@ -208,27 +209,207 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Basic implementation}
+\begin{frame}{Modify existing code problem}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Singleton.h
-\lstinputlisting{./examples/Basic/Singleton.h}
+Product.h
+\lstinputlisting{./examples/basicImplementation/naiveBasic/Product.h}
+ConcreteProduct.h
+\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct.h}
+ConcreteProduct.cpp
+\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct.cpp}
 \end{column}
 
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Singleton.cpp
-\lstinputlisting{./examples/Basic/Singleton.cpp}
+Creator.h
+\lstinputlisting{./examples/basicImplementation/naiveBasic/Creator.h}
+Creator.cpp
+\lstinputlisting{./examples/basicImplementation/naiveBasic/Creator.cpp}
 main.cpp
-\lstinputlisting{./examples/Basic/main.cpp}
+\lstinputlisting{./examples/basicImplementation/naiveBasic/main.cpp}
 \end{column}
 \end{columns}
 \end{frame}
 
+\begin{frame}{What if we add one more ConcreteProduct class?}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+ConcreteProduct1.h
+\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct1.h}
+ConcreteProduct1.cpp
+\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct1.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Creator.cpp
+\lstinputlisting{./examples/basicImplementation/naiveBasic/Creator.cpp}
+\textcolor{red}{\textbf{Factory Method Design Pattern comes in handy}}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic Implementation}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Product.h
+\lstinputlisting{./examples/basicImplementation/factoryBasics/Product.h}
+ConcreteProduct.h
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct.h}
+ConcreteProduct.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+ConcreteProduct1.h
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct1.h}
+ConcreteProduct1.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct1.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic Implementation}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Creator.h
+\lstinputlisting{./examples/basicImplementation/factoryBasics/Creator.h}
+Creator.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/Creator.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+ConcreteCreator.h
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator.h}
+ConcreteCreator.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic Implementation of Factory Method Pattern}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+ConcreteCreator1.h
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator1.h}
+ConcreteCreator1.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator1.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+main.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/main.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Class Diagram Explaining}
+\begin{center}
+\begin{tikzpicture}
+	\umlemptyclass[type=abstract,x=0,y=1]{Product}
+	\umlemptyclass[x=-2,y=-2]{ConcreteProduct}
+	\umlemptyclass[x=2,y=-2]{ConcreteProduct1}
+	\umlinherit[geometry=-|]{ConcreteProduct}{Product}
+	\umlinherit[geometry=-|]{ConcreteProduct1}{Product}
+	
+	\umlclass[type=abstract,x=5,y=0]{Creator}{}{\umlvirt{Create()} \\ AnOperation()}
+	\umlclass[x=3,y=-4]{ConcreteCreator}{}{Create()}
+	\umlclass[x=7,y=-4]{ConcreteCreator1}{}{Create()}
+	\umlinherit[geometry=-|]{ConcreteCreator}{Creator}
+	\umlinherit[geometry=-|]{ConcreteCreator1}{Creator}
+	
+	\umluniassoc[geometry=|-, color=green]{Creator}{Product}
+	
+	\umlimport[geometry = -|, weight = 0.5, color=blue]{ConcreteCreator}{ConcreteProduct}
+	\umlimport[geometry = |-, weight = 0.5, color=red]{ConcreteCreator1}{ConcreteProduct1}
+\end{tikzpicture}	
+\end{center}
+\end{frame}
+
+\begin{frame}{Real World Example: Application Framework?}
+	\textcolor{blue}{We want to create an framework}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Managing different kinds of document.
+		\item 
+		\item multiple instances are not required.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Real World Example: Application Framework}
+\begin{center}
+\begin{tikzpicture}
+	\umlemptyclass[type=abstract,x=0,y=0]{Document}
+	\umlemptyclass[x=-2,y=-2]{Text}
+	\umlemptyclass[x=2,y=-2]{Graphics}
+	\umlinherit[geometry=-|]{Text}{Document}
+	\umlinherit[geometry=-|]{Graphics}{Document}
+	
+	\umlclass[x=5,y=0]{Application}{}{}
+	
+	\umluniassoc[geometry=|-]{Application}{Document}
+\end{tikzpicture}	
+\end{center}
+\end{frame}
+
+\begin{frame}{App framework}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Document.h
+\lstinputlisting{./examples/appFramework/appBasics/Document.h}
+TextDocument.h
+\lstinputlisting{./examples/appFramework/appBasics/TextDocument.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+TextDocument.cpp
+\lstinputlisting{./examples/appFramework/appBasics/TextDocument.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.h
+\lstinputlisting{./examples/appFramework/appBasics/Application.h}
+Application.cpp
+\lstinputlisting{./examples/appFramework/appBasics/Application.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+main.cpp
+\lstinputlisting{./examples/appFramework/appBasics/main.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{The above implementation Problem}
+	\textcolor{blue}{If we want to manage with different doc?}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Managing different kinds of document.
+		\item 
+		\item multiple instances are not required.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Pros and Cons}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 	\begin{center}
 	\textcolor{blue}{\textbf{Pros}}
 	\end{center}
@@ -240,7 +421,7 @@ main.cpp
 		\item Can be subclassed.
 	\end{itemize}
 \end{column}
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 	\begin{center}
 	\textcolor{blue}{\textbf{Cons}}
 	\end{center}

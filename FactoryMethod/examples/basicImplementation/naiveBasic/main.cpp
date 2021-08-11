@@ -1,8 +1,6 @@
 #include "Creator.h"
-#include "ConcreteCreator.h"
-
 int main() {
-	ConcreteCreator ct;
+	Creator ct;
 	ct.AnOperation();
   return 0;
 }
