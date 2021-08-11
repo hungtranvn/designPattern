@@ -457,15 +457,13 @@ main.cpp
 
 \begin{frame}{How to implement lazy instance?}
 \begin{itemize}
-\setlength\itemsep{1em}
+\setlength\itemsep{2em}
 
 \item Need a pointer variable
 
 \item In Instance() method, implement return a pointer
 
 \item To avoid multiple instances, should put if condition for null check in Instance() method.
-
-\item Using lazy instance
 
 \end{itemize}
 \end{frame}
@@ -542,7 +540,7 @@ main.cpp
 \lstinputlisting{./examples/DestructionPolicies/smartPrt/main.cpp}
 \end{frame}
 
-\begin{frame}{Using atexit}
+\begin{frame}{Using atexit()}
 \begin{columns}[T]
 \begin{column}{.48\textwidth}
 Logger.h
@@ -611,6 +609,22 @@ main.cpp
 \lstinputlisting{./examples/DestructionPolicies/threadingSolve/main.cpp}
 \end{frame}
 
+\begin{frame}{Problem of mutex::lock}
+	\textcolor{blue}{If m\_pInstance is not null}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Thread does not perform creating new instance.
+		\item The others have not to wait. 
+	\end{itemize}
+	\textcolor{red}{\textbf{Using null check before lock()?}}
+\end{frame}
+
+\begin{frame}{double-check locking pattern}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/dplpCheck/Logger.cpp}
+\end{frame}
+
 \begin{frame}{Pros and Cons}
 \begin{columns}[T]
 \begin{column}{.48\textwidth}
@@ -648,6 +662,13 @@ main.cpp
 		\item multiple instances are not required.
 	\end{itemize}
 \end{frame}
+
+\begin{frame}
+\begin{center}
+{\fontsize{40}{50}\selectfont Thank You!}
+\end{center}
+\end{frame}
+
 \section{Factory Method}
 
 \end{document}

@@ -10,13 +10,13 @@ Logger::Logger() {
 	});
 }
 Logger& Logger::Instance() {
-  //if(m_pInstance == nullptr){ // double-check locking pattern
-  m_Mtx.lock();
-	if(m_pInstance == nullptr)
-		m_pInstance = new Logger{};
-	m_Mtx.unlock();
-  //}
-    return *m_pInstance;
+  if(m_pInstance == nullptr){ // double-check locking pattern
+    m_Mtx.lock();
+	  if(m_pInstance == nullptr)
+	  	m_pInstance = new Logger{};
+	  m_Mtx.unlock();
+  }
+  return *m_pInstance;
 }
 Logger::~Logger() {
 	std::cout << "Logger::~Logger() invoked" << std::endl; 

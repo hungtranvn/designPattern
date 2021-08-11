@@ -1,3 +1,2 @@
 [192.168.1.101] Application has started
 [192.168.1.101] Attempting to open a connection
-[192.168.1.101] Application is shutting down

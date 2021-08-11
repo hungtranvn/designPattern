@@ -8,8 +8,10 @@ int main() {
 	Logger &lg = Logger::Instance();
 	lg.SetTag("192.168.1.101");
 	lg.WriteLog("Application has started");
-	OpenConnection();
+	
+  OpenConnection();
 	lg.WriteLog("Application is shutting down");
+  
   Logger *ptrLogger = &lg;
   delete ptrLogger;
   return 0;

@@ -202,7 +202,7 @@
     single stick.
 
     => While one thread is modifying this instance variable, the other
-    thread may readfrom it, it is posible that the first thread has not
+    thread may read from it, it is posible that the first thread has not
     finished writing to this variable and the other reads from it.
     Therefore, there is a possibility the thread may read an invalid value
     which is not null. When any method is called on the instance that has

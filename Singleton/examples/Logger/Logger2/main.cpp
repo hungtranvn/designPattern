@@ -1,8 +1,8 @@
 #include "Logger.h"
 #include <iostream>
 void OpenConnection() {
-	//Logger lg = Logger::Instance() ;
-	Logger &lg = Logger::Instance();
+	Logger lg = Logger::Instance() ;
+	//Logger &lg = Logger::Instance();
 	lg.WriteLog("Attempting to open a connection");
 }
 
