@@ -397,14 +397,157 @@ main.cpp
 \end{columns}
 \end{frame}
 
-\begin{frame}{The above implementation Problem}
-	\textcolor{blue}{If we want to manage with different doc?}	
+\begin{frame}{The above implementation problem}
+	\textcolor{blue}{If we want to manage with different docs?}	
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Managing different kinds of document.
-		\item 
-		\item multiple instances are not required.
+		\item Make change to Application class.
+		\item But it is Framework (not support for modification)
+		\item Application class is tightly coupled with TextDocument class
+		\item \textcolor{red}{Remove the dependency on TextDocument class}
+		\item Application should be worked with any kind of data.
 	\end{itemize}
+	\begin{center}
+	\textcolor{blue}{\textbf{Implement Factory Method}}
+	\end{center}
+\end{frame}
+
+\begin{frame}{App framework}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Document.h
+\lstinputlisting{./examples/appFramework/appFrame/Document.h}
+TextDocument.h
+\lstinputlisting{./examples/appFramework/appFrame/TextDocument.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+TextDocument.cpp
+\lstinputlisting{./examples/appFramework/appFrame/TextDocument.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+SpreadSheetDocument.h
+\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetDocument.h}
+SpreadSheetDocument.cpp
+\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetDocument.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+SpreadSheetApplication.h
+\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetApplication.h}
+SpreadSheetApplication.cpp
+\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetApplication.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.h
+\lstinputlisting{./examples/appFramework/appFrame/Application.h}
+TextApplication.h
+\lstinputlisting{./examples/appFramework/appFrame/TextApplication.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.cpp
+\lstinputlisting{./examples/appFramework/appFrame/Application.cpp}
+TextApplication.cpp
+\lstinputlisting{./examples/appFramework/appFrame/TextApplication.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Memory management problem?}
+	\textcolor{blue}{If we want to manage with different docs?}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Make change to Application class.
+		\item But it is Framework (not support for modification)
+		\item Application class is tightly coupled with TextDocument class
+		\item \textcolor{red}{Remove the dependency on TextDocument class}
+		\item Application should be worked with any kind of data.
+	\end{itemize}
+	\begin{center}
+	\textcolor{blue}{\textbf{Implement Factory Method}}
+	\end{center}
+\end{frame}
+
+\begin{frame}{App framework: using smart pointer}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Document.h
+\lstinputlisting{./examples/appFramework/appPtr/Document.h}
+TextDocument.h
+\lstinputlisting{./examples/appFramework/appPtr/TextDocument.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+TextDocument.cpp
+\lstinputlisting{./examples/appFramework/appPtr/TextDocument.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework: using smart pointer}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+SpreadSheetDocument.h
+\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetDocument.h}
+SpreadSheetDocument.cpp
+\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetDocument.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+SpreadSheetApplication.h
+\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetApplication.h}
+SpreadSheetApplication.cpp
+\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetApplication.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework: using smart pointer}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.h
+\lstinputlisting{./examples/appFramework/appPtr/Application.h}
+TextApplication.h
+\lstinputlisting{./examples/appFramework/appPtr/TextApplication.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.cpp
+\lstinputlisting{./examples/appFramework/appPtr/Application.cpp}
+TextApplication.cpp
+\lstinputlisting{./examples/appFramework/appPtr/TextApplication.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Add new product, add more creator?}
+	\textcolor{blue}{How to create multiple instances without creating corresponding application class?}	
+	\begin{center}
+	\textcolor{red}{\textbf{Using Parameterized Factory}}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Pros and Cons}

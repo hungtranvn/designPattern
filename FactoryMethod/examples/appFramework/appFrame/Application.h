@@ -1,16 +1,12 @@
-#pragma once
-#include <memory>
-#include "Document.h"
-using DocumentPtr = std::unique_ptr<Document> ;
-class Application
-{
-	DocumentPtr m_pDocument ;
-	//Document *m_pDocument ;
+#ifndef APPLICATION_H
+#define APPLICATION_H
+class Document;
+class Application {
+	Document* m_pDocument;
 public:
-	void New() ;
-	void Open() ;
-	void Save() ;
-	virtual DocumentPtr Create(){return nullptr ;}
-	
+	void New();
+	void Open();
+	void Save();
+	virtual Document* Create(){return nullptr;}
 };
-
+#endif

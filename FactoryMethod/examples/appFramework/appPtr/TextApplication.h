@@ -3,6 +3,6 @@
 #include "Application.h"
 class TextApplication : public Application {
 public:
-	Document* Create() override;
+	DocumentPtr Create() override;
 };
 #endif

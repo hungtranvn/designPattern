@@ -1,6 +1,6 @@
 #include "SpreadSheetApplication.h"
-#include "SpreadsheetDocument.h"
+#include "SpreadSheetDocument.h"
 
-DocumentPtr SpreadSheetApplication::Create() {
-	return std::make_unique<SpreadsheetDocument>() ;
+Document* SpreadSheetApplication::Create() {
+	return new SpreadSheetDocument{};
 }
