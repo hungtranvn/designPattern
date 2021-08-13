@@ -1,12 +1,12 @@
-#pragma once
+#ifndef DOCUMENT_H
+#define DOCUMENT_H
 #include <memory>
 
-class Document
-{
+class Document {
 public:
-	virtual void Write() = 0 ;
-	virtual void Read() = 0 ;
-	virtual ~Document() = default ;
+	virtual void Write() = 0;
+	virtual void Read() = 0;
+	virtual ~Document() = default;
 };
-using DocumentPtr = std::unique_ptr<Document> ;
-
+using DocumentPtr = std::unique_ptr<Document>;
+#endif

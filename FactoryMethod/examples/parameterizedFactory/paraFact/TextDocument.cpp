@@ -2,9 +2,9 @@
 #include <iostream>
 
 void TextDocument::Write() {
-	std::cout << __FUNCSIG__ << std::endl; 
+	std::cout << "TextDocument::Write()" << std::endl; 
 }
 
 void TextDocument::Read() {
-	std::cout << __FUNCSIG__ << std::endl; 
+	std::cout << "TextDocument::Read()" << std::endl; 
 }

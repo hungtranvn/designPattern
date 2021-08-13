@@ -550,6 +550,86 @@ TextApplication.cpp
 	\end{center}
 \end{frame}
 
+\begin{frame}{Classes structure: Parameterized Factory}
+\begin{center}
+\begin{tikzpicture}
+	\umlemptyclass[type=abstract,x=0,y=0]{Document}
+	\umlemptyclass[x=-2,y=-2]{Text}
+	\umlemptyclass[x=2,y=-2]{Graphics}
+	\umlinherit[geometry=-|]{Text}{Document}
+	\umlinherit[geometry=-|]{Graphics}{Document}
+	
+	\umlclass[x=5,y=0]{Application}{}{}
+	
+	\umluniassoc[geometry=|-]{Application}{Document}
+\end{tikzpicture}	
+\end{center}
+\end{frame}
+
+\begin{frame}{What if you want to read different kinds of document?}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Specify the type of the string in Application.cpp
+	\item The string can take from user interface
+	\item DocumentFactory class has no state because of no attribute.
+	\item No attribute so not necessary to have multiple instances.
+	\item Make Create() function in DocumentFactory static
+	\item Only one negative point is that if you want to add more documents in the future, you will modify the Create() method.
+	\item It is trivial change because of only add some if condition
+	\item Or you can make Create() virtual, so add more document, just add more document factory.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{App framework: parameterized Factory}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Document.h
+\lstinputlisting{./examples/parameterizedFactory/paraFact/Document.h}
+TextDocument.h
+\lstinputlisting{./examples/parameterizedFactory/paraFact/TextDocument.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+TextDocument.cpp
+\lstinputlisting{./examples/parameterizedFactory/paraFact/TextDocument.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework: parameterized Factory}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+SpreadSheetDocument.h
+\lstinputlisting{./examples/parameterizedFactory/paraFact/SpreadSheetDocument.h}
+SpreadSheetDocument.cpp
+\lstinputlisting{./examples/parameterizedFactory/paraFact/SpreadSheetDocument.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{App framework: parameterized Factory}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.h
+\lstinputlisting{./examples/parameterizedFactory/paraFact/Application.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+Application.cpp
+\lstinputlisting{./examples/parameterizedFactory/paraFact/Application.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
 \begin{frame}{Pros and Cons}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
@@ -557,11 +637,11 @@ TextApplication.cpp
 	\textcolor{blue}{\textbf{Pros}}
 	\end{center}
 	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Class itself control the instantiation process.
-		\item Can allow multiple instances.
-		\item Better than global variable.
-		\item Can be subclassed.
+		\item Instances can be created at runtime
+		\item Promote loose coupling
+		\item Construction becomes simple due to abstraction
+		\item Construction becomes encapsulated
+		\item May not return new instance every time (return a cache instance), useful for object pool
 	\end{itemize}
 \end{column}
 \begin{column}{.45\textwidth}
@@ -570,23 +650,19 @@ TextApplication.cpp
 	\end{center}
 		\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Testing is difficult
-		\item DCLP is defective
-		\item Lazy destruction is complex
+		\item Every new product class may require a corresponding factory class.
 	\end{itemize}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Where to use?}
-	\textcolor{blue}{When only one instance should be use because:}	
+\begin{frame}{Where to use?}	
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item multiple instances cause data corruption.
-		\item managing global state or shared state.
-		\item multiple instances are not required.
+		\item A class does not know which instance it needs at runtime.
+		\item A class does not want to depend on concrete classes that it uses.
+		\item You want to encapsulate the creation process.
 	\end{itemize}
 \end{frame}
-\section{Factory Method}
 
 \end{document}

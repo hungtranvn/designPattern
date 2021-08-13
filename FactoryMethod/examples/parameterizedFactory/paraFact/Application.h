@@ -1,13 +1,12 @@
-#pragma once
+#ifndef APPLICATION_H
+#define APPLICATION_H
 #include <memory>
 #include "Document.h"
-class Application
-{
-	DocumentPtr m_pDocument ;
-	//Document *m_pDocument ;
+class Application {
+	DocumentPtr m_pDocument;
 public:
-	void New() ;
-	void Open() ;
-	void Save() ;
+	void New();
+	void Open();
+	void Save();
 };
-
+#endif

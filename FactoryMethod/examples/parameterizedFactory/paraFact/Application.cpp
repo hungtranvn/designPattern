@@ -2,16 +2,15 @@
 #include "DocumentFactory.h"
 
 void Application::New() {
-	
 	m_pDocument = DocumentFactory::Create("text");
 }
 
 void Application::Open() {
-	DocumentFactory factory ;
+	DocumentFactory factory;
 	m_pDocument = DocumentFactory::Create("text");
-	m_pDocument->Read() ;
+	m_pDocument->Read();
 }
 
 void Application::Save() {
-	m_pDocument->Write() ;
+	m_pDocument->Write();
 }
