@@ -123,7 +123,6 @@
 \institute{Fpt software}
 \date{\today}
 
-
 \begin{document}
 
 \begin{frame}
@@ -154,9 +153,35 @@
 
 \section{Factory Method Pattern}
 
-\begin{frame}{"new" operator problem}
+\begin{frame}{Logistic App}
+\includegraphics[scale=0.5]{./images/truckLogistic.png}
+\end{frame}
+
+\begin{frame}{Logistic App}
+	\begin{center}
+	\begin{tikzpicture}
+	\umlemptyclass[x=0,y=0]{Truck Class}
+	\umlemptyclass[x=6,y=0]{LogisticApp Class}
+	\umluniassoc[arg=bb, mult=1, pos=0.95, align=right, name=uniassoc]{LogisticApp Class}{Truck Class}
+	\end{tikzpicture}	
+	\end{center}
+	\begin{itemize}
+	\item Your app can only handle transportation by trucks.
+	\item The bulk of your code lives inside the Truck class.
+	\end{itemize}
+	\begin{center}
+	\textcolor{red}{You have more request from oversea regions, how to incorporate sea transportation with current app?}
+	\end{center}
+	\begin{itemize}
+	\item At present, your code is tightly coupled with Truck class.
+	\item Adding new \textcolor{red}{Ship class} resulting in change all code base.
+	\item Logistic app depends on transportation object.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Using "new" operator}
 \begin{columns}[T]
-\begin{column}{.48\textwidth}
+\begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/newOperator/newOperator.cpp}
 \end{column}
@@ -209,6 +234,26 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}{Modify existing code problem}
+	\begin{center}
+	\begin{tikzpicture}
+	\umlemptyclass[type=abstract,x=0,y=0]{Product}
+	\umlemptyclass[x=0,y=-3]{ConcreteProduct}
+	\umlinherit{ConcreteProduct}{Product}
+	\umlclass[type=abstract,x=6,y=0]{Creator}{}{AnOperation():Product*}
+	\umluniassoc[pos=0.95, align=right, name=uniassoc]{Creator}{Product}
+	\umluniassoc[pos=0.95, align=right, geometry = -|-, name=uniassoc]{Creator}{ConcreteProduct}
+	\end{tikzpicture}	
+	\end{center}
+	\begin{itemize}
+	\item Operation() method returns ConcreteProduct object
+	\item Add more ConcreteProduct class, modify AnOperation() method
+	\item End up with if else condition.
+	\item Always return the same class (using new operator)
+	\end{itemize}
+\end{frame}
+
+\iffalse
 \begin{frame}{Modify existing code problem}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
@@ -311,6 +356,7 @@ main.cpp
 \end{column}
 \end{columns}
 \end{frame}
+\fi
 
 \begin{frame}{Class Diagram Explaining}
 \begin{center}
@@ -321,7 +367,7 @@ main.cpp
 	\umlinherit[geometry=-|]{ConcreteProduct}{Product}
 	\umlinherit[geometry=-|]{ConcreteProduct1}{Product}
 	
-	\umlclass[type=abstract,x=5,y=0]{Creator}{}{\umlvirt{Create()} \\ AnOperation()}
+	\umlclass[type=abstract,x=5,y=1]{Creator}{m\_pProduct: Product*}{\umlvirt{Create()} \\ AnOperation()}
 	\umlclass[x=3,y=-4]{ConcreteCreator}{}{Create()}
 	\umlclass[x=7,y=-4]{ConcreteCreator1}{}{Create()}
 	\umlinherit[geometry=-|]{ConcreteCreator}{Creator}
@@ -335,251 +381,211 @@ main.cpp
 \end{center}
 \end{frame}
 
-\begin{frame}{Real World Example: Application Framework?}
-	\textcolor{blue}{We want to create an framework}	
+\begin{frame}{Create a ConcreteProduct object}
+\begin{columns}[T]
+\begin{column}{.4\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+main.cpp
+\lstinputlisting{./examples/basicImplementation/factoryBasics/main.cpp}
+\end{column}
+\begin{column}{.6\textwidth}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Managing different kinds of document.
-		\item 
-		\item multiple instances are not required.
+		\item Create() Method (or factory method) is overridden in derived classes.
+		\item The dependency on ConcreteProduct is no longer required
+		\item AnOperation method calls Create() method.
+		\item With the main function, which Create() method will invoke?
+		\item No need to modify the AnOperation()
+		\item Create() method behaves like virtual constructor
+	\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Real World Example: Application Framework?}
+	\textcolor{blue}{We want to create an framework!}	
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item The programmer can create an Application based on App framework.
+		\item Framework provides managing different kinds of documents.
+		\item Framework provides infrastructure of application.
+		\item By using app framework, programmer can create an application which can display different kinds of data (\textcolor{red}{Text or Graphics}).
+		\item To manage the data, the framework provides support through which is easy to maintain data.
+		\item We add \textcolor{red}{Application class} for managing data and display them.
+		\item We need add an \textcolor{red}{Document class} that Application manages
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Real World Example: Application Framework}
+\begin{frame}{Real World Example: Application Framework?}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Application class uses the features of Document class (display them).
+	\item However, Application does not know what kind of data is.
+	\item Document class need to be abstract in our framework.
+	\item \textbf{Document class has methods Read(), Write() which are overridden in derived classes.}
+	\item \textbf{Application class uses the features of Document class.}
+\end{itemize}
 \begin{center}
 \begin{tikzpicture}
-	\umlemptyclass[type=abstract,x=0,y=0]{Document}
-	\umlemptyclass[x=-2,y=-2]{Text}
-	\umlemptyclass[x=2,y=-2]{Graphics}
-	\umlinherit[geometry=-|]{Text}{Document}
-	\umlinherit[geometry=-|]{Graphics}{Document}
-	
+	\umlclass[type=abstract,x=0,y=0]{Document}{}{\umlvirt{Write()} \\ \umlvirt{Read()}}
 	\umlclass[x=5,y=0]{Application}{}{}
-	
 	\umluniassoc[geometry=|-]{Application}{Document}
 \end{tikzpicture}	
 \end{center}
 \end{frame}
 
-\begin{frame}{App framework}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Document.h
-\lstinputlisting{./examples/appFramework/appBasics/Document.h}
-TextDocument.h
-\lstinputlisting{./examples/appFramework/appBasics/TextDocument.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-TextDocument.cpp
-\lstinputlisting{./examples/appFramework/appBasics/TextDocument.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{Using Framework for managing data}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Programmer want to use the framework for managing the Text data.
+	\item Create a class Text which is derived class of Document class.
+	\item Application can use Text through Document class.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}
+	\umlclass[type=abstract,x=0,y=0]{Document}{}{\umlvirt{Write()} \\ \umlvirt{Read()}}
+	\umlclass[x=0,y=-2.5]{Text}{}{Write() \\ Read()}
+	\umlinherit[geometry=--]{Text}{Document}
+	
+	\umlclass[x=6,y=0]{Application}{}{New() \\ Open() \\ Save()}
+	\umluniassoc[geometry=|-]{Application}{Document}
+\end{tikzpicture}	
+\end{center}
 \end{frame}
 
-\begin{frame}{App framework}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Application.h
-\lstinputlisting{./examples/appFramework/appBasics/Application.h}
-Application.cpp
-\lstinputlisting{./examples/appFramework/appBasics/Application.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-main.cpp
-\lstinputlisting{./examples/appFramework/appBasics/main.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{Adding SpreadSheet class}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item New(), Open(), Save() are tight coupled with Text class.
+	\item Adding new Document class, change the Application class.
+	\item The framework does not allow modifying.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}
+	\umlclass[type=abstract,x=0,y=0]{Document}{}{\umlvirt{Write()} \\ \umlvirt{Read()}}
+	\umlclass[x=-2,y=-2.5]{Text}{}{Write() \\ Read()}
+	\umlclass[x=2,y=-2.5]{SpreadSheet}{}{Write() \\ Read()}
+	\umlinherit[geometry=-|]{Text}{Document}
+	\umlinherit[geometry=-|]{SpreadSheet}{Document}
+	
+	\umlclass[x=6,y=0]{Application}{}{New() \\ Open() \\ Save()}
+	\umluniassoc[geometry=|-]{Application}{Document}
+\end{tikzpicture}	
+\end{center}
 \end{frame}
 
-\begin{frame}{The above implementation problem}
-	\textcolor{blue}{If we want to manage with different docs?}	
+\begin{frame}{App framework with factory method}
+\begin{center}
+\begin{tikzpicture}
+	\umlclass[type=abstract,x=0,y=1]{Document}{}{\umlvirt{Read()} \\ \umlvirt{Write()}}
+	\umlemptyclass[x=-2,y=-2]{Text}
+	\umlemptyclass[x=2,y=-2]{SpreadSheet}
+	\umlinherit[geometry=-|]{Text}{Document}
+	\umlinherit[geometry=-|]{SpreadSheet}{Document}
+	
+	\umlclass[x=5,y=1]{Application}{m\_pDocument: Document*}{\umlvirt{Create()}: Document* \\ New() \\ Open() \\ Save()}
+	\umlclass[x=2,y=-4]{TextApp}{}{Create(): Document*}
+	\umlclass[x=7.3,y=-4]{SpreadSheetApp}{}{Create(): Document*}
+	\umlinherit[geometry=-|]{TextApp}{Application}
+	\umlinherit[geometry=-|]{SpreadSheetApp}{Application}
+	
+	\umluniassoc[geometry=|-, color=green]{Application}{Document}
+	
+	\umlimport[geometry = -|, weight = 0.5, color=blue]{TextApp}{Text}
+	\umlimport[geometry = |-, weight = 0.5, color=red]{SpreadSheetApp}{SpreadSheet}
+\end{tikzpicture}	
+\end{center}
+\end{frame}
+
+\begin{frame}{The Intent of Factory Method Design Pattern}
+	\begin{center}
+	\textcolor{blue}{\textbf{Define an interface for creating an object, but let subclasses which class to instantitate. Factory method lets class defer instantiation to subclasses.}}
+	\end{center}
+	\begin{itemize}
+	\item Application class is an interface.
+	\item Create() method is factory method.
+	\item The subclasses (TextApp and SpreadSheetApp) instantiate objects.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Intent of Factory Method Design Pattern}
+\begin{columns}[T]
+\begin{column}{.4\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/appFramework/appFrame//TextApplication.cpp}
+\end{column}
+\begin{column}{.6\textwidth}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Make change to Application class.
-		\item But it is Framework (not support for modification)
-		\item Application class is tightly coupled with TextDocument class
-		\item \textcolor{red}{Remove the dependency on TextDocument class}
-		\item Application should be worked with any kind of data.
+		\item \textcolor{red}{How to free the instance?}
+		\item Using smart pointers
 	\end{itemize}
-	\begin{center}
-	\textcolor{blue}{\textbf{Implement Factory Method}}
-	\end{center}
-\end{frame}
-
-\begin{frame}{App framework}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Document.h
-\lstinputlisting{./examples/appFramework/appFrame/Document.h}
-TextDocument.h
-\lstinputlisting{./examples/appFramework/appFrame/TextDocument.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-TextDocument.cpp
-\lstinputlisting{./examples/appFramework/appFrame/TextDocument.cpp}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{App framework}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-SpreadSheetDocument.h
-\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetDocument.h}
-SpreadSheetDocument.cpp
-\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetDocument.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-SpreadSheetApplication.h
-\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetApplication.h}
-SpreadSheetApplication.cpp
-\lstinputlisting{./examples/appFramework/appFrame/SpreadSheetApplication.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{Using smart pointer}
+\begin{center}
+\begin{tikzpicture}
+	\umlclass[type=abstract,x=0,y=1]{Document}{}{\umlvirt{Read()} \\ \umlvirt{Write()}}
+	\umlemptyclass[x=-2,y=-2]{Text}
+	\umlemptyclass[x=2,y=-2]{SpreadSheet}
+	\umlinherit[geometry=-|]{Text}{Document}
+	\umlinherit[geometry=-|]{SpreadSheet}{Document}
+	
+	\umlclass[x=5,y=1]{Application}{m\_pDocument: unique\_ptr<Document>}{\umlvirt{Create()}: unique\_ptr<Document> \\ New() \\ Open() \\ Save()}
+	\umlclass[x=2,y=-4]{TextApp}{}{Create(): unique}
+	\umlclass[x=7.3,y=-4]{SpreadSheetApp}{}{Create(): unique}
+	\umlinherit[geometry=-|]{TextApp}{Application}
+	\umlinherit[geometry=-|]{SpreadSheetApp}{Application}
+	
+	\umluniassoc[geometry=|-, color=green]{Application}{Document}
+	
+	\umlimport[geometry = -|, weight = 0.5, color=blue]{TextApp}{Text}
+	\umlimport[geometry = |-, weight = 0.5, color=red]{SpreadSheetApp}{SpreadSheet}
+\end{tikzpicture}
+\end{center}
 \end{frame}
 
-\begin{frame}{App framework}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Application.h
-\lstinputlisting{./examples/appFramework/appFrame/Application.h}
-TextApplication.h
-\lstinputlisting{./examples/appFramework/appFrame/TextApplication.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Application.cpp
-\lstinputlisting{./examples/appFramework/appFrame/Application.cpp}
-TextApplication.cpp
-\lstinputlisting{./examples/appFramework/appFrame/TextApplication.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Memory management problem?}
-	\textcolor{blue}{If we want to manage with different docs?}	
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Make change to Application class.
-		\item But it is Framework (not support for modification)
-		\item Application class is tightly coupled with TextDocument class
-		\item \textcolor{red}{Remove the dependency on TextDocument class}
-		\item Application should be worked with any kind of data.
-	\end{itemize}
-	\begin{center}
-	\textcolor{blue}{\textbf{Implement Factory Method}}
-	\end{center}
-\end{frame}
-
-\begin{frame}{App framework: using smart pointer}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Document.h
-\lstinputlisting{./examples/appFramework/appPtr/Document.h}
-TextDocument.h
-\lstinputlisting{./examples/appFramework/appPtr/TextDocument.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-TextDocument.cpp
-\lstinputlisting{./examples/appFramework/appPtr/TextDocument.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{App framework: using smart pointer}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-SpreadSheetDocument.h
-\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetDocument.h}
-SpreadSheetDocument.cpp
-\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetDocument.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-SpreadSheetApplication.h
-\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetApplication.h}
-SpreadSheetApplication.cpp
-\lstinputlisting{./examples/appFramework/appPtr/SpreadSheetApplication.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{App framework: using smart pointer}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Application.h
-\lstinputlisting{./examples/appFramework/appPtr/Application.h}
-TextApplication.h
-\lstinputlisting{./examples/appFramework/appPtr/TextApplication.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Application.cpp
-\lstinputlisting{./examples/appFramework/appPtr/Application.cpp}
-TextApplication.cpp
-\lstinputlisting{./examples/appFramework/appPtr/TextApplication.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Add new product, add more creator?}
+\begin{frame}{Add new Document, add more Application?}
 	\textcolor{blue}{How to create multiple instances without creating corresponding application class?}	
 	\begin{center}
 	\textcolor{red}{\textbf{Using Parameterized Factory}}
 	\end{center}
 \end{frame}
 
-\begin{frame}{Classes structure: Parameterized Factory}
-\begin{center}
-\begin{tikzpicture}
-	\umlemptyclass[type=abstract,x=0,y=0]{Document}
-	\umlemptyclass[x=-2,y=-2]{Text}
-	\umlemptyclass[x=2,y=-2]{Graphics}
-	\umlinherit[geometry=-|]{Text}{Document}
-	\umlinherit[geometry=-|]{Graphics}{Document}
-	
-	\umlclass[x=5,y=0]{Application}{}{}
-	
-	\umluniassoc[geometry=|-]{Application}{Document}
-\end{tikzpicture}	
-\end{center}
-\end{frame}
-
 \begin{frame}{What if you want to read different kinds of document?}
+\begin{center}
+\includegraphics[scale=0.25]{./images/visualDialog.png}
+\end{center}
+
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Specify the type of the string in Application.cpp
-	\item The string can take from user interface
-	\item DocumentFactory class has no state because of no attribute.
-	\item No attribute so not necessary to have multiple instances.
-	\item Make Create() function in DocumentFactory static
-	\item Only one negative point is that if you want to add more documents in the future, you will modify the Create() method.
-	\item It is trivial change because of only add some if condition
-	\item Or you can make Create() virtual, so add more document, just add more document factory.
+	\item Like dialog shows options which clients can chose.
+	\item You need to know how many applications before implementations.
+	\item Input Type through user interface.
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Classes structure: Parameterized Factory}
+\begin{center}
+\begin{tikzpicture}
+	\umlclass[type=abstract,x=-1.5,y=2]{Document}{}{\umlvirt{Read()} \\ \umlvirt{Write()}}
+	\umlemptyclass[x=-3,y=-2]{Text}
+	\umlemptyclass[x=1,y=-2]{SpreadSheet}
+	\umlinherit[geometry=-|]{Text}{Document}
+	\umlinherit[geometry=-|]{SpreadSheet}{Document}
+	
+	\umlclass[x=3,y=0]{DocFactory}{}{Create(Type): Document*}
+	\umlclass[x=7,y=-2]{Application}{DocFactory}{New() \\ Open() \\ Save()}
+	\umluniassoc[geometry=|-, color=green]{Application}{DocFactory}
+	\umlimport[geometry = -|, weight = 0.5, color=blue]{DocFactory}{Text}
+	\umlimport[geometry = |-, weight = 0.5, color=red]{DocFactory}{SpreadSheet}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\iffalse
 \begin{frame}{App framework: parameterized Factory}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
@@ -629,6 +635,7 @@ Application.cpp
 \end{column}
 \end{columns}
 \end{frame}
+\fi
 
 \begin{frame}{Pros and Cons}
 \begin{columns}[T]
