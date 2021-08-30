@@ -151,87 +151,65 @@
 	\end{itemize}
 \end{frame}
 
-\section{Factory Method Pattern}
+\section{Object Pool Design Pattern}
 
-\begin{frame}{Logistic App}
-\includegraphics[scale=0.5]{./images/truckLogistic.png}
+\begin{frame}{Game Example}
 \end{frame}
 
-\begin{frame}{Logistic App}
+\begin{frame}{Factory Pattern}
+\begin{itemize}
+\item Always create new instance
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Intent of Object Pool Design Pattern}
+	\begin{center}
+	\textcolor{blue}{\textbf{Improve performance and memory use by reusing objects from fixed pool instead of allocating and freeing them repetitively.}}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Structure of Object Pool Design Pattern}
 	\begin{center}
 	\begin{tikzpicture}
-	\umlemptyclass[x=0,y=0]{Truck Class}
-	\umlemptyclass[x=6,y=0]{LogisticApp Class}
-	\umluniassoc[arg=bb, mult=1, pos=0.95, align=right, name=uniassoc]{LogisticApp Class}{Truck Class}
+	\umlemptyclass[x=0,y=0]{Clients}
+	\umlclass[x=8,y=0]{ObjectPool}{pool: vector}{GetInstance() \\ Acquire() \\ Release()}
+	\umlclass[x=8,y=-4]{SharedObject}{}{MethodA() \\ MethodB()}
+	\umluniassoc[pos=0.95, align=right, name=uniassoc,]{ObjectPool}{SharedObject}
+	\umluniassoc[pos=0.95, align=right, name=uniassoc, arg1=requests]{Clients}{ObjectPool}
+	\umluniassoc[geometry = |-,pos=0.95, align=right, name=uniassoc, arg1=uses]{Clients}{SharedObject}
 	\end{tikzpicture}	
 	\end{center}
-	\begin{itemize}
-	\item Your app can only handle transportation by trucks.
-	\item The bulk of your code lives inside the Truck class.
-	\end{itemize}
-	\begin{center}
-	\textcolor{red}{You have more request from oversea regions, how to incorporate sea transportation with current app?}
-	\end{center}
-	\begin{itemize}
-	\item At present, your code is tightly coupled with Truck class.
-	\item Adding new \textcolor{red}{Ship class} resulting in change all code base.
-	\item Logistic app depends on transportation object.
-	\end{itemize}
 \end{frame}
 
-\begin{frame}{Using "new" operator}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-\lstinputlisting{./examples/newOperator/newOperator.cpp}
-\end{column}
-\begin{column}{.48\textwidth}
+\begin{frame}{How to Implement of Object Pool Design Pattern?}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Need name of class
-		\item Tightly coupled with the name
-		\item Add new class, modify the existing code
-		\item Compiler does not know which instance created at compile time or an instance has to be created at runtime?
+		\item \emph{ObjectPool} class maintains an array or a list of \emph{SharedObject} instances
+		\item \emph{SharedObject} instances are not created by Clients; instead they use the \emph{ObjectPool} class
+		\item Objects are constructed when: The program starts, The pool is empty, An existing object is not available.
+		\item For the last case, the pool can be \emph{grow dynamically}.
+		\item ObjectPool should have \emph{only one instance} (Singleton or Monostate)
 	\end{itemize}
-\end{column}
-\end{columns}
 \end{frame}
 
-\begin{frame}{The Intent of Factory Method Design Pattern}
-	\begin{center}
-	\textcolor{blue}{\textbf{Define an interface for creating an object, but let subclasses which class to instantitate. Factory method lets class defer instantiation to subclasses.}}
-	\end{center}
-\end{frame}
-
-\begin{frame}{How to Implement of Factory Method Design Pattern?}
+\begin{frame}{How to Implement of Object Pool Design Pattern?}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Different ways to implement
-		\item An overridable method is provide that returns an instance of a class
-		\item This method can be overridden to return instance of a subclass
-		\item Behave likes \textbf{constructor}
-		\item However, the constructor always returns the same instance
-		\item The factory method can returns any sub-type 
-		\item The factory method also called \textbf{virtual constructor}
-		\item C++ language does not allow virtual constructor
+		\item The clients acquire a \emph{SharedObject} instance by invoking a factory method in the pool.
+		\item When the clients gets a \emph{SharedObject} instance, it is either removed from the \emph{ObjectPool} or marked as used.
+		\item The clients may manually return a \emph{SharedObject} to the \emph{ObjectPool} or t may be done automatically.
+		\item The instance can be used again.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Structure of Factory Method Design Pattern}
-	\begin{center}
-	\begin{tikzpicture}
-	\umlemptyclass[type=abstract,x=0,y=0]{Product}
-	\umlemptyclass[x=0,y=-3]{ConcreteProduct}
-	\umlinherit{ConcreteProduct}{Product}
-	
-	\umlclass[type=abstract,x=4,y=0]{Creator}{}{\umlvirt{FactoryMethod()} \\ AnOperation()}
-	\umlclass[x=4,y=-3]{ConcreteCreator}{}{FactoryMethod()}
-	\umlinherit{ConcreteCreator}{Creator}
-	\umlimport[geometry = -|-, weight = 0.3]{ConcreteCreator}{ConcreteProduct}
-	\umlnote[x=8, y=-1, width = 4.2cm]{Creator}{product = FactoryMethod()}
-	\umlnote[x=8, y=-4, width = 3.5cm]{ConcreteCreator}{return new concrete product}
-	\end{tikzpicture}	
-	\end{center}
+\begin{frame}{How to Implement of Object Pool Design Pattern?}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item The Pool object instance can be reset: before giving it to the client or after it is returned to the pool.
+		\item The ObjectPool is responsible for deleting the pooled instances
+		\item These instances are usually deleted at the end of the program.
+		\item To avoid tight coupling with concreate pooled objects, ObjectPool can use a factory to instantiate them.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Modify existing code problem}
@@ -240,9 +218,9 @@
 	\umlemptyclass[type=abstract,x=0,y=0]{Product}
 	\umlemptyclass[x=0,y=-3]{ConcreteProduct}
 	\umlinherit{ConcreteProduct}{Product}
-	\umlclass[type=abstract,x=6,y=0]{Creator}{}{AnOperation():Product*}
-	\umluniassoc[pos=0.95, align=right, name=uniassoc]{Creator}{Product}
-	\umluniassoc[pos=0.95, align=right, geometry = -|-, name=uniassoc]{Creator}{ConcreteProduct}
+	\umlclass[x=6,y=0]{Creator}{}{AnOperation():Product*}
+	\umluniassoc[geometry = -|,pos=0.95, align=right, name=uniassoc]{Creator}{Product}
+	\umluniassoc[geometry = -|,pos=0.95, align=right, geometry = -|-, name=uniassoc]{Creator}{ConcreteProduct}
 	\end{tikzpicture}	
 	\end{center}
 	\begin{itemize}
@@ -252,111 +230,6 @@
 	\item Always return the same class (using new operator)
 	\end{itemize}
 \end{frame}
-
-\iffalse
-\begin{frame}{Modify existing code problem}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Product.h
-\lstinputlisting{./examples/basicImplementation/naiveBasic/Product.h}
-ConcreteProduct.h
-\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct.h}
-ConcreteProduct.cpp
-\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Creator.h
-\lstinputlisting{./examples/basicImplementation/naiveBasic/Creator.h}
-Creator.cpp
-\lstinputlisting{./examples/basicImplementation/naiveBasic/Creator.cpp}
-main.cpp
-\lstinputlisting{./examples/basicImplementation/naiveBasic/main.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{What if we add one more ConcreteProduct class?}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-ConcreteProduct1.h
-\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct1.h}
-ConcreteProduct1.cpp
-\lstinputlisting{./examples/basicImplementation/naiveBasic/ConcreteProduct1.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Creator.cpp
-\lstinputlisting{./examples/basicImplementation/naiveBasic/Creator.cpp}
-\textcolor{red}{\textbf{Factory Method Design Pattern comes in handy}}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Basic Implementation}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Product.h
-\lstinputlisting{./examples/basicImplementation/factoryBasics/Product.h}
-ConcreteProduct.h
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct.h}
-ConcreteProduct.cpp
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-ConcreteProduct1.h
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct1.h}
-ConcreteProduct1.cpp
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteProduct1.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Basic Implementation}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-Creator.h
-\lstinputlisting{./examples/basicImplementation/factoryBasics/Creator.h}
-Creator.cpp
-\lstinputlisting{./examples/basicImplementation/factoryBasics/Creator.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-ConcreteCreator.h
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator.h}
-ConcreteCreator.cpp
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Basic Implementation of Factory Method Pattern}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-ConcreteCreator1.h
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator1.h}
-ConcreteCreator1.cpp
-\lstinputlisting{./examples/basicImplementation/factoryBasics/ConcreteCreator1.cpp}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-main.cpp
-\lstinputlisting{./examples/basicImplementation/factoryBasics/main.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-\fi
 
 \begin{frame}{Class Diagram Explaining}
 \begin{center}
