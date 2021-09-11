@@ -2,8 +2,7 @@
 #define BASE_SINGLETON_H
 
 template<typename T>
-class BaseSingleton
-{
+class BaseSingleton {
 protected:
 	BaseSingleton() = default;
 	BaseSingleton(const BaseSingleton &) = delete;

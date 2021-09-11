@@ -2,7 +2,7 @@
 #include <iostream>
 #include "SharedObject.h"
 
-SharedObject* ObjectPool::AcquireObject() {
+std::shared_ptr<SharedObject> ObjectPool::AcquireObject() {
   for (auto &so : m_PooledObjects) {
     if(!so->IsUsed()) {
       std::cout << "[POOL] returning an existing object\n";
@@ -11,13 +11,14 @@ SharedObject* ObjectPool::AcquireObject() {
       return so;
     }
   }
+
   std::cout << "[POOL] creating a new object\n";
-  SharedObject *so = new SharedObject{};
+  std::shared_ptr<SharedObject> so = std::make_shared<SharedObject>();
   m_PooledObjects.push_back(so);
   return so;
 }
 
-void ObjectPool::ReleaseObject(SharedObject* pSO) {
+void ObjectPool::ReleaseObject(std::shared_ptr<SharedObject> pSO) {
   for (auto &so : m_PooledObjects) {
     if (so == pSO) {
       so->SetUsedState(false);

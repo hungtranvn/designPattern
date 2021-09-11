@@ -7,8 +7,7 @@
 
 #include "BaseSingleton.h"
 
-class Logger : public BaseSingleton<Logger>
-{
+class Logger : public BaseSingleton<Logger> {
 	FILE *m_pStream;
 	std::string m_Tag;
 	friend class BaseSingleton<Logger>;

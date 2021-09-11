@@ -1,5 +1,6 @@
 #ifndef SHARED_OBJECT_H
 #define SHARED_OBJECT_H
+
 class SharedObject {
   bool m_IsUsed{true};
 public:
@@ -8,5 +9,6 @@ public:
   void Reset();
   void MethodA();
   void MethodB();
+  ~SharedObject();
 };
 #endif

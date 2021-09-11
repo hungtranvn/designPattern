@@ -12,3 +12,7 @@ void SharedObject::MethodA() {
 void SharedObject::MethodB() {
   std::cout << "MethodB\n";
 }
+
+SharedObject::~SharedObject() {
+  std::cout << "SharedObject::~SharedObject()\n";
+}
