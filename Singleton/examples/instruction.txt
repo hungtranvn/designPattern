@@ -195,6 +195,7 @@
     c.Assume that multiple threads call Instance() method at the same time?
     They will check that instance is not null and will simply return
     existing function.
+    
     Look at the code, we are able to modify the instance in critical
     condition (lock() and unlock()). What happen if one thread is modifying
     the instance and the other reading from it? The operations on the
@@ -237,8 +238,8 @@
     
     Let reorder the three steps statements:
         1. Memory is allocated
-        2. It is initialized
         3. Memory address is assigned
+        2. It is initialized
     => program may crash!
 
 7. Meyer's Singleton

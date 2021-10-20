@@ -1,9 +1,7 @@
-#ifndef CLOCK_H
-#define CLOCK_H
-
+#ifndef CLOCK_H_
+#define CLOCK_H_
 #include <string>
-class Clock
-{
+class Clock {
 	int m_Hour;
 	int m_Minute;
 	int m_Second;

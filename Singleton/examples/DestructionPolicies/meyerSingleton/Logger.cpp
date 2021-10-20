@@ -7,13 +7,8 @@ std::mutex Logger::m_Mtx;
 Logger::Logger() {
 	std::cout << "Logger::Logger() invoked" << std::endl; 
 	m_pStream = fopen("applog.txt", "w");
-    
-    atexit([]() {
-		delete m_pInstance;
-	}) ;
 }
 
-//
 Logger& Logger::Instance() {
     static Logger instance;
     return instance;

@@ -436,7 +436,7 @@ main.cpp
 
 \item Rule of Three: copy constructor, assignment operator, destructor
 
-\item Rule of Five: move constructor, move assignment but we do not need?
+\item Rule of Five: move constructor, move assignment but why we do not need?
 
 \end{itemize}
 \end{frame}
@@ -447,9 +447,9 @@ main.cpp
 
 \item The above implementations, the instance is created before main invoked. 
 
-\item The above instances called eager instances.
+\item The instances called eager.
 
-\item We need instance created when we want, after the instance method invoked?
+\item However, we need instance created when we want, after the instance method invoked?
 
 \item Using lazy instance
 
@@ -588,7 +588,15 @@ main.cpp
 \textbf{Static initialization fiasco?}
 \end{frame}
 
-\begin{frame}{Using mutex::lock}
+\begin{frame}{Multiplethreads issue}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item We can see that two instances is created
+	\item Solution: we can use lock()
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Using mutex::lock() to solve multiplethreads issue}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 Logger.h
@@ -604,7 +612,7 @@ Logger.cpp
 \end{columns}
 \end{frame}
 
-\begin{frame}{Using mutex::lock}
+\begin{frame}{Using mutex::lock() to solve multiplethreads issue}
 main.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/threadingSolve/main.cpp}
@@ -615,15 +623,68 @@ main.cpp
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item Thread does not perform creating new instance.
-		\item The others have not to wait. 
+		\item The others do not have to wait. 
 	\end{itemize}
 	\textcolor{red}{\textbf{Using null check before lock()?}}
 \end{frame}
 
-\begin{frame}{double-check locking pattern}
+\begin{frame}{double-check locking pattern to handle the issue}
 Logger.cpp
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
 \lstinputlisting{./examples/DestructionPolicies/dplpCheck/Logger.cpp}
+\end{frame}
+
+\begin{frame}{double-check locking pattern issue}
+The statement \textcolor{blue}{m\_pInstance = new Logger{};} is performed in three steps:	
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Memory is allocated
+	\item It is initialized
+	\item Memory address is assigned
+\end{itemize}
+\textcolor{red}{Therefore, the first thread is executing the above statement, the other thread may read from it and get invalid result.\\
+\textbf{So double-check locking pattern fails.}}
+\end{frame}
+
+\begin{frame}{double-check locking pattern issue}
+Logger.cpp
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\lstinputlisting{./examples/DestructionPolicies/dclpFail/Logger.cpp}
+\end{frame}
+
+\begin{frame}{Meyer singleton}
+\textcolor{blue}{Create static instance inside the Instance() method.}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Thread safe because of static member
+	\item No worry about how to delete instance
+	\item Eager instance
+\end{itemize}
+\end{frame}
+
+\begin{frame}{call\_one method}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Thread safe
+	\item Meyer or call\_one? Meyer is more efficient
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Curiously Recurring Template Pattern Singleton}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item You may have multiple classes behave like singleton, so you will have implement singular behavior in all classes.
+	\item This pattern will reduce effort to make multiple singleton classes by using inheritance property.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Clock class: Singleton-like}
+\textcolor{blue}{Implement the singular behavior without singleton pattern}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item
+	\item
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Pros and Cons}
@@ -655,7 +716,7 @@ Logger.cpp
 \end{frame}
 
 \begin{frame}{Where to use?}
-	\textcolor{blue}{When only one instance should be use because:}	
+	\textcolor{blue}{When only one instance should be use because:}
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item multiple instances cause data corruption.
@@ -670,6 +731,5 @@ Logger.cpp
 \end{center}
 \end{frame}
 
-\section{Factory Method}
 
 \end{document}
