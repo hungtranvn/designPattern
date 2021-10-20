@@ -1,17 +1,14 @@
-CC = g++
-CXXFLAGS = -g -Wall -std=c++17
+CXXFLAGS += -g -Wall -std=c++17
 
 NAME = clock
 TARGET = $(NAME).exe
 
-output: main.o clock.o
-	$(CC) $(CXXFLAGS) main.o clock.o -o $(TARGET)
+OBJECTS = main.o clock.o 
 
-main.o: main.cpp
-	$(CC) $(CXXFLAGS) main.cpp
+all: $(TARGET)
 
-Clock.o: clock.cpp clock.h
-	$(CC) $(CXXFLAGS) clock.cpp
-
+$(TARGET): $(OBJECTS)
+	$(CXX) $(OBJECTS) -o $(TARGET)
+    
 clean:
 	-rm -f *.o $(TARGET)
