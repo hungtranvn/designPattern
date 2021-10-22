@@ -1,5 +1,4 @@
 #include "PrinterProvider.h"
-
 #include <iostream>
 
 void PrinterProvider::RegisterPrinter(const std::string& key, Printer* p) {

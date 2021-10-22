@@ -1,9 +1,8 @@
 #include "PrinterProvider.h"
-
 #include <iostream>
 
 void PrinterProvider::RegisterPrinter(const std::string& key, Printer* p) {
-	std::lock_guard lock{m_mtx} ;
+	std::lock_guard lock{m_mtx};
 	if(auto it = m_Printers.find(key); it == end(m_Printers)) {
 		m_Printers[key] =  p;
 	}else {

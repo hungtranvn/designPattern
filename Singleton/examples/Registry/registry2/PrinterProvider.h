@@ -3,14 +3,12 @@
 
 #include <mutex>
 #include <unordered_map>
-
 #include "Printer.h"
 
 //Registry of singletons
 //Multiton
 
-class PrinterProvider
-{
+class PrinterProvider{
 	inline static std::mutex m_mtx;
 	inline static std::unordered_map<std::string, Printer*> m_Printers{};
 	PrinterProvider() = default;

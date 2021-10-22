@@ -899,9 +899,73 @@ Logger.cpp
 \begin{frame}{Open close principle issue}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item The above implementation introduces new issue: adding more type, modifying code
+		\item The above implementation introduces new issue: adding more printer type, modifying code
 		\item Violate open close principle
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Registry Singleton}
+\begin{columns}[T]
+	\begin{column}{.45\textwidth}
+		Printer.h
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/Printer.h}
+	\end{column}
+	
+	\begin{column}{.45\textwidth}
+		main.cpp
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/main.cpp}
+	\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Registry Singleton}
+\begin{columns}[T]
+	\begin{column}{.45\textwidth}
+		LocalPrinter.h
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/LocalPrinter.h}
+	\end{column}
+	
+	\begin{column}{.45\textwidth}
+		LocalPrinter.cpp
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/LocalPrinter.cpp}
+	\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Registry Singleton}
+\begin{columns}[T]
+	\begin{column}{.45\textwidth}
+		PDFPrinter.h
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/PDFPrinter.h}
+	\end{column}
+	
+	\begin{column}{.45\textwidth}
+		PDFPrinter.cpp
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/PDFPrinter.cpp}
+	\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Registry Singleton}
+\begin{columns}[T]
+	\begin{column}{.45\textwidth}
+		PrinterProvider.cpp
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/PrinterProvider.h}
+	\end{column}
+	
+	\begin{column}{.45\textwidth}
+		PDFPrinter.cpp
+		\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+		\lstinputlisting{./examples/Registry/registry1/PrinterProvider.cpp}
+	\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Pros and Cons}

@@ -2,11 +2,9 @@
 #define LOCAL_PRINTER_H
 
 #include <string>
-
 #include "Printer.h"
 
-class LocalPrinter : public Printer
-{
+class LocalPrinter : public Printer {
 	static LocalPrinter m_Instance;
 	LocalPrinter();
 public:

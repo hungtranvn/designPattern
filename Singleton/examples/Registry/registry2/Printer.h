@@ -3,14 +3,13 @@
 
 #include <string>
 
-class Printer
-{
+class Printer {
 protected:
-	Printer() =default ;
+	Printer() = default;
 public:
-	Printer(const Printer &) = delete ;
-	Printer & operator=(const Printer &) = delete ;
+	Printer(const Printer &) = delete;
+	Printer & operator=(const Printer &) = delete;
 	virtual ~Printer()=default ;
-	virtual void Print(const std::string &data)=0 ;
+	virtual void Print(const std::string &data)=0;
 };
 #endif

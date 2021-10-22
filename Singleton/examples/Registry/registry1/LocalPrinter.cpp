@@ -1,6 +1,5 @@
 #include "LocalPrinter.h"
 #include <iostream>
-
 #include "PrinterProvider.h"
 
 LocalPrinter LocalPrinter::m_Instance;
