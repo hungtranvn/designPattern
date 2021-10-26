@@ -1,0 +1,293 @@
+%******************************section 1.2*************************************************
+%
+%
+\section{Sequence Containers} %section 1.2
+\subsection{Sequence Containers} %subsection 1.2.1
+These containers maintain a certain order to the elements inside them. This order can be completely 
+controlled by a programmer, and he or she can choose the exact position at which a particular element 
+will be located/placed in a sequence container. The containers themselves have no influence on the 
+sequence of elements.
+
+In this category, the STL offers three solutions:
+\begin{itemize}
+    \item vector
+    \item deque
+    \item list
+\end{itemize}
+Before we describe the containers in detail, let’s take a look at the table, which shows the various 
+methods provided by each of them. As you can see, most of the methods are common among all three containers. 
+But don’t worry, each of the methods will be described appropriately, and with an accompanying example.
+
+\subsection{\texttt{Vectors}} %subsection 1.2.2
+\begin{classinfo}
+  {<vector>}{template<class T, class Allocator = std::allocator<T>> class vector;}
+\end{classinfo}
+The vector is usually the first container to learn when somebody starts his or her adventure with the STL. 
+A vector is basically a dynamic array. It always occupies a continuous memory block. The example at 
+the start of this tutorial shows how a dynamic array works. The biggest advantage of the vector is 
+the ability to access its elements randomly (by means of the index) in constant time.
+
+The \texttt{allocator} is responsible for providing a \textbf{memory model} for the container elements. 
+Usually the default one is used (\inlinecode{C++}{std::allocator<T>}), but it’s also possible to supply 
+a different one. Technically, you’re allowed to use a different \texttt{allocator} for each type of container.
+
+\textbf{The definition of a vector shows that a vector is a template class} and \textbf{it’s necessary 
+to specify the type of its elements during instantiation}.
+For example:
+\begin{lstlisting}[language=C++]
+class A;
+vector<int> v1;
+vector<float> v2;
+vector<A> v3;
+\end{lstlisting}
+
+\subsection{Constructing \texttt{vectors}} %subsection 1.2.3
+Before we can start using the \texttt{vector}, we need to create it. We already know that we need 
+to choose the type of elements of the \texttt{vector}, but this isn’t the only choice we have to make. 
+The \texttt{vector} class possesses a few constructor methods, which can be used as needed:
+\begin{lstlisting}[language=C++]
+explicit vector ( const Allocator& = Allocator() );
+explicit vector ( size_type n, const T& value= T(), \
+  const Allocator& = Allocator() );
+template <class InputIterator>
+  vector ( InputIterator first, InputIterator last, \
+    const Allocator& = Allocator() );
+  vector ( const vector<T,Allocator>& x );
+\end{lstlisting}
+
+\textbf{Default constructor}
+
+The first constructor is the default constructor. We’ve seen its usage before. The \texttt{allocator} 
+parameter is optional in all the constructors.
+
+\textbf{Initializing the constructor}
+
+The second constructor creates a \texttt{allocator} containing n objects, all of them having the same 
+value – value. It can be used in situations where someone needs a vector of a predefined size and wants 
+to initialize it. Look at the example.
+
+\textcolor{green}{File name: 1.2.4.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.4.cpp}
+
+\subsection{Constructing vectors Iterator constructors} %subsection 1.2.4
+The next constructor uses \texttt{iterators} to initialize itself. It will create a 
+\texttt{vector} with a copy of the values from first (inclusive) to last (exclusive). 
+In the most typical case, this constructor creates a new \texttt{vector} using the 
+elements from an already existing collection.
+
+But due to the fact that \texttt{iterators} are defined as a set of operations instead 
+of a certain type, it is also possible to use normal pointers. This remark leads us to 
+the conclusion that you can use a normal C++ array to initialize a collection. 
+And in fact, you can.
+
+\subsection{Iterator constructors – initialization} %subsection 1.2.5
+As you can see, you can initialize a vector using a range of elements from another vector 
+(or a collection in general) or an array. We need to remember again that the first element 
+will be included, and the last element will not be in that range.
+
+\textcolor{green}{File name: 1.2.5.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.5.cpp}
+
+\subsection{Copy constructors} %subsection 1.2.6
+The copy constructor is a very important concept in the C++ world, so it’s not surprising 
+that a vector also possesses one. It works in an obvious way, creating a new object from the existing one.
+
+The copy is exact; therefore, every element from the source is copied. It’s a very important fact, so 
+remember this for now. On this page, there is an example of a copy constructor. Nothing fancy, but 
+it shows the idea how the copy constructor is supposed to work.
+
+On the next page, we’ll show you a more advanced example.
+
+\textcolor{green}{File name: 1.2.6.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.6.cpp}
+
+\subsection{Dealing with objects} %subsection 1.2.7
+In all the examples presented so far, the \texttt{vectors} have been defined as of type \texttt{int}.  
+Now we’ll have to take a look at what happens when the type is not a C++ built-in one. There are many 
+things that have to be taken into consideration.
+
+Let’s go through all the constructors again, but this time, let’s create a \texttt{vector} of the objects. 
+We need to pay attention to the behavior of the constructors (normal, default and copy as well) and 
+assignment operators. Also, some aspects of type conversion will come into the picture.
+
+Take a look at the example. The topic is: \textbf{\texttt{implicit} type conversion}.
+What do you think of this example? Will it compile or not? The answer is yes, it will.
+There is this constructor inside the class, which takes the int parameter. 
+
+The \inlinecode{C++}{push_back()} method expects an object of type \texttt{A}. This constructor will 
+be used to create an object of type \texttt{A implicitly}. This can be an advantage, but it might also 
+pose a danger if that constructor does something unwanted.
+
+For example, an object might be created \texttt{implicitly} and passed to a method when we do not want 
+it to happen in such a way. This would not be allowed if the constructor was marked \texttt{explicit}. 
+Let’s see this on the next page.
+
+\textcolor{green}{File name: 1.2.7.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.7.cpp}
+
+\subsection{Constructors and objects} %subsection 1.2.8
+Let’s move on further. The purpose of this example is to show you explicitly when a particular 
+type of constructor is being called. It’s not always obvious, therefore you might forget to 
+create a constructor.
+
+The numbers in brackets \texttt{()} indicate a particular line of code and the corresponding 
+lines of output. Let’s try to analyze the code and its behavior.
+
+The first line creates a \texttt{vector} of size one. We’ve used the initializing constructor. 
+Its first argument is a number of elements, and the second one is a possible value to initialize 
+the elements. If the value is not submitted, the default value is used. It that case, an object 
+of class \texttt{A} is created using a default constructor. The object is then passed to the 
+constructor to initialize one element of the collection.
+
+In the second line, an object is created using the type conversion mechanism we described earlier. 
+The one-parameter constructor is invoked. The next step happens inside the \texttt{vector v1}. 
+First it reallocates itself to make room for another object. Then two objects – the new one and 
+the old one – are copied into the \texttt{vector} storage area.
+
+The third line is just an assignment. But again, the first step is to create an object, then 
+to assign it to its proper place.
+
+This example clearly shows how important it is to have proper constructors, the copy constructor 
+and the assignment operator in a class which is meant to be put into STL containers. You won’t 
+always need to create all these methods explicitly. On many occasions, it’ll be sufficient to 
+rely on their default implementations.
+
+\textcolor{green}{File name: 1.2.8.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.8.cpp}
+
+\subsection{Creating a copy of a vector} %subsection 1.2.9
+The final example will show what is happening while copying the entire \texttt{vector}. We’re using 
+the same class \texttt{A} as in the previous example.
+
+Let’s carry out a short analysis of what’s going on in this code. Again, the lines of code and 
+the corresponding output are marked.
+
+Part one is easy: the \texttt{v1 vector} is created and one element is added to it.
+
+Part two: the copy constructor is invoked. Inside the source \texttt{vector} there is only one element, 
+so the class \texttt{A} copy constructor is called only once.
+
+Part three: this one is a little bit surprising. The output clearly states that the copy constructor 
+has been called, but we were expecting the assignment operator instead, were we not? The target vector 
+is empty. It looks as though in such a case, the copy constructor is called instead of the assignment 
+operator. This situation is worth remembering.
+
+Part four – the last one: this is pretty straightforward. A \texttt{vector} containing two objects of 
+class A is created, so there are two invocations of the default constructor and the copy constructor. 
+The next step is an assignment operation, and since the source vector has only one element, only one 
+invocation of the assignment operator is performed.
+
+\textcolor{green}{File name: 1.2.9.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.9.cpp}
+
+\subsection{Destructors} %subsection 1.2.10
+There’s not much to say about this method. It does the housework. It destroys all the objects stored 
+inside a \texttt{vector} by calling their destructors, and then deallocates all storage capacity 
+reserved by the vector.
+
+But it’s important to remember that the destructor of elements will be called if and only if these 
+elements are static (not pointers). In the opposite case, the user is responsible for this activity.
+
+Take a look at the example on the slide. A lot has happened in this code. We should focus on the output 
+after the Third ready! mark. We can see three invocations of the destructor. All of them have been caused 
+by the destructor of the \texttt{vector}.
+
+\textcolor{green}{File name: 1.2.10.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.10.cpp}
+
+\subsection{Destroying dynamically allocated objects} %subsection 1.2.11
+Now, for comparison, let’s see what happens when dynamically allocated objects are in the collection.
+As you can see, there are no destructors calls whatsoever. Dynamically allocated objects stored inside 
+a collection will not be automatically destroyed when this collection is being destroyed. This can lead 
+to a memory leak, which is already bad enough. But there are scenarios where unwanted objects can lead 
+to more severe consequences.
+
+Although this example involves the vector only, it works in exactly the same manner for all the other collections.
+
+\textcolor{green}{File name: 1.2.11.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.11.cpp}
+
+\subsection{\texttt{deque} class} %subsection 1.2.12
+
+\begin{classinfo}
+  {<deque>}{template<class T, class Allocator = std::allocator<T>> class deque;}
+\end{classinfo}
+The name deque stands for double-ended queue. In many ways, this container is very similar to a vector.
+\textbf{The most important difference is that it does not have to occupy contiguous memory space}. 
+If a \texttt{vector} is basically an array inside, \textbf{\texttt{deque} is a double-linked list of arrays}. 
+This allows for fast insertion at both ends of the container. There’s no need for reallocation, because 
+a new array can always be added on either side. \\
+\texttt{deque}, similarly to a vector, allows for random access using \texttt{operator []}. 
+The \texttt{deque} template definition has exactly the same meaning as the \texttt{vector} does. 
+The \texttt{Allocator} is responsible for the memory model.
+
+\subsection{\texttt{deque} constructors – size constructors} %subsection 1.2.13
+\texttt{deque} has four constructors, virtually identical to those of the \texttt{vector}:
+\begin{lstlisting}[language=C++]
+explicit deque ( const Allocator& = Allocator() );
+explicit deque ( size_type n, const T& value= T(), \
+  const Allocator& = Allocator() );
+emplate <class InputIterator> 
+deque ( InputIterator first, InputIterator last, \
+const Allocator& = Allocator() );
+deque ( const deque<T,Allocator>& x );
+\end{lstlisting}
+
+The mode of operation of each of these constructors is identical to their \texttt{vector} counterparts. 
+Again we have: the default constructor, the initializing constructor, the iterator constructor and 
+the copy constructor.
+
+On this and the following slides you will see examples of deque’s usage of constructors.
+
+\textcolor{green}{File name: 1.2.13.cpp}
+\begin{lstlisting}[language=C++]
+#include <deque>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    deque<int> d1(10, 0);
+    cout<<"Size: "<<d1.size()<<endl;
+    for(unsigned i = 0; i < d1.size(); ++i)
+    {
+        cout<< d1[i]<<" ";
+    }
+    cout<<endl;
+    return 0;
+}
+\end{lstlisting}
+
+\subsection{\texttt{deque} – iterator constructors} %subsection 1.2.14
+Iterator constructor example:
+
+\textcolor{green}{File name: 1.2.14.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.14.cpp}
+
+\subsection{\texttt{deque} – copy constructors} %subsection 1.2.15
+An example of copy constructor usage for the \texttt{deque} class.
+Elements which might be stored inside a \texttt{deque} require the same consideration as 
+those stored inside a \texttt{vector}. They need: a proper constructor, a copy constructor and 
+an assignment operator, to work as expected.
+
+\textcolor{green}{File name: 1.2.15.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.2.15.cpp}
+
+\subsection{\texttt{list}} %subsection 1.2.16
+\begin{classinfo}
+  {<list>}{template<class T, class Allocator = std::allocator<T>> class list;}
+\end{classinfo}
+\textbf{The \texttt{list} container is an implementation of the double-linked list principle}. 
+Each element has pointers leading to the next and the previous ones in a \texttt{list} sequence. 
+The storage is \textbf{not contiguous}; it’s likely that each element will be placed in a completely 
+different memory area.
+
+The \texttt{list} container allows for fast insertion and deletion anywhere inside the range of its elements.
+Generally, all operations related to the change in the sequence of elements are less costly than 
+in \texttt{vector} and \texttt{deque}. \textbf{The price to pay for this advantage is the lack of the 
+random access mechanism – operator[]}.
+But of course, it’s still possible to iterate through the collection using a general STL mechanism – 
+the \texttt{iterator}.
+Another drawback is the additional data required to keep linking information for each of the elements. 
+\textbf{This results in additional memory consumption}. In specific cases this might be a significant problem.

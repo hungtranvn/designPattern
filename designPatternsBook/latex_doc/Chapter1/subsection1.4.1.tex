@@ -1,0 +1,29 @@
+
+%**************************************section 1.4**************************************
+\section{Operation} %section 1.4
+
+\subsection{size and max\_size} %subsection 1.4.1
+\begin{methodinfo}
+  {size}
+  {size_type size () const;}
+  {None}
+  {The number of elements which are currently stored inside a collection.}
+  {This method returns the number of elements which are currently stored inside a container. 
+  The size will change each time an element is added to or removed from the container.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {max_size}
+  {size_type max_size () const;}
+  {None}
+  {The maximum number of elements which can be held inside a container.}
+  {The method returns the maximum physical capacity of a container. This value might depend on 
+  the STL library implementation or an operating system, and will always be constant in the same environment.}
+\end{methodinfo}
+
+\textbf{Example}: The example shows the basic usage of the \inlinecode{C++}{size()} and 
+\inlinecode{C++}{max_size()} methods. As you can see, the size changes after inserting and removing 
+elements from the container. On the other hand, the maximum size remains constant.
+
+\textcolor{green}{File name: 1.4.1.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.1.cpp}

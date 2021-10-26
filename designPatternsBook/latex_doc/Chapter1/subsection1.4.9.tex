@@ -1,0 +1,20 @@
+
+\subsection{erase()} %subsection 1.4.9
+\begin{methodinfo}
+  {erase}
+  {iterator erase ( iterator position ); 
+  iterator erase ( iterator first, iterator last );}
+  {\texttt{position} – the iterator pointing to the element to be erased
+
+  \texttt{first, last} – the iterators which specify the range of elements to be erased. 
+  As usual, the range includes first and excludes last.}
+  {An iterator to the first element after the last removed element, or \texttt{end} if the operation removes 
+  the last element in the collection.}
+  {This function removes an element or a range of elements from a collection. It’s important to note 
+  that it uses iterators, and not the index value, nor the value of the element itself. After the 
+  operation, the size of the collection is decreased. During the removal of the elements, 
+  the destructors are called.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.9.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.9.cpp}

@@ -1,0 +1,24 @@
+
+\subsection{splice() – list only} %subsection 1.4.14
+\begin{methodinfo}
+  {splice}
+  {void splice ( iterator position, list<T,Allocator>& x ); 
+  void splice ( iterator position, list<T,Allocator>& x, iterator i ); 
+  void splice ( iterator position, list<T,Allocator>& x, iterator first, iterator last );}
+  {\texttt{position} – the position in the calling list where the elements will be inserted;\\
+  \texttt{x} – the list from which the elements will be moved to the calling list\\
+  \texttt{i} – the iterator to a single element from the source list, which will be 
+      moved to the calling list\\
+  \texttt{first, last} – the iterators which define the range of elements to be moved from 
+    the source list to the destination. The range includes \texttt{first} and excludes \texttt{last}.}
+  {None}
+  {This method moves elements from a list specified as parameter \texttt{x}, and inserts them into 
+  the list container which calls the method. The target list size increases by the number of elements 
+  moved, while the source list size decreases accordingly. There are three versions of this method. A 
+  method which moves the whole content of the source container. A method which moves one, and only one, 
+  element specified by the iterator.A method which moves a range of elements specified by the iterators.
+  In all cases, there’s no object destruction or construction involved during the call.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.14.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.14.cpp}

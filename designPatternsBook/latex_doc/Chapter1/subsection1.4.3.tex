@@ -1,0 +1,29 @@
+
+\subsection{vector::capacity() - vector only} %subsection 1.4.3
+\begin{methodinfo}
+  {vector<T>::capacity}
+  {size_type capacity () const;}
+  {None}
+  {The total amount of space for elements currently allocated to a particular vector}
+  {This method is present in the vector class only.
+
+  The \texttt{vector} class has two methods related to its size. The first one is \texttt{size}, 
+  which you already know. The second one is capacity.
+
+  \texttt{capacity} is the total number of slots inside a vector which are currently allocated. 
+  Some of the slots might be used; some of them might be free.
+
+  \texttt{capacity} is always greater than or equal to \texttt{size}. As we said earlier, 
+  the \texttt{vector} occupies a \textbf{contiguous memory area}. This approach has some limitations. 
+  When a new element is inserted into a \texttt{vector}, its size is increased and the whole structure needs 
+  to be reallocated. In practice, such an approach isn’t very effective. In order to limit the number 
+  of reallocations, the vector is equipped with a capacity capability.
+
+  Each time a new element is put into the \texttt{vector}, it  first checks to see if there is enough capacity. 
+  If not, the vector is reallocated, but the new capacity is usually larger than the old capacity + 1. 
+  So, the next insertion/addition of an element will not require any reallocation of the vector. 
+  This approach improves the performance of the vector.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.3.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.3.cpp}

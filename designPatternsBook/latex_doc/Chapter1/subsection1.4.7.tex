@@ -1,0 +1,30 @@
+
+\subsection{assign()} %subsection 1.4.7
+\begin{methodinfo}
+  {assign}
+  {template <class InputIterator>
+      void assign ( InputIterator first, InputIterator last ); 
+      void assign ( size_type n, const T& u );}
+  {\texttt{first, last}: the input iterators which provide a collection of input elements. 
+  The \texttt{assign} method will copy all the elements from this range, including \texttt{first} and 
+  excluding \texttt{last}. Because \texttt{first} and \texttt{last} are of the \texttt{InputIterator} type, 
+  virtually any type of iterator can be used in the call
+
+  \texttt{n}: the number of times the value will be copied to fill the container.
+
+  \texttt{u}: the value to be copied}
+  {None}
+  {This method assigns new values to an already existing container. The whole old content of the 
+  container is dropped and deleted.
+
+  The new content is provided by one of two means: by either the iterator’s range or value, 
+  which will fill a certain number of elements.
+
+  In both cases, the new elements which are stored inside the collections are obtained by 
+  copying the source values. As a result of the dropping of all the old elements, it’s possible 
+  to use a source container of a different size to the target one. After the assignment, they will 
+  both have the same size.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.7.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.7.cpp}

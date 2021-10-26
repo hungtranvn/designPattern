@@ -1,0 +1,33 @@
+
+\subsection{merge() – list only} %subsection 1.4.17
+\begin{methodinfo}
+  {merge (list)}
+  {void merge ( list<T,Allocator>& x ); 
+  template <class Compare> 
+    void merge ( list<T,Allocator>& x, Compare comp );}
+  {\texttt{x} – the source list, whose elements are to be merged into the list calling the function;\\
+  \texttt{comp} – the binary predicate used to compare the elements from the source and target lists in order 
+  to ensure the proper sequence of elements in the target list.}
+  {None}
+  {This method performs a merge of two sorted list. In order to do so, two iterators are used: 
+  one in the target (calling) list, and the second in the source list. The \texttt{merge()} method 
+  compares the objects’ pointers with those iterators, and if the source object is less than the 
+  target, it’s removed from the source and placed in the target list at the target iterator position.
+
+  If the source object is greater, the insertion iterator advances and the procedure repeats. 
+  This operation is repeated until the insertion iterator reaches the \texttt{end()} of the target list. 
+  At that moment, if there are any elements left in the source list, they’re all moved to the target list, 
+  and placed at the end.
+
+  The second version of the method uses an external comparator in the form of a binary predicate 
+  to perform a comparison between the elements from the target and the source. The predicate takes 
+  as its first argument an object from the target list, and as the second argument an element from 
+  the source list. It should return true if the target is less than the source, and false otherwise. 
+  It should perform the strictly weak strict  ordering.
+
+  During \texttt{merge()}, the objects are moved from the source to the target. Effectively, no object is created, 
+  copied, or deleted. This function requires both lists to be sorted before it can be called.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.17.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.17.cpp}

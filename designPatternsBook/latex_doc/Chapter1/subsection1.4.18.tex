@@ -1,0 +1,21 @@
+
+\subsection{sort() – list only} %subsection 1.4.18
+\begin{methodinfo}
+  {sort(list)}
+  {void sort ( ); 
+  template <class Compare> 
+    void sort ( Compare comp );}
+  {\texttt{comp} – the binary predicate used to compare pairs of elements in order to ensure a proper sort order. 
+  It takes arguments of the same type as the elements of the list.}
+  {None}
+  {This method performs the sorting of elements in a lexicographic order – from lowest to highest.
+
+  The first version uses the operator < to compare pairs of elements. This operator is available for 
+  built-in types. In order to use this function with other types, you must either create the operator for 
+  those types, or create a binary predicate which will perform basically the same role. In that case, 
+  the second variant of \texttt{sort()} must be used. This predicate must perform strict weak ordering. 
+  During the sort, there’s no deletion, creation, or copying of elements within the list. The objects are 
+  moved only.}
+\end{methodinfo}
+\textcolor{green}{File name: 1.4.18.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.18.cpp}

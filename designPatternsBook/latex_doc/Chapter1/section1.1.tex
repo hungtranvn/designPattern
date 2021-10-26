@@ -1,0 +1,265 @@
+%*******************************************************************************
+%*********************************** First Chapter *****************************
+%*******************************************************************************
+
+\chapter{STL sequential containers}  %Title of the First Chapter
+
+\ifpdf
+    \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
+\else
+    \graphicspath{{Chapter1/Figs/Vector/}{Chapter1/Figs/}}
+\fi
+
+
+%********************************** %First Section  **************************************
+
+\section{Quick introduction to Standard Template Library.}
+\subsection{Basic information about STL} %subsection 1.1.1
+
+Note: This course is in BETA version. Even though we do our best effort to ensure 
+the courseware is of very good quality, some occasional errors, spelling mistakes, 
+and formatting issues might occur both in the learning resources and assessments. 
+We apologize for all of them. The course will be fully updated in the first 
+quarter of 2018, most probably in February. Thank you for your patience and 
+being understanding.
+
+\textbf{STL} stands for \textbf{Standard Template Library}. STL is an important 
+part of the C++ development environment, and if you intend to be a C++ programmer, 
+you should certainly learn how to use it.
+
+What is STL good for? Generally speaking, it provides ready-to-use solutions for 
+many programming problems. The word “standard” is also meaningful. It means that 
+every C++ compiler is accompanied by \textbf{this software package}. So, as long 
+as you use STL, your program portability is high (portability of C++ programs is 
+a huge but unrelated topic). What problems can we solve with the help of the STL? 
+Many, but not all – otherwise \textbf{we wouldn’t need Boost libraries (free and 
+peer-reviewed portable C++ source libraries)} and all of the language improvements.
+
+Basically, STL can be divided into two parts:
+\begin{itemize}
+    \item \textbf{Containers}, and 
+    \item \textbf{Algorithms}
+\end{itemize}
+
+There are more features in the library, and we’ll explain them later in the course – 
+don’t worry. We just think that \textbf{containers and algorithms are most important}, 
+and that’s why we’re going to focus on them first and most extensively.
+
+\subsection{Quick introduction to containers} %subsection 1.1.2
+
+\textbf{Containers}, or \textbf{collections}, as they are sometimes called, are meant 
+to contain something inside. This something is various kinds of data. Different types 
+of containers store data in different manners.
+This is good, because it allows programmers to choose the best collection for the task 
+they face. We’ll talk more about this later. The \textbf{simplest container} you can 
+think of is an \textbf{array}, for example:
+
+\inlinecode{C++}{int a[10];}
+
+The array above is of type \texttt{int}. \textbf{An array is a container which stores 
+elements of the same type}, and usually \textbf{those elements occupy a continuous area of memory}.
+Each element is placed one after the other, starting from a certain location in the memory. 
+You can access a particular element of an array by its index using the \texttt{[] operator} – 
+the square brackets operator.
+
+For example:
+\begin{lstlisting}[language=C++]
+a[3] = 3;
+cout<<a[3]<<endl;
+\end{lstlisting}
+
+An array is a very basic container. It has a few \textbf{limitations}:
+\begin{itemize}
+    \item the size of an array cannot be changed once instantiated;
+    \item an array does not know its size – this information has to be stored in another variable;
+    \item as a result of the previous point, an array also cannot check if it is properly accessed 
+      – the index used in the operator cannot be checked;
+    \item an array (one dimension) is organized as one big memory block.
+\end{itemize}
+The last point is not always a limitation; it all depends on the particular array usage scenario.
+
+\subsection{Improving arrays} %subsection 1.1.3
+
+Let us think for a while about how to improve our array and remove some of \textbf{its limitations}.
+What could you do?
+
+Let’s design a \texttt{class} named \texttt{Array}, which will be our new better array. 
+This \texttt{class} will remove the first two limitations of the original array: 
+\textbf{the inability to change the size}, and \textbf{the lack of knowledge of its 
+size (may we can know the size by \texttt{sizeoff()})}. The class in its basic form 
+might look like the one on the slide.
+
+As you can see, the \texttt{Array} class is built around a regular C/C++ dynamically 
+allocated array. But there’s more. We’ve used class abstraction to improve the ordinary array.
+On the next slide, the newly created class will be put to use.
+
+\textcolor{green}{File name: 1.1.3.h}
+\lstinputlisting[language=C++]{Chapter1/codes/1.1.3.h}
+
+\textcolor{green}{File name: 1.1.3.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.1.3.cpp}
+
+\subsection{Using our improved array} %subsection 1.1.4
+The first step is to declare an object of type \texttt{Array}.
+Its initial size is set to 10. The constructor allocates an array of ten elements 
+inside object \texttt{A}.
+
+The second interesting thing is that we use this object in the same way as a 
+regular array \texttt{operator[]} is called for access. Such behavior is possible 
+because the class implements \texttt{operator[]}.
+
+The loops illustrated in the code are using the \texttt{getSize()} method to obtain 
+the actual size of the Array object. This is another improvement over a standard C++ array.
+
+\textcolor{green}{File name: use1.1.3.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/use1.1.3.cpp}
+
+Let’s go further. You’ve probably noticed two methods which have not been discussed yet: 
+\texttt{add} and \texttt{delItem()}. Now we’re going to put them to work. 
+
+Take a look at the example on the slide. This is the \texttt{main()} function, 
+which we’ve seen before, with additional code. The code takes advantage of the methods 
+\texttt{add} and \texttt{delItem}. These two methods allow our new array to grow and 
+shrink as needed. Another array limitation seems to have been overcome. The last important 
+modification is related to access control, which is provided inside \texttt{operator[]}. 
+In case a program tries to access an element by an index which is out of scope, an exception is thrown.
+
+\subsection{Better array – STL way} %subsection 1.1.5
+
+Of course, the \texttt{Array} class is far from perfect. There’s a lot of other functionality 
+that could be implemented here. First of all, the class could be created as a template class. 
+It would allow other types than just integer. Secondly, some performance issues are present in 
+the previous code. But this is just a brief introduction to the world of containers. 
+Now let’s take a look at how STL fits into this picture. In order to do that, we’ll rewrite 
+the \texttt{main()} function using a very basic STL container – a vector. As you can see, 
+the \texttt{vector} class allows for the same behavior as our handmade \texttt{Array} class. 
+Moreover, the \texttt{vector} is a template class and can work with basically 
+\textbf{any type of element}. That is a \textbf{huge advantage}.
+
+In this example, we’re using two very common \texttt{vector} methods: 
+\inlinecode{C++}{push_back()} – which adds a new element to the end of a vector, 
+and \inlinecode{C++}{pop_back()} – this one removes the last element from a vector.
+As the \texttt{Array} class, the vector also has \texttt{operator[]} overloaded. 
+And finally, the method \texttt{size()}, whose task is rather obvious. This is a vector, 
+in a nutshell, ladies and gentlemen. Let’s see what else can be found inside the 
+\textbf{Standard Template Library}. With the introduction of C++11, we can use a very 
+compact way to initialize vector elements – the initializer list. We’ll present it here 
+shortly; it’s just a comma-separated list enclosed in braces: \texttt{vector<int> v1 = {5, 6, 9};}
+
+\textcolor{green}{File name: 1.1.5.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.1.5.cpp}
+
+\subsection{Standard Template Library} %subsection 1.1.6
+
+The STL can be divided into the following parts:
+\begin{itemize}
+    \item containers
+    \item algorithms
+    \item input/output
+    \item strings
+    \item numeric library
+    \item iterators
+    \item utilities
+    \item localizations
+    \item regular expressions
+    \item atomic operations
+    \item thread support
+    \item concepts
+\end{itemize}
+
+This division is not meant to be definitive. Different books or websites might provide different 
+views of the STL. Let us take a closer look at each of the first seven categories.
+
+\subsection{Containers} %subsection 1.1.7
+This is one of two major parts of the STL. It is made up of various containers which help the 
+programmer to implement the best solution to the task at hand.
+
+The \textbf{Standard Template Library} provides the programmer with a lot of different containers, 
+split into the following subcategories:
+\begin{itemize}
+    \item sequential containers:
+    \begin{itemize}
+        \item vector
+        \item list
+        \item deque
+    \end{itemize}    
+    \item associative containers:
+    \begin{itemize}
+        \item set
+        \item multiset
+        \item map
+        \item multimap
+    \end{itemize}
+    \item container adaptors:
+    \begin{itemize}
+        \item stack
+        \item queue
+        \item priority queue
+    \end{itemize}
+\end{itemize}
+
+If you’re familiar with abstract data structures, some of these names will be quite familiar – 
+list, set, map, stack, etc. Containers are based on some underlying data abstraction, which 
+is usually a well-known computer science concept. All this will be explained later.
+
+\subsection{Algorithms} %subsection 1.1.8
+
+The second biggest STL branch is \textbf{algorithms} – a means to transform data – 
+usually stored inside either a particular or a general container. \textbf{These algorithms 
+are expressed as functions}. There’s a huge number of them, and if you’re thinking about 
+implementing an algorithm, it would be prudent to first check if it’s not already present 
+in the STL. Once again, we need to emphasize \textbf{the importance of using a well-defined library}, 
+instead of creating your own versions. \textbf{Containers are structures only. Without algorithms, 
+they’re not of very much use}. Different sources divide STL algorithms into different categories. 
+Below you can find a typical list:
+\begin{itemize}
+    \item non-modifying sequence operations
+    \item modifying sequence operations
+    \item sorting
+    \item set operations
+    \item binary search
+    \item heap operations
+    \item min/max operations
+\end{itemize}
+The list is quite impressive; it’s highly probable that you’ll find what you are looking for here.
+
+\subsection{Input and output library} %subsection 1.1.9
+This part of the STL is responsible for all kinds of input and output operations: 
+\textbf{console and files}. You certainly know the \texttt{cout} object and the 
+\texttt{iostream} include. This is exactly the STL i/o division.
+
+\subsection{String library} %subsection 1.1.10
+The string library is C++'s response to the char * problem. The class string is a solution 
+to many problems related to the processing of character strings. The class is not perfect, 
+especially if you’re familiar with its Java counterpart. There are also some performance 
+considerations, but still, this class solves a lot of common string problems. Also, it’s worth 
+mentioning that the string class is a container itself, and can be treated like one.
+
+\subsection{Numeric library} %subsection 1.1.11
+A few additional classes are strongly connected to the math world. There is \textbf{the complex class}, 
+which is exactly what you would expect, and the valarray type. \textbf{Valarray} is a special kind of 
+array which allows for specific mathematical operations, like slicing.
+
+\subsection{Iterators} %subsection 1.1.12
+\textbf{Iterators} are generalizations of \textbf{pointers}. They allow for access to the 
+elements of collections. Every collection, regardless of its type, can be accessed using iterators. 
+There are five types of iterators to distinguish:
+\begin{itemize}
+    \item input iterator
+    \item output iterator
+    \item forward iterator
+    \item bidirectional iterator
+    \item random access iterator
+\end{itemize}
+\textbf{C++ iterators are not defined in any manner of specific type (like a class)}. Instead, 
+they’re defined by their behavior-supported operations. Every type of iterator has its own set of operations, 
+which must be supported for a particular type to be called an iterator. This is the only constraint.
+
+\subsection{Utilities} %subsection 1.1.13
+The last department of \textbf{the Standard Template Library} is called \textbf{Utilities}. 
+As the name suggests, it contains some \textbf{tools}, for example, for \textbf{date/time manipulation}, 
+some supporting types like \textbf{pair}. The most important part is \textbf{the functional objects} 
+(and functions) library. These objects are simple algorithms, defined for easy common tasks. 
+For example, less(), which is used during the usage of the sort algorithm (and many more cases). 
+The functional object library was designed to complement containers and algorithms in STL branches, 
+but most of them can also be used in other applications.

@@ -1,0 +1,19 @@
+
+\subsection{swap()} %subsection 1.4.10
+\begin{methodinfo}
+  {swap}
+  {void vector::swap ( vector<T,Allocator>&   vec ); 
+  void deque::swap ( deque<T,Allocator>& dqe ); 
+  void list::swap ( list<T,Allocator>& lst );}
+  {\texttt{vec, deq, lst}: another collection of the same type as this one.}
+  {None}
+  {This method swaps the entire content between two collections of the same type 
+  (\texttt{list <–> list, vector <–> vector, deque <–> deque}). Although the types of 
+  collections must be \textbf{the same}, their \textbf{sizes may differ}. After the change, 
+  all the existing iterators are still valid, but they of course point to different containers. 
+  After the swap operations, the calling container will be made up of elements from 
+  the source collection, and vice versa.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.10.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.10.cpp}

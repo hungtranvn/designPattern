@@ -1,0 +1,229 @@
+\documentclass[13pt]{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+\usetheme{CambridgeUS}     % or try Darmstadt, Madrid, Warsaw, ...
+\usecolortheme{beaver} % or try albatross, beaver, crane, ...
+\usefonttheme{default}  % or try serif, structurebold, ...
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\tikzumlset{font=\footnotesize\ttfamily}
+\usepackage{hyperref}
+
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{myCustomCppStyle}{
+language=C++,
+numbers=left,
+stepnumber=1,
+numbersep=9pt,
+tabsize=2,
+showspaces=false,
+showstringspaces=false
+}
+
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+
+\lstdefinestyle{mystyle}{
+backgroundcolor=\color{backcolour},   
+commentstyle=\color{codegreen},
+keywordstyle=\color{magenta},
+numberstyle=\tiny\color{codegray},
+stringstyle=\color{codepurple},
+basicstyle=\ttfamily\footnotesize,
+breakatwhitespace=false,         
+breaklines=true,                 
+captionpos=b,                    
+keepspaces=true,                 
+numbers=left,                    
+numbersep=5pt,                  
+showspaces=false,                
+showstringspaces=false,
+showtabs=false,                  
+tabsize=1
+}
+
+\lstset{style=mystyle}
+
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{shapes.geometric, arrows, positioning, calc, matrix}
+
+\tikzset{
+basic box/.style={
+shape=rectangle, rounded corners, align=center,
+draw=#1, fill=#1!25},
+header node/.style={
+Minimum Width=header nodes,
+font=\strut\Large\ttfamily,
+text depth=+0pt,
+fill=white, draw},
+header/.style={%
+inner ysep=+1.5em,
+append after command={
+\pgfextra{\let\TikZlastnode\tikzlastnode}
+node [header node] (header-\TikZlastnode) at (\TikZlastnode.north) {#1}
+node [span=(\TikZlastnode)(header-\TikZlastnode)] at (fit bounding box) (h-\TikZlastnode) {}
+}
+},
+hv/.style={to path={-|(\tikztotarget)\tikztonodes}},
+vh/.style={to path={|-(\tikztotarget)\tikztonodes}},
+fat blue line/.style={ultra thick, blue}
+}
+
+\definecolor{mygray}{RGB}{208,208,208}
+\definecolor{mymagenta}{RGB}{226,0,116}
+\newcommand*{\mytextstyle}{\sffamily\Large\bfseries\color{black!85}}
+\newcommand{\arcarrow}[3]{%
+% inner radius, middle radius, outer radius, start angle,
+% end angle, tip protusion angle, options, text
+\pgfmathsetmacro{\rin}{1.7}
+\pgfmathsetmacro{\rmid}{2.2}
+\pgfmathsetmacro{\rout}{2.7}
+\pgfmathsetmacro{\astart}{#1}
+\pgfmathsetmacro{\aend}{#2}
+\pgfmathsetmacro{\atip}{5}
+\fill[mygray, very thick] (\astart+\atip:\rin)
+                  arc (\astart+\atip:\aend:\rin)
+-- (\aend-\atip:\rmid)
+-- (\aend:\rout)   arc (\aend:\astart+\atip:\rout)
+-- (\astart:\rmid) -- cycle;
+\path[
+decoration = {
+  text along path,
+  text = {|\mytextstyle|#3},
+  text align = {align = center},
+  raise = -1.0ex
+},
+decorate
+](\astart+\atip:\rmid) arc (\astart+\atip:\aend+\atip:\rmid);
+}
+\title[Design Pattern]{Structural Design Pattern}
+\author{Hung Tran}
+\institute{Fpt software}
+\date{\today}
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+\begin{frame}{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Structural Pattern Overview}
+
+\begin{frame}{Structural Pattern Overview}
+	\begin{center}
+	\textcolor{blue}{\textbf{How classes and objects are composed fo form larger structure.}}
+	\end{center}
+	\begin{itemize}
+		\item \textbf{Adapter}: Convert the interface of a class into another interface.
+		\item \textbf{Bridge}: Decouple an abstraction from its implementation.
+		\item \textbf{Composite}: Compose objects into tree structure.
+		\item \textbf{Decorator}: Attach additional responsibilities to an object dynamically.
+		\item \textbf{Facade}: Provide a unified interface to a set of interfaces.
+		\item \textbf{Flyweight}: Use sharing to support large numbers of fine-grained objects efficiently.
+		\item \textbf{Proxy}: Provide a surrogate or placeholder for another object to control access to it.
+	\end{itemize}
+\end{frame}
+
+\section{Adapter pattern}
+
+\begin{frame}{Why we need Adapter Design Pattern?}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+		\item 
+		\item 
+		\item 
+	\end{itemize}
+	\begin{center}
+	\textcolor{red}{\textbf{Class wrapper}}
+	\end{center}
+\end{frame}
+
+\begin{frame}{The Intent of Adapter Design Pattern}
+	\begin{center}
+	\textcolor{red}{\textbf{Convert the interface of a class into another interface clients expect. Adapter lets classes work together that could not otherwise because of incompatible interfaces.}}\\
+	\end{center}
+\end{frame}
+
+\begin{frame}{How to implement Adapter Design Pattern?}
+	\begin{itemize}
+		\setlength\itemsep{2em}
+		\item 
+		\item 
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Adapter Pattern}
+	\begin{center}
+	\begin{tikzpicture}
+  \umlemptyclass[x=0,y=0]{Client}
+  \umlclass[x=4,y=0]{Client interface}{}{request()}
+  \umlclass[x=4,y=-3]{Adapter}{}{request()}
+  \umlclass[x=9,y=-3]{Adaptee}{}{specificRequest()}
+  \umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Client interface}
+  \umluniassoc[pos=0.95, align=right, name=uniassoc]{Adapter}{Adaptee}
+  \umlinherit{Adapter}{Client interface}
+	\end{tikzpicture}	
+	\end{center}
+\end{frame}
+
+\begin{frame}{Basic implementation}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Where to use?}
+	\textcolor{blue}{When only one instance should be use because:}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item multiple instances cause data corruption.
+		\item managing global state or shared state.
+		\item multiple instances are not required.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+{\fontsize{40}{50}\selectfont Thank You!}
+\end{center}
+\end{frame}
+
+
+\end{document}

@@ -1,0 +1,41 @@
+
+\subsection{empty() and resize()} %subsection 1.4.2
+\begin{methodinfo}
+  {empty}
+  {bool empty () const;}
+  {None}
+  {The method returns true if a container is empty and false otherwise.}
+  {This method is used to indicate whether a container is empty or not. You should use this method 
+  instead of calling \inlinecode{C++}{size()} to check if the list container is empty. Using calling 
+  \inlinecode{C++}{size()} for a list might result in linear time performance for some STL implementations, 
+  instead of constant ones.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {resize}
+  {void resize (size_type sz, T c = T() );}
+  {\\\texttt{sz}: the new size of a container\\
+  \texttt{c}: the value to copy in order to add elements into a container when the new size (sz) 
+  is greater than the old size}
+  {None}
+  {This method changes the current size of a container, either by causing it to grow or shrink. 
+  The new size is provided by the parameter \texttt{sz}.
+
+  If the new size is greater than the old size, new elements are added to the container. 
+  Those new elements are created by copying parameter c, or, if c is not provided, by copying 
+  the default value for a particular type of element. The number of elements added is expressed 
+  by a simple formula: new size minus old size.
+
+  If the new size is smaller than the old size, the collection will shrink. All elements between 
+  the new size and the old size will cease to exist – which might cause their destructors to be called.}
+\end{methodinfo}
+
+\textbf{Example}: In the example, we use the \texttt{empty()} method to check whenever containers are 
+eligible for resizing. You must remember that the \inlinecode{C++}{resize()} method sets the current 
+size of a container to the exact value provided by its first argument. This argument \texttt{sz} is not 
+a delta, but the exact size to be set. Another thing to remember is that \texttt{sz} is \texttt{unsigned}, 
+so providing a negative value might cause the container not to shrink, but rather to grow close to its 
+limit – \inlinecode{C++}{max_size()}.
+
+\textcolor{green}{File name: 1.4.2.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.2.cpp}

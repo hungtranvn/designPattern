@@ -1,0 +1,24 @@
+
+\subsection{unique() – list only} %subsection 1.4.16
+\begin{methodinfo}
+  {unique(list)}
+  {void unique ( ); 
+  template <class BinaryPredicate> 
+    void unique ( BinaryPredicate binary_pred );}
+  {\texttt{binary\_pred} – binary predicate – a two-argument function or proper functional object, 
+  which performs a comparison between two elements of the list in order to decide whether 
+  they are alike or not. If they are found to be alike, the second element is removed.}
+  {None}
+  {The function \texttt{unique()} removes consecutive duplicates from the list. Basically, 
+  the function makes a comparison between every two directly subsequent elements (starting from 
+  the beginning of the list) and if they’re found to be alike, the second element is deleted. 
+  The second version of this function does exactly the same thing, but it uses a binary predicate to 
+  decide whether the objects are equal or not.
+
+  For every element eligible for deletion, its constructor  is called, and the size of the list is 
+  reduced. To supply the predicate to the method, you must use either the function pointer, or 
+  the functional object instance.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.16.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.16.cpp}

@@ -1,0 +1,37 @@
+
+\subsection{push\_back() and pop\_back()} %subsection 1.4.12
+\begin{methodinfo}
+  {pop_back()}
+  {void push_back (const T& x);}
+  {\texttt{x}: the value which will be used to create a new element (by copying) inside a container.}
+  {None}
+  {The function \texttt{push\_back()} adds a new value to a container. The value is added at the end 
+  (the back) of the container, and increases the size of the container by one. Different types of containers 
+  react differently:}
+  \begin{itemize}
+    \item if a \texttt{vector} has enough capacity, the item is just added to it, no reallocation is performed, 
+      and all obtained iterators remain valid
+    \item if there is not enough capacity left, a reallocation is performed, which invalidates all iterators
+    \item In the case of \texttt{deque}, all iterators are invalidated
+    \item For a \texttt{list} container, all iterators are left unaffected.
+  \end{itemize}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {pop_back}
+  {void pop_back();}
+  {None}
+  {None}
+  {This function removes an element from the tail of the container. Basically, it is the opposite 
+  method to \texttt{push\_back()}. During element removal, its destructor is called, and the container 
+  size is reduced by one. In the case of a vector call, this method invalidates all iterators, 
+  pointers and references referring to the removed element.
+
+  It’s also worth noticing that \texttt{pop\_back()} only removes the value, and the value is 
+  not returned. This method cannot be used as the \texttt{l-value}. To obtain a value, you should 
+  use \texttt{back() first}.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.12.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.12.cpp}
+

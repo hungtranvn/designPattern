@@ -1,0 +1,20 @@
+
+\subsection{vector::reserve() vector only} %subsection 1.4.4
+\begin{methodinfo}
+  {vector<T>::reserve}
+  {void reserve (size_type n);}
+  {\texttt{n}: the minimum value of capacity to be requested}
+  {None}
+  {This method allocates additional space for elements inside a vector. If the newly requested capacity 
+  \texttt{n} is greater than the current capacity, reallocation is enforced. The new effective capacity 
+  will be at least as large as the one requested.
+
+  If reallocation happens, all iterators are invalidated. If a requested capacity is lower than the 
+  current capacity, the method will do nothing.
+
+  Calling this method will never affect the elements already placed in the vector. This method is a 
+  way to prepare the vector to accept a certain number of elements. Reserving space beforehand 
+  eliminates the need for reallocation after each insertion.}
+\end{methodinfo}
+\textcolor{green}{File name: 1.4.4.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.4.cpp}

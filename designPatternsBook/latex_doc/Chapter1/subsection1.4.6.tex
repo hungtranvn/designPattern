@@ -1,0 +1,45 @@
+
+\subsection{operator[] and at() \texttt{vector and deque only}} %subsection 1.4.6
+\begin{methodinfo}
+  {operator[]}
+  {reference operator[] (size_type n); 
+  const_reference operator[] ( size_type n) const}
+  {\texttt{n}: the index of the element to access}
+  {A reference to the element of index \texttt{n}}
+  {\inlinecode{C++}{operator []} allows containers (\texttt{vector} and \texttt{deque}0 in this case) 
+  to be treated in a similar way to \texttt{arrays}. Each element of these collections can be accessed 
+  using [] – square brackets. 
+  The correct range of indexes is 0 to size -1, just as in the case of an ordinary array.
+
+  Because \inlinecode{C++}{operator []} returns a reference, the accessed element can be used as the 
+  l-value and the r-value.
+
+  \inlinecode{C++}{operator []} \textbf{does not check} if index n is in the proper range – 0 to size – 1, 
+  so it’s possible to access an element which is not in fact in the container. This may lead to 
+  unpredictable results.
+
+  In comparison, the method \inlinecode{C++}{at()} performs exactly the same task, but with 
+  \textbf{index range checking}. When used as the l-value, \inlinecode{C++}{operator[]} can only change 
+  an already stored element. It’s not possible to add an element to a collection using this operator – 
+  it doesn’t change the size of the container.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {at}
+  {reference at ( size_type n );\\
+  const_reference at ( size_type n ) const}
+  {\texttt{n}: the index of the element to be accessed}
+  {A reference to the element of index \texttt{n}}
+  {the method \inlinecode{C++}{at()} is used to retrieve an element from the STL container (\texttt{vector} and 
+  \texttt{deque}). It retrieves the value stored under the index \texttt{n}. This method returns a 
+  reference, which means it can be used as the \texttt{l-value} as well as the \texttt{r-value}.
+
+  \inlinecode{C++}{at()} is very similar in its behavior to \inlinecode{C++}{operator[]}. The only difference 
+  is that \inlinecode{C++}{at()} performs a \textbf{range check} on parameter \texttt{n}, and if \texttt{n} 
+  is out of range, an \inlinecode{C++}{out_of_range exception} is thrown. When used as an \texttt{l-value}, 
+  \inlinecode{C++}{at()} can only change an already stored element. It’s not possible to add an element to 
+  a collection using this method – it doesn’t change the size of the container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.6.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.6.cpp}

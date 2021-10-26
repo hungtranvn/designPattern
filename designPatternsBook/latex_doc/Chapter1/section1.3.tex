@@ -1,0 +1,115 @@
+%*************************section 1.3*********************************
+%
+%
+%
+\section{Iterators} %section 1.3
+\subsection{Iterators} %section 1.3.1
+The \texttt{iterator} is in many ways similar to the concept of the \textbf{pointer}, and in some cases, 
+they can be used interchangeably.
+
+As we stated earlier, there are \textbf{five kinds of iterators}. Each category is defined by the ability 
+to perform a chosen set of operations. The table on the right tries to summarize all the information about 
+the different characteristics of \texttt{iterators}.
+
+\subsection{Containers and iterators} %subsection 1.3.2
+Every container is made up of four members (types) related to iterators:
+\begin{itemize}
+    \item \inlinecode{C++}{iterator} – read/write iterator type;
+    \item \inlinecode{C++}{const_iterator} – read-only iterator type;
+    \item \inlinecode{C++}{reverse_iterator} – reverse iterator type (iterates from the end to the beginning)
+    \item \inlinecode{C++}{const_reverse_iterator} – as above, but read only.
+\end{itemize}
+Although the members have the same names throughout the collections, they are different in each container type, 
+and  they must facilitate different types of containers.
+
+For example, \texttt{vector} and \texttt{deque} support random access \texttt{iterators}, while a list only 
+supports bidirectional ones. And to top it all off, there is the internal structure of the container to consider, 
+so you can use a \texttt{vector} iterator to iterate through a \texttt{list}, and vice versa. But on the other hand, 
+when a function or a method expects a bidirectional \texttt{iterator}, you can use any one, 
+no matter which collection it belongs to.
+
+Look at the example of different \texttt{iterator} declarations.
+There are three different container objects declared in the code on the right, and for each of them, 
+two \texttt{iterators} have been created – normal and const. At the moment, none of these \texttt{iterators} are 
+initialized, and therefore cannot be used. Exactly the same is true for uninitialized pointers. We’re going to 
+initialize them on the next slide.
+
+\textcolor{green}{File name: 1.3.2.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.3.2.cpp}
+
+\subsection{Initialization of iterators} %subsection 1.3.3
+So, we need to initialize iterators in order to use them. To do this, we need to get the iterator value 
+from the container. There are four methods (check out table 1 if you have any queries) that can do that:
+\begin{lstlisting}[language=C++]
+    begin()
+    end()
+    rbegin()
+    rend()
+\end{lstlisting}
+These methods are available for all the containers, but the values returned for each of them are different. 
+Each method comes in two variations – normal and const:
+\begin{lstlisting}[language=C++]
+    iterator begin ();
+    const_iterator begin () const;
+
+    iterator end ();
+    const_iterator end () const;
+
+    reverse_iterator rbegin();
+    const_reverse_iterator rbegin() const;
+
+    reverse_iterator rend();
+    const_reverse_iterator rend() const;
+\end{lstlisting}
+\textbf{Important}:
+
+For \texttt{vector} and \texttt{deque}, these methods return random access iterators, but the list only 
+supports a bidirectional iterator.
+\begin{itemize}
+    \item the \texttt{begin()} method returns the iterator that points to the first element of the collection;
+    \item the \texttt{end()} method returns the iterator that refers to the past-the-end-element. If a container 
+      has n elements, this value will be marked n+1 (non-existent). In practice, this just means the end of 
+      the collection. But you must remember that the end of a collection does not mean the last element, 
+      but the first element after the last;
+    \item the \texttt{rbegin()} method means reverse begin – it returns the  iterator that points to the 
+      last element of the collection;
+    \item the \texttt{rend()} method means reverse end – it returns the iterator that refers to the element 
+      before the first element of the container – this value indicates the end of the collection in reverse order.
+\end{itemize}
+\textbf{Past-the-end element}
+
+The past-the-end element is a virtual element located after the last element of the collection. It indicates 
+the end of the collection.
+
+\textcolor{green}{File name: 1.3.3.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.3.3.cpp}
+
+\subsection{Iterators usage examples – reverse iterators} %subsection 1.3.4
+\textcolor{green}{File name: 1.3.4.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.3.4.cpp}
+
+\subsection{Iterators usage examples – const iterators} %subsection 1.3.5
+\textcolor{green}{File name: 1.3.5.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.3.5.cpp}
+
+\subsection{Iterators usage examples} %subsection 1.3.6
+Iterators usage examples – \texttt{const iterators} – incorrect scenario.
+The example illustrated in the code cannot be compiled. The compiler doesn’t allow anything to be assigned 
+to an element referred to by a \texttt{constant iterator}.
+
+\textcolor{green}{File name: 1.3.6.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.3.6.cpp}
+
+\subsection{Other collections} %subsection 1.3.6
+Iterators of other types of containers work in the same manner. The most important factor in the proper usage 
+of iterators is the iterator type. The most common are:
+\begin{itemize}
+    \item \textbf{random access}
+    \item \textbf{bidirectional}
+\end{itemize}
+\textbf{Remember that you can do more with the first type than the second.}
+Iterators allow you to traverse through collections and manipulate their elements regardless of the 
+collection type. This is a common interface for using STL containers.
+\textbf{Iterators make it relatively easy to switch from one type of container to another without any 
+heavy impact on the source code}. All the STL containers provide iterators, which is why it’s so 
+important to fully understand them.

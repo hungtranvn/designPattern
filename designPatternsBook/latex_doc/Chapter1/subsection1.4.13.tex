@@ -1,0 +1,31 @@
+
+\subsection{push\_front() and pop\_front() \texttt{list} and \texttt{deque} only} %subsection 1.4.13
+\begin{methodinfo}
+  {push_front}
+  {void push_front(const T& x);}
+  {\texttt{x} – the value which will be used to create a new element (by copying) inside a container.}
+  {None}
+  {The function \texttt{push\_front()} adds a new value to a container. The value is added at the 
+  beginning (the front) of the container, and increases the size of the container by one. Different 
+  types of containers react differently:
+  \begin{itemize}
+    \item in the case of \texttt{deque}, all iterators are invalidated
+    \item for a \texttt{list} container, all iterators are left unaffected.
+  \end{itemize}}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {pop_front}
+  {void pop_front();}
+  {None}
+  {None}
+  {This function removes an element from the beginning of the container. Basically, it’s 
+  the opposite method to \texttt{push\_front()}. During element removal, its destructor is called, 
+  and the container size is reduced by one. It’s also worth noticing that \texttt{pop\_front()} only 
+  removes the value, and the value is not returned. This method cannot be used as the l-value. 
+  To obtain a value, you should use \texttt{front()} first.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.13.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.13.cpp}
+

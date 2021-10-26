@@ -1,0 +1,29 @@
+
+\subsection{remove() and remove\_if() – list only} %subsection 1.4.15
+\begin{methodinfo}
+  {remove(list)}
+  {void remove (const T& value);}
+  {\texttt{value} – the value of the element to be removed from the list. It’s the same type as that 
+  used during the list declaration.}
+  {None}
+  {This function removes from the list all the elements equal to the values provided as the parameters. 
+  During the removal, the destructors are called. This function works in a different way in comparison 
+  to \texttt{erase} which uses iterators.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {remove_if(list)}
+  {template <class Predicate>\\
+     void remove_if ( Predicate pred );}
+  {\texttt{pred} – a unary predicate (one argument function, or function object) which takes an 
+  argument of the same type as the elements of the list. The predicate should return \texttt{true} 
+  for elements which are to be removed, and \texttt{false} for all others.}
+  {None}
+  {The function \inlinecode{C++}{remove_if()} performs a conditional object deletion. 
+  The method calls the provided predicate for every element stored inside the list. 
+  If the predicate returns \texttt{true}, the element is eligible for removal. 
+  During the removal, the destructors are called and the size of the list decreases.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.15.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.15.cpp}

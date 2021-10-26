@@ -1,0 +1,493 @@
+%*************************************section1.5*****************************************
+%
+%
+\section{Container adaptors} %section 1.5
+\subsection{Container adaptors} %subsection 1.5.1
+In STL terminology, a container adaptor is a class which uses an STL container in order to provide 
+\textbf{other functionality}. In our case, these adaptors use sequential collections to \textbf{create 
+additional data structures}, like \textbf{stacks} or \textbf{queues}. The STL provides three types of container 
+adaptors:
+\begin{itemize}
+    \item stack;
+    \item queue;
+    \item priority queue.
+\end{itemize}
+In the table, you can find all the methods provided by container adaptors. As you can see, their subset is 
+rather \textbf{limited in comparison to standard containers}, but their names should mostly be familiar to you. 
+Most of these methods work as a simple proxy, and call the methods of the underlying containers.
+
+In order for adaptors to work, you need to \textbf{provide} them with a \textbf{proper object container}. 
+This can be done during their initialization – \textbf{the adaptor constructor} allows for that. You can 
+choose which container will be used, or rely on a default one, which is different for every adaptor class. 
+Each adaptor class requires a slightly different interface and functionality from its underlying collection.
+
+Generally, \textbf{only sequential containers can be used}, but there are other limits related to specific 
+adaptors; we’ll describe those limits a little later. You don’t have to use STL classes as underlying container 
+types, though. As long as a container provides the interface required by the container adaptor to work, it 
+can be any class.
+
+\subsection{stack} %section 1.5.1
+\begin{methodinfo}
+  {<stack>}
+  {template < class T, class Container = deque<T> > class stack;}
+  {\texttt{T}: the type of the elements stored in the stack\\
+  \texttt{Container}: the type of the underlying storage container}
+  {None}
+  {None}
+\end{methodinfo}
+\textbf{The stack class is just an STL implementation of a stack data structure – the LIFO (last in first out) 
+concept}. In such a container, you can only add and remove elements, at its one end, which is usually called 
+the top. The top always points to the last inserted element, and only this element can be removed from the stack.
+
+A stack requires the following interface from its internal container:
+\begin{itemize}
+    \item \inlinecode{C++}{back()}
+    \item \inlinecode{C++}{push_back()}
+    \item \inlinecode{C++}{pop_back()} 
+\end{itemize}
+Therefore \textbf{all sequential containers (vector,  deque, list)} can be used as underlying storage. 
+If an internal container is not specified, a \texttt{deque} is used.
+
+\subsection{Stack object initialization} %subsection 1.5.2
+\begin{methodinfo}
+  {constructor}
+  {explicit stack( const Container\& cont = Container() );}
+  {\texttt{cont}: a container provided to serve as internal storage. Its type must be the same as the type defined
+  in the stack template.\\
+  \texttt{other}: an already existing stack which is used as a template to instantiate the current object. 
+  Its internal container must be of the same type as the object being created.}
+  {None}
+  {First, the constructor creates a stack using the internal container provided. The container does not have 
+  to be empty; there might be objects already inside. However, \texttt{cont} needs to be of the same type as 
+  specified in the stack object declaration – the Container template parameter.
+  
+  The second constructor is just a copy constructor. Again, the source stack and the stack being created 
+  must use internal storage of the same type.}
+\end{methodinfo}
+The example shows the correct way to create stack objects.
+
+\textcolor{green}{File name: 1.5.2.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.2.cpp}
+
+\subsection{Stack initialization – the wrong way} %subsection 1.5.3
+1. Not allowed - iterator constructor \\
+2. Not allowed - copy constructor source and target stack object using different storage containers \\
+3. Not allowed - initialization using predefined container – using different storage object than declared
+
+\textcolor{green}{File name: 1.5.3.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.3.cpp}
+
+\subsection{Stack – assignment operator} %subsection 1.5.4
+\begin{methodinfo}
+  {assignment operator =}
+  {stack<T, Container>& operator=( const stack<T,Container>& other );}
+  {\texttt{other: }the source stack object, its contents are copied and stored in the target stack. 
+  Source and target objects must use the same type of internal container.}
+  {A reference to a calling object (\*this)}
+  {The assignment operator copies elements from other and places them in the calling object (l-value). 
+  As in the case of the copy constructor, the source and the target stack objects must both be created 
+  using \textbf{the same type of internal storage}.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.4.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.4.cpp}
+
+\subsection{Stack – destructor, empty() and size()} %subsection 1.5.5
+\begin{methodinfo}
+  {destructor}
+  {\~stack();}
+  {None}
+  {None}
+  {Destroys a \texttt{stack} object. The \textbf{destructor} of a stack calls the destructors (if applicable) 
+  of all objects stored inside the stack, and \textbf{deallocates} all used storage.}
+\end{methodinfo}
+\begin{methodinfo}
+  {empty}
+  {bool empty ( ) const;}
+  {None}
+  {\texttt{true} if the stack size is 0, and \texttt{false} otherwise.}
+  {This method tests if the stack size is 0, which means the stack is empty. The function is just a proxy 
+  which calls the method of the same name in the underlying container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {size}
+  {size_type size ( ) const;}
+  {None}
+  {The number of elements currently stored inside the stack.}
+  {Returns the number of elements stored in a stack. The function is just a proxy which calls the method 
+  of the same name in the underlying container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.5.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.5.cpp}
+
+\subsection{Stack – top()} %subsection 1.5.6
+\begin{methodinfo}
+  {top}
+  {value_type& top ( ); \\
+  const value_type& top ( ) const;}
+  {None}
+  {A reference to the element at the top of the stack.}
+  {This function returns a reference to the top-most element of the stack. Since the stack is 
+  a \textbf{LIFO} container, it also means it returns a reference to the last pushed element.
+  \texttt{top()} is a proxy method, which means it calls the \texttt{back()} method of an underlying container. 
+  The member type \inlinecode{C++}{value_type} is defined as the type of the elements from the underlying container.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {push}
+  {void push ( const T& x ); \\
+  const value_type& top ( ) const;}
+  {\texttt{x} – the value to be \texttt{pushed} (copied) onto the top of the stack; \\
+    \texttt{T} – this is the first template parameter – the type of the elements stored inside the container.}
+  {A reference to the element at the top of the stack.}
+  {The \texttt{push()} method adds a new value onto the top of the stack. The new value lies on top of 
+  the previously pushed value. This effectively increases the size of the stack by one. The new element 
+  is created by coping parameter \texttt{x}. This method is a proxy, which means it calls the 
+  \inlinecode{C++}{push_back()} method in the underlying storage container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {pop}
+  {void pop ( );}
+  {None}
+  {None}
+  {The \texttt{pop()} method removes the top-most element from the stack, and therefore reduces 
+  its size by one. The element placed under the current top-most element becomes the new top of the stack.
+
+  It’s important to remember that the \texttt{pop()} call does not return the removed element. 
+  If you want to store the value of the top of the stack, call the \texttt{top()} method. This method 
+  is a proxy, which means it calls the \inlinecode{C++}{pop_back()} method in the underlying storage container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.6.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.6.cpp}
+
+\subsection{Queue class} %subsection 1.5.7
+\begin{methodinfo}
+  {<queue>}
+  {template  < class T, class Container = deque<T> > class queue;}
+  {\texttt{T} – the type of the elements stored in the queue;\\
+  \texttt{Container} – the type of underlying storage container.}
+  {None}
+  {\texttt{queue} is a container which provides FIFO (first in first out) functionality. 
+  In the STL, it’s implemented as a container adaptor, therefore it requires some other 
+  container to work as storage space. As for the FIFO concept, the element can be added (
+  pushed) to one end of the queue (the back) and removed (popped) from the other (the front).
+
+  In order for the queue to work, it requires a storage object with the following interface:
+
+  \inlinecode{C++}{front()}
+  
+  \inlinecode{C++}{back()}
+  
+  \inlinecode{C++}{push_back()}
+  
+  \inlinecode{C++}{pop_front()}
+  
+  Therefore, the STL containers \texttt{deque} and \texttt{list} can be used. Of course, any collection 
+  which makes use of these methods will be appropriate. If the type of the underlying container is not 
+  specified explicitly, \texttt{deque} is used (check the class queue signature).}
+\end{methodinfo}
+
+\subsection{Queue – initialization} %subsection 1.5.8
+Most of the list methods are just proxy methods, calling the method in the underlying container.
+\begin{methodinfo}
+  {constructor}
+  {explicit queue( const Container& cont = Container() );\\
+   queue( const queue& other );}
+  {\\\texttt{cont} – the container provided to serve as internal storage. Its type must be the same as 
+  the type declared in the queue template; \\
+  \texttt{other} – the already existing queue, which is used as a template to instantiate the current 
+  object; its internal container must be of the same type as the object being created.}
+  {None}
+  {First, the constructor creates the \texttt{queue} using the container provided. The container does 
+  not have to be empty; there might be objects already inside. An important fact is that this container 
+  must be of the same type as the internal type specified in the \texttt{queue} object declaration – 
+  the Container template parameter.\\
+  Second, the constructor is a copy constructor. Again, the source \texttt{queue} object and the queue 
+  being created must use the same type of internal storage.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {destructor}
+  {\~queue();}
+  {None}
+  {None}
+  {Destroys the \texttt{queue} object. The queue destructor calls the destructors (if applicable) of all 
+  objects stored inside the \texttt{queue} and deallocates all used storage.}
+\end{methodinfo}
+Here is the correct way to create \texttt{queue} objects.
+
+\textcolor{green}{File name: 1.5.8.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.8.cpp}
+
+\subsection{Queue initialization – the wrong way} %subsection 1.5.9
+1. Not allowed - iterator constructor\\
+2. Not allowed - copy constructor source and target stack object using different storage containers\\
+3. Not allowed - initialization using predefined container - using different storage object than declared
+
+\textcolor{green}{File name: 1.5.9.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.9.cpp}
+
+\subsection{Queue – assignment operator} %subsection 1.5.10
+\begin{methodinfo}
+  {assignment operator =}
+  {queue<T, Container>& operator=( const queue<T,Container>& other );}
+  {\texttt{other} – the source queue object, whose contents are copied and stored in a target queue. 
+  The source and target objects must use the same type of internal container.}
+  {A reference to a calling object (*this).}
+  {The assignment operator copies the elements from other and places them in a calling object (l-value). 
+  As in the case of the copy constructor, the source and target objects must be created using the same 
+  type of internal storage.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.10.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.10.cpp}
+
+\subsection{Queue – empty() and size() methods} %subsection 1.5.11
+\begin{methodinfo}
+  {empty}
+  {bool empty ( ) const;}
+  {None}
+  {true if the \texttt{queue} size is 0, and false otherwise.}
+  {This method tests if the \texttt{queue} size is 0, which means that the queue is empty. The function 
+  is just a proxy which calls the method of the same name in the underlying container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {size}
+  {size_type size ( ) const;}
+  {None}
+  {The number of elements currently stored inside a \texttt{queue}.}
+  {Returns the number of elements stored in the \texttt{queue} internal storage.  The function is just a 
+  proxy which calls the method of the same name in the underlying container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.11.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.11.cpp}
+
+\subsection{Queue – front(), back(), push() and pop()} %subsection 1.5.12
+\begin{methodinfo}
+  {front}
+  {value_type& front ( );\\
+  const value_type& front ( ) const;}
+  {None}
+  {A reference to the element at the front of a \texttt{queue}.}
+  {This function returns a reference to the front-most element of a queue. This element is the one which 
+  has been in the \texttt{queue} the longest, and only this element can be removed (popped) from the \texttt{queue}. 
+  \texttt{front()} is a proxy method, which means it calls the \texttt{front()} method of the underlying container. 
+  The member type \inlinecode{C++}{value_type} is defined as the type of the elements from the underlying container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {back}
+  {value_type& back ( );\\
+  const value_type& back ( ) const;}
+  {None}
+  {A reference to the last element in the \texttt{queue}}
+  {This function returns a reference to the last element of the \texttt{queue} – in other words, 
+  to the last inserted (pushed) element. 
+
+  \texttt{back()} is a proxy method, which means it calls the method of the same name in the 
+  underlying container. The member type \inlinecode{C++}{value_type} is defined as the type of 
+  the elements from the underlying container – the \texttt{T} parameter of the \texttt{queue} template. 
+  The last element of the \texttt{queue} cannot be removed.}
+\end{methodinfo}
+\begin{methodinfo}
+  {push}
+  {void push ( const T& x );}
+  {\texttt{x} – the value to be inserted (pushed) at the end of the queue;\\
+    \texttt{T} – this is the first template parameter – the type of the elements stored inside the container.}
+  {None}
+  {The \texttt{push()} method adds a new element to the \texttt{queue}. The new value is placed after 
+  the previously pushed one, and becomes the last element of the \texttt{queue}. This effectively increases 
+  the size of the \texttt{queue} by one. The new element is created by performing a copy of parameter \texttt{x}. 
+  This method is a proxy, which means it calls the \inlinecode{C++}{push_back()} method in the underlying 
+  storage container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {pop}
+  {void pop ( );}
+  {None}
+  {None}
+  {The \texttt{pop()} method removes the first element from the \texttt{queue} and therefore reduces 
+  its size by one. If the \texttt{queue} is not empty, the next element (previously second in the sequence) 
+  becomes the new front of the \texttt{queue}.
+
+  It’s important to remember that the \texttt{pop()} call doesn’t return the removed element. If you want 
+  to retrieve the value of the front of the \texttt{queue}, call the \texttt{front()} method instead. 
+  This method is a proxy, which means it calls the \inlinecode{C++}{pop_front()} method in the underlying 
+  storage container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.12.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.12.cpp}
+
+\subsection{Priority queue} %subsection 1.5.13
+\begin{methodinfo}
+  {<queue>}
+  {template < class T, class Container = vector<T>,\\
+  class Compare = less<typename Container::value_type> >\\ 
+  class priority_queue;}
+  {\\\texttt{T} – the type of the elements stored inside the \inlinecode{C++}{priority_queue}\\
+    \texttt{Container} – the internal storage provider\\
+    \texttt{Compare} – the comparator used for ascertaining the strict weak ordering inside the 
+    \inlinecode{C++}{priority_queue};\\
+    \inlinecode{C++}{Container::value_type} – the type of the elements stored inside the 
+    \inlinecode{C++}{priority_queue} – it holds the same meaning as \texttt{T}.}
+  {None}
+  {\inlinecode{C++}{priority_queue} is a data structure in which the greatest element is always the first one, 
+  due to some predefined strict weak ordering condition. The STL \inlinecode{C++}{priority_queue} is just 
+  an implementation of that principle.
+
+  In order for \inlinecode{C++}{priority_queue} to function, it requires a container to provide internal storage. 
+  This container must offer the following functionality and methods: the elements must be accessible through 
+  the random access iterator; \inlinecode{C++}{front(); push_back(); pop_back();}
+
+  Therefore, only \texttt{vector} and \texttt{deque} of the STL containers are applicable. But again, 
+  any container supporting the required functionality will be feasible; a programmer is not limited to 
+  just the STL containers. If the internal storage type is not specified, a \texttt{vector} is used.
+
+  \inlinecode{C++}{priority_queue} maintains its order using a comparator. The comparator is a function 
+  which takes two parameters and returns true if the first parameter is lower than the second due to some 
+  strict weak ordering. It can be implemented as either a functional object, or a standalone method. 
+  This comparator is used when a new element is inserted (pushed) into the \texttt{queue}, or removed 
+  (popped) from the \texttt{queue}, to guarantee that the element on top of it is always the greatest. 
+  If no comparator is specified during the instantiation of the \inlinecode{C++}{priority_queue} – less, 
+  the STL predicate is used.
+
+  The ordered sequence of elements is achieved by using the \texttt{heap} algorithm. 
+  \inlinecode{C++}{priority_queue} uses the following methods (algorithms): 
+  \inlinecode{C++}{make_heap(), push_heap(), pop_heap()}.}
+\end{methodinfo}
+
+\subsection{Priority queue – initialization } %subsection 1.5.14
+\begin{methodinfo}
+  {constructor}
+  {explicit priority_queue ( const Compare& x = Compare(),\\
+  const Container& y = Container() );\\
+  priority_queue( const priority_queue& other );}
+  {\texttt{x} – the comparator object used to ensure strict weak ordering of the \texttt{queue} – 
+  must be of the same type as declared in the template parameters;\\
+  \texttt{y} – the container provided to serve as internal storage. Its type must be the same as the 
+  type defined in the \inlinecode{C++}{priority_queue} template declaration;\\
+  \texttt{other} – the already existing \inlinecode{C++}{priority_queue}, which is used as a template 
+  to instantiate the current object; its internal container must be of the same type as the object 
+  being created. Also, both objects must use the same comparator.}
+  {None}
+  {First, the constructor creates a \inlinecode{C++}{priority_queue} using the internal container provided, 
+  and compares the predicate. The container does not have to be empty; there might be objects already inside. 
+  However, the cont needs to be of the same type as specified in the \inlinecode{C++}{priority_queue} object 
+  declaration – the Container template parameter. If objects \texttt{x} and \texttt{y} are provided, their 
+  copies are created; in other cases, the container and comparator are just initialized. After that, the 
+  constructor calls \inlinecode{C++}{make_heap()}.
+
+  Second, the constructor is just a copy constructor. It creates a new object by coping the existing one. 
+  Both objects must be equal in terms of their template definition – the same type of container and comparator 
+  predicates.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.14.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.14.cpp}
+
+\subsection{Priority queue – initialization} %subsection 1.5.15
+Priority queue initialization – the wrong way
+\begin{itemize}
+  \item 1. using external storage object only
+  \item 2. using forbidden container type as internal storage
+  \item 3. providing comparator but not container type
+  \item 4. using different comparator object than declared - warning, but the comparator object type 
+    is deducted from constructor parameter
+\end{itemize}
+
+\textcolor{green}{File name: 1.5.15.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.15.cpp}
+
+\subsection{Priority queue – assignment operator} %subsection 1.5.16
+\begin{methodinfo}
+  {assignment operator =}
+  {priority_queue<T, Container>&\\
+  operator=( const priority_queue<T,Container>& other );}
+  {\texttt{other} – the source \inlinecode{C++}{priority_queue} object, whose contents are copied and 
+  stored in a target; \inlinecode{C++}{priority_queue}. The source and target objects must use the same 
+  type of internal container.}
+  {A reference to a calling object (*this).}
+  {The assignment operator copies the elements from other, and places them in a calling object (l-value). 
+  As in the case of the copy constructor, the source and target objects must be created using the same 
+  type of internal storage.
+
+  1. Correct - source and target stack are of the same type
+  
+  2a. Incorrect - target and source queue are not of the same type - internal storage
+  
+  2b. Incorrect - target and source queue are not using the same comparator}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.16.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.16.cpp}
+
+\subsection{Priority queue – empty() and size() methods} %subsection 1.5.17
+\begin{methodinfo}
+  {empty}
+  {bool empty ( ) const;}
+  {None}
+  {\texttt{true} if the \inlinecode{C++}{priority_queue} size is 0, and \texttt{false} otherwise.}
+  {This method tests if the \inlinecode{C++}{priority_queue} size is 0, which means the \texttt{queue} is empty. 
+  The function is just a proxy which calls the method of the same name in the underlying container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {size}
+  {size_type size ( ) const;}
+  {None}
+  {The number of elements currently stored inside a \inlinecode{C++}{priority_queue}}
+  {Returns the number of elements stored in a \inlinecode{C++}{priority_queue}. The function is just 
+  a proxy which calls the method of the same name in the underlying container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.17.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.17.cpp}
+
+\subsection{Priority queue – top(), push() and pop()} %subsection 1.5.18
+\begin{methodinfo}
+  {top}
+  {const value_type& top ( ) const;}
+  {None}
+  {A constant reference to the element at the top of a \inlinecode{C++}{priority_queue}}
+  {This function returns a reference to the top-most element of a \inlinecode{C++}{priority_queue}. 
+  Because a \inlinecode{C++}{priority_queue} uses strict weak ordering, the top element is the greatest one. 
+  It’s also worth noticing that the returned reference is a \texttt{const}. There’s no non-const version of 
+  this method, as in a \texttt{stack}, for example. This is because of the ordered nature of the 
+  \inlinecode{C++}{priority_queue}. A reference would allow for unnoticeable changes of element values, 
+  and would disrupt the order of the \texttt{queue}.
+
+  \texttt{top()} is a proxy method, which means it calls the \texttt{front()} method of the underlying container. 
+  The member type \inlinecode{C++}{value_type} is defined as the type of the elements from the underlying container.}
+\end{methodinfo}
+\begin{methodinfo}
+  {push}
+  {void push ( const T& x );}
+  {\texttt{x} - the value to be pushed (copied) into the \texttt{queue};\\
+  \texttt{T} – this is the first template parameter – the type of the elements stored inside the container.}
+  {None}
+  {The method \texttt{push()} puts a new value into the \inlinecode{C++}{priority_queue}, and rearranges it 
+  to keep the proper heap structure. This effectively increases the size of the adaptor by one. The location 
+  of the newly inserted element is not determined beforehand; it depends on the values of the elements 
+  already stored inside the \texttt{queue}. The new element is created by copying parameter \texttt{x}. 
+  This method is a proxy, which means it calls the \inlinecode{C++}{push_back()} method in the underlying 
+  storage container. Afterward, the \inlinecode{C++}{push_heap()} method is called.}
+\end{methodinfo}
+\begin{methodinfo}
+  {pop}
+  {void pop ( );}
+  {None}
+  {None}
+  {The \texttt{pop()} method removes the top-most element from the \inlinecode{C++}{priority_queue}, 
+  and therefore reduces its size by one, and the element destructor is called in the process. Also, 
+  this method ensures that the new top element is the greatest one out of all the remaining elements. 
+  It’s important to remember that the \texttt{pop()} call doesn’t return the removed element.
+
+  If you want to retrieve the value of the top of the \texttt{queue}, call the \texttt{top()} method. 
+  This method is a proxy, which means it calls the \inlinecode{C++}{pop_heap()} algorithm, and 
+  then \inlinecode{C++}{pop_back()} in the underlying storage container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.5.18.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.5.18.cpp}

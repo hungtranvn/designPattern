@@ -1,0 +1,30 @@
+
+\subsection{back() and front()} %subsection 1.4.5
+\begin{methodinfo}
+  {front}
+  {reference front (); 
+  const_reference front () const;}
+  {None}
+  {A reference to the first element in a container}
+  {this method returns a reference to the first element in a container. The reference might be normal or 
+  constant: it all depends on the calling context.
+  The purpose of this method is to retrieve the first value from the container. Because the element is 
+  returned by a reference, it’s possible to modify it – a call to \texttt{front} can become the target of the 
+  assignment – the \texttt{l-value}. The returned element is not removed from the container.}
+\end{methodinfo}
+
+\begin{methodinfo}
+  {back}
+  {reference back ();
+  const_reference back () const;}
+  {None}
+  {A reference to the last element in a container}
+  {this method returns a reference to the \textbf{last element} in a container. The reference might be normal or 
+  constant – it all depends on the calling context.
+  The purpose of this method is to retrieve the last value from the container. Because the element is 
+  returned by a reference, it’s possible to modify it – a call to \texttt{back} can become the target of the 
+  assignment – the \texttt{l-value}. The returned element is not removed from the container.}
+\end{methodinfo}
+
+\textcolor{green}{File name: 1.4.5.cpp}
+\lstinputlisting[language=C++]{Chapter1/codes/1.4.5.cpp}
