@@ -104,16 +104,16 @@ fat blue line/.style={ultra thick, blue}
 \pgfmathsetmacro{\aend}{#2}
 \pgfmathsetmacro{\atip}{5}
 \fill[mygray, very thick] (\astart+\atip:\rin)
-                  arc (\astart+\atip:\aend:\rin)
+                 arc (\astart+\atip:\aend:\rin)
 -- (\aend-\atip:\rmid)
 -- (\aend:\rout)   arc (\aend:\astart+\atip:\rout)
 -- (\astart:\rmid) -- cycle;
 \path[
 decoration = {
-  text along path,
-  text = {|\mytextstyle|#3},
-  text align = {align = center},
-  raise = -1.0ex
+ text along path,
+ text = {|\mytextstyle|#3},
+ text align = {align = center},
+ raise = -1.0ex
 },
 decorate
 ](\astart+\atip:\rmid) arc (\astart+\atip:\aend+\atip:\rmid);
@@ -182,40 +182,171 @@ decorate
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Structure of Adapter Pattern}
+\begin{frame}{Structure of Adapter Pattern: Object adapter}
 	\begin{center}
 	\begin{tikzpicture}
-  \umlemptyclass[x=0,y=0]{Client}
-  \umlclass[x=4,y=0]{Client interface}{}{request()}
-  \umlclass[x=4,y=-3]{Adapter}{}{request()}
-  \umlclass[x=9,y=-3]{Adaptee}{}{specificRequest()}
-  \umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Client interface}
-  \umluniassoc[pos=0.95, align=right, name=uniassoc]{Adapter}{Adaptee}
-  \umlinherit{Adapter}{Client interface}
+ \umlemptyclass[x=0,y=0]{Client}
+ \umlclass[x=4,y=0]{Client interface}{}{request()}
+ \umlclass[x=4,y=-3]{Adapter}{}{request()}
+ \umlclass[x=9,y=-3]{Adaptee}{}{specificRequest()}
+ \umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Client interface}
+ \umluniassoc[pos=0.95, align=right, name=uniassoc]{Adapter}{Adaptee}
+ \umlinherit{Adapter}{Client interface}
+ \umlnote[x=4,y=-5, width=120]{Adapter}{Adaptee->specificRequest()}
 	\end{tikzpicture}	
 	\end{center}
 \end{frame}
 
-\begin{frame}{Basic implementation}
+\begin{frame}{Basic implementation: Rectangle class}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-
+rectangle.h
+\lstinputlisting{./examples/squareRecAdapter/rectangle.h}
 \end{column}
 
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
+rectangle.cpp
+\lstinputlisting{./examples/squareRecAdapter/rectangle.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: Square class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+square.h
+\lstinputlisting{./examples/squareRecAdapter/square.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+square.cpp
+\lstinputlisting{./examples/squareRecAdapter/square.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: Adapter class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+adapter.h
+\lstinputlisting{./examples/squareRecAdapter/adapter.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+adapter.cpp
+\lstinputlisting{./examples/squareRecAdapter/adapter.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: client code}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+main.cpp
+\lstinputlisting{./examples/squareRecAdapter/main.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\begin{itemize}
+\item Object adapter
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Structure of Adapter Pattern: Class adapter}
+	\begin{center}
+	\begin{tikzpicture}
+ \umlemptyclass[x=0,y=0]{Client}
+ \umlclass[x=4,y=0]{Client interface}{}{request()}
+ \umlclass[x=9,y=0]{Adaptee}{}{specificRequest()}
+ \umlclass[x=6.5,y=-4]{Adapter}{}{request()}
+ \umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Client interface}
+ \umlinherit[geometry=|-|]{Adapter}{Client interface}
+ \umlinherit[geometry=|-|]{Adapter}{Adaptee}
+ \umlnote[x=3,y=-5, width=100]{Adapter}{specificRequest()}
+	\end{tikzpicture}	
+	\end{center}
+\end{frame}
+
+\begin{frame}{Basic implementation: Rectangle class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+rectangle.h
+\lstinputlisting{./examples/classAdapter/rectangle.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+rectangle.cpp
+\lstinputlisting{./examples/classAdapter/rectangle.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: Square class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+square.h
+\lstinputlisting{./examples/classAdapter/square.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+square.cpp
+\lstinputlisting{./examples/classAdapter/square.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: Adapter class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+adapter.h
+\lstinputlisting{./examples/classAdapter/adapter.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+adapter.cpp
+\lstinputlisting{./examples/classAdapter/adapter.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: client code}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+main.cpp
+\lstinputlisting{./examples/classAdapter/main.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+\begin{itemize}
+\item class adapter
+\end{itemize}
 \end{column}
 \end{columns}
 \end{frame}
 
 \begin{frame}{Where to use?}
-	\textcolor{blue}{When only one instance should be use because:}
+	\textcolor{blue}{}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item multiple instances cause data corruption.
-		\item managing global state or shared state.
-		\item multiple instances are not required.
+		\item
 	\end{itemize}
 \end{frame}
 
