@@ -254,14 +254,68 @@ person.cpp
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Advantages}
+\begin{frame}{Applicability}
 	\textcolor{blue}{}
 	\begin{itemize}
-		\item Bridge Design Pattern provides flexibility to develop abstraction(i.e. interface) and the implementation independently. And the client/API-user code can access only the abstraction part without being concerned about the Implementation part.
-		\item It preserves the Open-Closed Principle, in other words, improves extensibility as client/API-user code relies on abstraction only so implementation can modify or augmented any time.
-		\item By using the Bridge Design Pattern in the form of PIMPL. We can hide the implementation details from the client as we did in PIMPL idiom example above.
-		\item The Bridge Design Pattern is an application of the old advice, “prefer composition over inheritance” but in a smarter way. It comes handy when you must subclass different times in ways that are orthogonal with one another(say 2×2 problem discuss earlier).
-		\item A compile-time binding between an abstraction and its implementation should be avoided. So that an implementation can select at run-time.
+		\item Use the Bridge pattern when you want to divide and organize a monolithic class that has several variants of some functionality (for example, if the class can work with various database servers).
+		\item The bigger a class becomes, the harder it is to figure out how it works, and the longer it takes to make a change. The changes made to one of the variations of functionality may require making changes across the whole class, which often results in making errors or not addressing some critical side effects.
+		\item The Bridge pattern lets you split the monolithic class into several class hierarchies. After this, you can change the classes in each hierarchy independently of the classes in the others. This approach simplifies code maintenance and minimizes the risk of breaking existing code.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Applicability}
+	\textcolor{blue}{}
+	\begin{itemize}
+		\item Use the pattern when you need to extend a class in several orthogonal (independent) dimensions.
+		\item The Bridge suggests that you extract a separate class hierarchy for each of the dimensions. The original class delegates the related work to the objects belonging to those hierarchies instead of doing everything on its own.
+		\item Use the Bridge if you need to be able to switch implementations at runtime.
+		\item Although it’s optional, the Bridge pattern lets you replace the implementation object inside the abstraction. It’s as easy as assigning a new value to a field.
+		%By the way, this last item is the main reason why so many people confuse the Bridge with the Strategy pattern. Remember that a pattern is more than just a certain way to structure your classes. It may also communicate intent and a problem being addressed.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{How to Implement}
+	\begin{itemize}
+		\item Identify the orthogonal dimensions in your classes. These independent concepts could be: abstraction/platform, domain/infrastructure, front-end/back-end, or interface/implementation.
+		\item See what operations the client needs and define them in the base abstraction class.
+		\item Determine the operations available on all platforms. Declare the ones that the abstraction needs in the general implementation interface.
+		\item For all platforms in your domain create concrete implementation classes, but make sure they all follow the implementation interface.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{How to Implement}
+	\begin{itemize}
+		\item Inside the abstraction class, add a reference field for the implementation type. The abstraction delegates most of the work to the implementation object that’s referenced in that field.
+		\item If you have several variants of high-level logic, create refined abstractions for each variant by extending the base abstraction class.
+		\item The client code should pass an implementation object to the abstraction’s constructor to associate one with the other. After that, the client can forget about the implementation and work only with the abstraction object.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Pros and Cons}
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+			\begin{itemize}
+				\item You can create platform-independent classes and apps.
+				\item The client code works with high-level abstractions. It isn’t exposed to the platform details.
+				\item Open/Closed Principle. You can introduce new abstractions and implementations independently from each other.
+				\item Single Responsibility Principle. You can focus on high-level logic in the abstraction and on platform details in the implementation.
+			\end{itemize}
+		\end{column}
+	
+		\begin{column}{.5\textwidth}
+			\begin{itemize}
+				\item  You might make the code more complicated by applying the pattern to a highly cohesive class.
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Relations with Other Patterns}
+	\begin{itemize}
+		\item Bridge is usually designed up-front, letting you develop parts of an application independently of each other. On the other hand, Adapter is commonly used with an existing app to make some otherwise-incompatible classes work together nicely.
+		\item Bridge, State, Strategy (and to some degree Adapter) have very similar structures. Indeed, all of these patterns are based on composition, which is delegating work to other objects. However, they all solve different problems. A pattern isn’t just a recipe for structuring your code in a specific way. It can also communicate to other developers the problem the pattern solves.
+		\item You can use Abstract Factory along with Bridge. This pairing is useful when some abstractions defined by Bridge can only work with specific implementations. In this case, Abstract Factory can encapsulate these relations and hide the complexity from the client code.
+		\item You can combine Builder with Bridge: the director class plays the role of the abstraction, while different builders act as implementations.
 	\end{itemize}
 \end{frame}
 

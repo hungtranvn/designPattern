@@ -191,72 +191,116 @@ decorate
 	\begin{center}
 		\begin{tikzpicture}
 			\umlemptyclass[x=0,y=0]{Client}
-			\umlclass[x=3,y=0]{Abstraction}{}{operation()}
-			\umlclass[x=2,y=-4]{RefinedAbstruction}{}{}
-			\umlclass[x=8,y=0]{Implementor}{}{operationImp()}
-			\umlclass[x=6,y=-4]{ConcreteA}{}{operationImp()}
-			\umlclass[x=10,y=-4]{ConcreteB}{}{operationImp()}
-			\umluniaggreg{Abstraction}{Implementor}
-			\umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Abstraction}
-			\umlinherit[geometry=|-|]{RefinedAbstruction}{Abstraction}
-			\umlinherit[geometry=|-|]{ConcreteA}{Implementor}
-			\umlinherit[geometry=|-|]{ConcreteB}{Implementor}
+			\umlclass[x=7,y=0]{Component}{}{operation()\\add()\\remove()\\getChild(int)}
+			\umlclass[x=5,y=-4]{Leaf}{}{operation()}
+			\umlclass[x=9,y=-4]{Composite}{}{operation()\\add()\\remove()\\getChild(int)}
+			\umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Component}
+			\umlinherit[geometry=-|]{Leaf}{Component}
+			\umlinherit[geometry=-|]{Composite}{Component}
+			\umluniaggreg[geometry=|-]{Composite}{Component}
 		\end{tikzpicture}	
 	\end{center}
 \end{frame}
 
-\begin{frame}{Pointer to Implementation (PIMPL)}
-	\textcolor{blue}{}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item PIMPLE is the manifestation of the bridge design pattern albeit a slightly different one.
-		\item PIMPL idiom is all about hiding the implementation details of a particular class by sticking it into separate implementation pointed by pointer just as the name suggests.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{PIMPL implementation}
+\begin{frame}{Tree implementation}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-person.h
-\lstinputlisting{./examples/pimpl/person.h}
+component.h
+\lstinputlisting{./examples/tree/component.h}
 \end{column}
 
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-person.cpp
-\lstinputlisting{./examples/pimpl/person.cpp}
+component.cpp
+\lstinputlisting{./examples/tree/component.cpp}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Why would you want to do this PIMPL?}
-	\textcolor{blue}{}
+\begin{frame}{Tree implementation}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+leaf.h
+\lstinputlisting{./examples/tree/leaf.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+leaf.cpp
+\lstinputlisting{./examples/tree/leaf.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Tree implementation}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+composite.h
+\lstinputlisting{./examples/tree/composite.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+composite.cpp
+\lstinputlisting{./examples/tree/composite.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Applicability}
 	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Security purpose: a data member which contains critical information.
-		\item Compilation time
+		\item Make sure that the core model of your app can be represented as a tree structure. Try to break it down into simple elements and containers. Remember that containers must be able to contain both simple elements and other containers.
+		\item Declare the component interface with a list of methods that make sense for both simple and complex components.
+		\item Create a leaf class to represent simple elements. A program may have multiple different leaf classes.
+		\item Create a container class to represent complex elements. In this class, provide an array field for storing references to sub-elements. The array must be able to store both leaves and containers, so make sure it’s declared with the component interface type.
+		% While implementing the methods of the component interface, remember that a container is supposed to be delegating most of the work to sub-elements.
+		\item Finally, define the methods for adding and removal of child elements in the container.
+		% Keep in mind that these operations can be declared in the component interface. This would violate the Interface Segregation Principle because the methods will be empty in the leaf class. However, the client will be able to treat all the elements equally, even when composing the tree.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Disadvantages of PIMPL?}
-	\textcolor{blue}{}
+\begin{frame}{How to implement}
 	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Run-time overhead as we have to dereference the pointer every time for access.
-		\item Construction \& destruction overhead of unique\_ptrbecause it creates a memory in a heap
-		\item We also have to bear some indirection if we want to access the data member of Person in PersonImpl like passing this pointer or so
+		\item \textcolor{blue}{Use the Composite pattern when you have to implement a tree-like object structure.}
+		\item The Composite pattern provides you with two basic element types that share a common interface: simple leaves and complex containers. A container can be composed of both leaves and other containers. This lets you construct a nested recursive object structure that resembles a tree.
+		\item \textcolor{blue}{Use the pattern when you want the client code to treat both simple and complex elements uniformly.}
+		\item All elements defined by the Composite pattern share a common interface. Using this interface, the client doesn’t have to worry about the concrete class of the objects it works with.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Advantages}
-	\textcolor{blue}{}
+\begin{frame}{Pros and Cons}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
 	\begin{itemize}
-		\item Bridge Design Pattern provides flexibility to develop abstraction(i.e. interface) and the implementation independently. And the client/API-user code can access only the abstraction part without being concerned about the Implementation part.
-		\item It preserves the Open-Closed Principle, in other words, improves extensibility as client/API-user code relies on abstraction only so implementation can modify or augmented any time.
-		\item By using the Bridge Design Pattern in the form of PIMPL. We can hide the implementation details from the client as we did in PIMPL idiom example above.
-		\item The Bridge Design Pattern is an application of the old advice, “prefer composition over inheritance” but in a smarter way. It comes handy when you must subclass different times in ways that are orthogonal with one another(say 2×2 problem discuss earlier).
-		\item A compile-time binding between an abstraction and its implementation should be avoided. So that an implementation can select at run-time.
+	\item You can work with complex tree structures more conveniently: use polymorphism and recursion to your advantage.
+	\item Open/Closed Principle. You can introduce new element types into the app without breaking the existing code, which now works with the object tree.
+	\end{itemize}
+\end{column}
+
+\begin{column}{.45\textwidth}
+	\begin{itemize}
+	\item It might be difficult to provide a common interface for classes whose functionality differs too much. In certain scenarios, you’d need to overgeneralize the component interface, making it harder to comprehend.
+	\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Relations with Other Patterns}
+	\begin{itemize}
+		\item You can use Builder when creating complex Composite trees because you can program its construction steps to work recursively.
+		\item Chain of Responsibility is often used in conjunction with Composite. In this case, when a leaf component gets a request, it may pass it through the chain of all of the parent components down to the root of the object tree.
+		\item You can use Iterators to traverse Composite trees.
+		\item You can use Visitor to execute an operation over an entire Composite tree.
+		\item You can implement shared leaf nodes of the Composite tree as Flyweights to save some RAM.
+		\item Composite and Decorator have similar structure diagrams since both rely on recursive composition to organize an open-ended number of objects.
+		% A Decorator is like a Composite but only has one child component. There’s another significant difference: Decorator adds additional responsibilities to the wrapped object, while Composite just “sums up” its children’s results.
+		
+		%However, the patterns can also cooperate: you can use Decorator to extend the behavior of a specific object in the Composite tree.
+		\item Designs that make heavy use of Composite and Decorator can often benefit from using Prototype.
+		%Applying the pattern lets you clone complex structures instead of re-constructing them from scratch.
 	\end{itemize}
 \end{frame}
 
@@ -265,6 +309,5 @@ person.cpp
 {\fontsize{40}{50}\selectfont Thank You!}
 \end{center}
 \end{frame}
-
 
 \end{document}

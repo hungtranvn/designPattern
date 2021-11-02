@@ -157,111 +157,229 @@ decorate
 \begin{frame}{Problem Statement}
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
-			\includegraphics[scale=0.4]{./images/problem.png}
+		\begin{tikzpicture}
+			\umlclass[x=2,y=0]{Shape}{}{}
+			\umlclass[x=0,y=-3]{Circle}{}{}
+			\umlclass[x=4,y=-3]{Square}{}{}
+			\umlinherit[geometry=|-|]{Circle}{Shape}
+			\umlinherit[geometry=|-|]{Square}{Shape}
+			\umlclass[x=0,y=-6]{RedCir}{}{}
+			\umlclass[x=2,y=-6]{GreenCir}{}{}
+			\umlinherit[geometry=|-|]{RedCir}{Circle}
+			\umlinherit[geometry=|-|]{GreenCir}{Circle}
+		\end{tikzpicture}	
 		\end{column}
 	
-		\begin{column}{.4\textwidth}
+		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item You have a geometric Shape class with a pair of subclasses: Circle and Square.
-				\item You want to extend this class hierarchy to incorporate colors.
+				\item You have a geometric \textbf{\textit{Shape}} class with a pair of subclasses: \textbf{Circle} and \textbf{Square}.
+				\item You want to \textbf{extend} this class hierarchy to incorporate \textbf{colors (red, green)}.
 				\item Adding new shape types and colors to the hierarchy will grow it exponentially.
-				\item The total classes by combination?
+				\item \textcolor{red}{The total classes by combination?}
+				\item What if lack of virtual destructor?
 			\end{itemize}
 		\end{column}
 	\end{columns}
 \end{frame}
 
 \begin{frame}{Problem Statement}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Extending the class hierarchy by inheritance leads to explosion of number of derived classes.
+		\item The \textbf{Decorator pattern} allows us to enhance existing types without
+		either \textbf{modifying the original types} (Open-Closed Principle) or causing an
+		\textbf{explosion of the number of derived types}.
+		\item Inheritance alone does not offer us an efficient way to provide enhancements to shapes, so we must turn to \textbf{composition}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{The Intent of Decorator Design Pattern}
+	\begin{center}
+	\textcolor{red}{\textbf{Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.}}\\
+	\textcolor{blue}{In other words, The Decorator Pattern uses composition instead of inheritance to extend the functionality of an object at runtime.}\\
+	\textbf{The Decorator Pattern is also known as Wrapper.}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Structure of Dynamic Decorator Pattern}
+	\begin{center}
+		\begin{tikzpicture}
+			\umlclass[x=5,y=1]{Component}{}{operation()}
+			\umlclass[x=2,y=-1.5]{ConcreteComponent}{}{operation()}
+			\umlclass[x=8,y=-1.5]{Decorator}{}{operation()}
+			\umlclass[x=5,y=-4]{ConcreteDecoratorA}{addState}{operation()}
+			\umlclass[x=10,y=-4]{ConcreteDecoratorB}{}{operation() \\ addBehavior()}
+			\umlinherit[geometry=-|]{ConcreteComponent}{Component}
+			\umluniaggreg[geometry=|-]{Decorator}{Component}
+			\umlinherit[geometry=-|]{Decorator}{Component}
+			\umlinherit[geometry=|-|]{ConcreteDecoratorA}{Decorator}
+			\umlinherit[geometry=|-|]{ConcreteDecoratorB}{Decorator}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Basic implementation: shapes class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+shape.h
+\lstinputlisting{./examples/shapes/shape.h}
+circle.h
+\lstinputlisting{./examples/shapes/circle.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+circle.cpp
+\lstinputlisting{./examples/shapes/circle.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: shapes class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+coloredShape.h
+\lstinputlisting{./examples/shapes/coloredShape.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+coloredShape.cpp
+\lstinputlisting{./examples/shapes/coloredShape.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: shapes class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+transparentShape.h
+\lstinputlisting{./examples/shapes/transparentShape.h}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+transparentShape.cpp
+\lstinputlisting{./examples/shapes/transparentShape.cpp}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Basic implementation: shapes class}
+\begin{columns}[T]
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+main.cpp.cpp
+\lstinputlisting{./examples/shapes/main.cpp}
+\end{column}
+
+\begin{column}{.45\textwidth}
+\lstset{basicstyle=\tiny,style=myCustomCppStyle}
+	\begin{itemize}
+		\item As we can see resize() method cant not call because it is not part of Shape class.
+	\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Static Decorator Pattern}
+	\begin{center}
+		\begin{tikzpicture}
+			\umlclass[x=5,y=1]{Component}{}{operation()}
+			\umlclass[x=2,y=-1.5]{ConcreteComponent}{}{operation()}
+			\umlclass[x=8,y=-1.5]{Decorator}{}{operation()}
+			\umlclass[x=5,y=-4]{ConcreteDecoratorA}{addState}{operation()}
+			\umlclass[x=10,y=-4]{ConcreteDecoratorB}{}{operation() \\ addBehavior()}
+			\umlinherit[geometry=-|]{ConcreteComponent}{Component}
+			\umluniaggreg[geometry=|-]{Decorator}{Component}
+			\umlinherit[geometry=-|]{Decorator}{Component}
+			\umlinherit[geometry=|-|]{ConcreteDecoratorA}{Decorator}
+			\umlinherit[geometry=|-|]{ConcreteDecoratorB}{Decorator}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Functional Decorator Pattern}
+	\begin{center}
+		\begin{tikzpicture}
+			\umlclass[x=5,y=1]{Component}{}{operation()}
+			\umlclass[x=2,y=-1.5]{ConcreteComponent}{}{operation()}
+			\umlclass[x=8,y=-1.5]{Decorator}{}{operation()}
+			\umlclass[x=5,y=-4]{ConcreteDecoratorA}{addState}{operation()}
+			\umlclass[x=10,y=-4]{ConcreteDecoratorB}{}{operation() \\ addBehavior()}
+			\umlinherit[geometry=-|]{ConcreteComponent}{Component}
+			\umluniaggreg[geometry=|-]{Decorator}{Component}
+			\umlinherit[geometry=-|]{Decorator}{Component}
+			\umlinherit[geometry=|-|]{ConcreteDecoratorA}{Decorator}
+			\umlinherit[geometry=|-|]{ConcreteDecoratorB}{Decorator}
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Applicability}
+	\begin{itemize}
+		\item Use the Decorator pattern when you need to be able to assign extra behaviors to objects at runtime without breaking the code that uses these objects.
+		\item The Decorator lets you structure your business logic into layers, create a decorator for each layer and compose objects with various combinations of this logic at runtime. The client code can treat all these objects in the same way, since they all follow a common interface.
+		\item Use the pattern when it’s awkward or not possible to extend an object’s behavior using inheritance.
+		\item Many programming languages have the final keyword that can be used to prevent further extension of a class. For a final class, the only way to reuse the existing behavior would be to wrap the class with your own wrapper, using the Decorator pattern.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{How to Implement}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Make sure your business domain can be represented as a primary component with multiple optional layers over it.
+		\item Figure out what methods are common to both the primary component and the optional layers. Create a component interface and declare those methods there.
+		\item Create a concrete component class and define the base behavior in it.
+		\item Create a base decorator class. It should have a field for storing a reference to a wrapped object. The field should be declared with the component interface type to allow linking to concrete components as well as decorators. The base decorator must delegate all work to the wrapped object.
+		\item Make sure all classes implement the component interface.
+		\item Create concrete decorators by extending them from the base decorator. A concrete decorator must execute its behavior before or after the call to the parent method (which always delegates to the wrapped object).
+		\item The client code must be responsible for creating decorators and composing them in the way the client needs.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Pros and Cons}
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
-			\includegraphics[scale=0.45]{./images/solution.png}
+			\begin{itemize}
+				\item You can extend an object’s behavior without making a new subclass.
+				\item You can add or remove responsibilities from an object at runtime.
+				\item You can combine several behaviors by wrapping an object into multiple decorators.
+				\item Single Responsibility Principle. You can divide a monolithic class that implements many possible variants of behavior into several smaller classes.
+			\end{itemize}
 		\end{column}
 	
-		\begin{column}{.4\textwidth}
+		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item The Bridge pattern attempts to solve this problem by switching from inheritance to the object composition.
-				\item Adding new colors won’t require changing the shape hierarchy, and vice versa.
+				\item It’s hard to remove a specific wrapper from the wrappers stack.
+				\item It’s hard to implement a decorator in such a way that its behavior doesn’t depend on the order in the decorators stack.
+				\item The initial configuration code of layers might look pretty ugly.
 			\end{itemize}
 		\end{column}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{The Intent of Decorator Design Pattern}
-	\begin{center}
-	\textcolor{red}{\textbf{Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality.}}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Structure of Bridge Pattern: Object adapter}
-	\begin{center}
-		\begin{tikzpicture}
-			\umlemptyclass[x=0,y=0]{Client}
-			\umlclass[x=3,y=0]{Abstraction}{}{operation()}
-			\umlclass[x=2,y=-4]{RefinedAbstruction}{}{}
-			\umlclass[x=8,y=0]{Implementor}{}{operationImp()}
-			\umlclass[x=6,y=-4]{ConcreteA}{}{operationImp()}
-			\umlclass[x=10,y=-4]{ConcreteB}{}{operationImp()}
-			\umluniaggreg{Abstraction}{Implementor}
-			\umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Abstraction}
-			\umlinherit[geometry=|-|]{RefinedAbstruction}{Abstraction}
-			\umlinherit[geometry=|-|]{ConcreteA}{Implementor}
-			\umlinherit[geometry=|-|]{ConcreteB}{Implementor}
-		\end{tikzpicture}	
-	\end{center}
-\end{frame}
-
-\begin{frame}{Pointer to Implementation (PIMPL)}
-	\textcolor{blue}{}
+\begin{frame}{Relations with Other Patterns}
 	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item PIMPLE is the manifestation of the bridge design pattern albeit a slightly different one.
-		\item PIMPL idiom is all about hiding the implementation details of a particular class by sticking it into separate implementation pointed by pointer just as the name suggests.
+		\item Adapter changes the interface of an existing object, while Decorator enhances an object without changing its interface. In addition, Decorator supports recursive composition, which isn’t possible when you use Adapter.
+		\item Adapter provides a different interface to the wrapped object, Proxy provides it with the same interface, and Decorator provides it with an enhanced interface.
+		\item Chain of Responsibility and Decorator have very similar class structures. Both patterns rely on recursive composition to pass the execution through a series of objects. However, there are several crucial differences.
+		%The CoR handlers can execute arbitrary operations independently of each other. They can also stop passing the request further at any point. On the other hand, various Decorators can extend the object’s behavior while keeping it consistent with the base interface. In addition, decorators aren’t allowed to break the flow of the request.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{PIMPL implementation}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-person.h
-\lstinputlisting{./examples/pimpl/person.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-person.cpp
-\lstinputlisting{./examples/pimpl/person.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Why would you want to do this PIMPL?}
-	\textcolor{blue}{}
+\begin{frame}{Relations with Other Patterns}
 	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Security purpose: a data member which contains critical information.
-		\item Compilation time
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Disadvantages of PIMPL?}
-	\textcolor{blue}{}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Run-time overhead as we have to dereference the pointer every time for access.
-		\item Construction \& destruction overhead of unique\_ptrbecause it creates a memory in a heap
-		\item We also have to bear some indirection if we want to access the data member of Person in PersonImpl like passing this pointer or so
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Advantages}
-	\textcolor{blue}{}
-	\begin{itemize}
-		\item Bridge Design Pattern provides flexibility to develop abstraction(i.e. interface) and the implementation independently. And the client/API-user code can access only the abstraction part without being concerned about the Implementation part.
-		\item It preserves the Open-Closed Principle, in other words, improves extensibility as client/API-user code relies on abstraction only so implementation can modify or augmented any time.
-		\item By using the Bridge Design Pattern in the form of PIMPL. We can hide the implementation details from the client as we did in PIMPL idiom example above.
-		\item The Bridge Design Pattern is an application of the old advice, “prefer composition over inheritance” but in a smarter way. It comes handy when you must subclass different times in ways that are orthogonal with one another(say 2×2 problem discuss earlier).
-		\item A compile-time binding between an abstraction and its implementation should be avoided. So that an implementation can select at run-time.
+		\item Composite and Decorator have similar structure diagrams since both rely on recursive composition to organize an open-ended number of objects.
+		%A Decorator is like a Composite but only has one child component. There’s another significant difference: Decorator adds additional responsibilities to the wrapped object, while Composite just “sums up” its children’s results.
+		
+		%However, the patterns can also cooperate: you can use Decorator to extend the behavior of a specific object in the Composite tree.
+		\item Designs that make heavy use of Composite and Decorator can often benefit from using Prototype. Applying the pattern lets you clone complex structures instead of re-constructing them from scratch.
+		\item Decorator lets you change the skin of an object, while Strategy lets you change the guts.
+		\item Decorator and Proxy have similar structures, but very different intents. Both patterns are built on the composition principle, where one object is supposed to delegate some of the work to another. The difference is that a Proxy usually manages the life cycle of its service object on its own, whereas the composition of Decorators is always controlled by the client.
 	\end{itemize}
 \end{frame}
 
