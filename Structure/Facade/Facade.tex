@@ -157,202 +157,127 @@ decorate
 \begin{frame}{Problem Statement}
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
-			\includegraphics[scale=0.3]{./images/problem.png}
+			\includegraphics[scale=0.6]{./images/problem.jpg}
 		\end{column}
 	
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item Imagine that you’re creating a stock market monitoring app. The app downloads the stock data from multiple sources in XML format and then displays nice-looking charts and diagrams for the user.
-				\item At some point, you decide to improve the app by integrating a smart 3rd-party analytics library. But there’s a catch: the analytics library only works with data in JSON format.
-				\item You could change the library to work with XML. However, this might break some existing code that relies on the library. And worse, you might not have access to the library’s source code in the first place, making this approach impossible.
+				\item You must make your code work with a broad set of objects that belong to a sophisticated library or framework.
+				\item You’d need to initialize all of those objects, keep track of dependencies, execute methods in the correct order, and so on.
+				\item As a result, the business logic of your classes would become tightly coupled to the implementation details of 3rd-party classes, making it hard to \textbf{comprehend and maintain}.
 			\end{itemize}
 		\end{column}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Solution}
+\begin{frame}{Solution: Facade Pattern}
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
-			\includegraphics[scale=0.3]{./images/solution.png}
+			\includegraphics[scale=0.6]{./images/solution.jpg}
 		\end{column}
 	
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item You can create an adapter. This is a special object that converts the interface of one object so that another object can understand it.
-				\item An adapter wraps one of the objects to hide the complexity of conversion happening behind the scenes. The wrapped object isn’t even aware of the adapter.
-				\item Adapters can not only convert data into various formats but can also help objects with different interfaces collaborate. Here’s how it works:
-				%The adapter gets an interface, compatible with one of the existing objects.
-				%Using this interface, the existing object can safely call the adapter’s methods.
-				%Upon receiving a call, the adapter passes the request to the second object, but in a format and order that the second object expects.
-				\item Sometimes it’s even possible to create a two-way adapter that can convert the calls in both directions.
+				\item A facade is a class that provides a simple interface to a complex subsystem.
+				\item Provide limited functionality in comparison to working with the subsystem directly
+				\item Having a facade is handy when you need to integrate your app with a sophisticated library that has dozens of features, but you just need a tiny bit of its functionality.
 			\end{itemize}
 		\end{column}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{The Intent of Adapter Design Pattern}
+\begin{frame}{The Intent of Facade Design Pattern}
 	\begin{center}
-	\textcolor{red}{\textbf{Convert the interface of a class into another interface clients expect. Adapter lets classes work together that could not otherwise because of incompatible interfaces.}}\\
+	\textcolor{red}{\textbf{Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.}}\\
 	\end{center}
 \end{frame}
 
-\begin{frame}{Structure of Adapter Pattern: Object adapter}
+\begin{frame}{Structure of Facade Pattern: Object adapter}
 	\begin{center}
 	\begin{tikzpicture}
- \umlemptyclass[x=0,y=0]{Client}
- \umlclass[x=4,y=0]{Client interface}{}{request()}
- \umlclass[x=4,y=-3]{Adapter}{}{request()}
- \umlclass[x=9,y=-3]{Adaptee}{}{specificRequest()}
- \umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Client interface}
- \umluniassoc[pos=0.95, align=right, name=uniassoc]{Adapter}{Adaptee}
- \umlinherit{Adapter}{Client interface}
- \umlnote[x=4,y=-5, width=120]{Adapter}{Adaptee->specificRequest()}
+ 	\umlemptyclass[x=0,y=0]{Client}
+ 	\umlclass[x=3,y=0]{Facade}{}{operation()}
+ 	\umlclass[x=9,y=0]{AdditionalFacade}{}{addOperation()}
+ 	\umlclass[x=0,y=-5]{SubSystem1}{}{}
+ 	\umlclass[x=3,y=-5]{SubSystem2}{}{}
+ 	\umlclass[x=6,y=-5]{SubSystem3}{}{}
+ 	\umlclass[x=9,y=-5]{SubSystem4}{}{}
+ 	\umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Facade}
+ 	\umluniassoc[pos=0.95, align=right, name=uniassoc]{Facade}{AdditionalFacade}
+ 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{Facade}{SubSystem1}
+ 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{Facade}{SubSystem2}
+ 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{Facade}{SubSystem3}
+ 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{AdditionalFacade}{SubSystem4}
 	\end{tikzpicture}	
 	\end{center}
 \end{frame}
 
-\begin{frame}{Basic implementation: Rectangle class}
+\begin{frame}{Sequence Diagram}
+\begin{center}
+	\includegraphics[scale=0.25]{./images/sequence.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Basic implementation: cpu class}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-rectangle.h
-\lstinputlisting{./examples/squareRecAdapter/rectangle.h}
+cpu.h
+\lstinputlisting{./examples/cpu.h}
 \end{column}
 
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-rectangle.cpp
-\lstinputlisting{./examples/squareRecAdapter/rectangle.cpp}
+cpu.cpp
+\lstinputlisting{./examples/cpu.cpp}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Basic implementation: Square class}
+\begin{frame}{Basic implementation: memory class}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-square.h
-\lstinputlisting{./examples/squareRecAdapter/square.h}
+memory.h
+\lstinputlisting{./examples/memory.h}
 \end{column}
 
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-square.cpp
-\lstinputlisting{./examples/squareRecAdapter/square.cpp}
+memory.cpp
+\lstinputlisting{./examples/memory.cpp}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Basic implementation: Adapter class}
+\begin{frame}{Basic implementation: hard driver}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-adapter.h
-\lstinputlisting{./examples/squareRecAdapter/adapter.h}
+hardDriver.h
+\lstinputlisting{./examples/hardDriver.h}
 \end{column}
 
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-adapter.cpp
-\lstinputlisting{./examples/squareRecAdapter/adapter.cpp}
+hardDriver.cpp
+\lstinputlisting{./examples/hardDriver.cpp}
 \end{column}
 \end{columns}
 \end{frame}
 
-\begin{frame}{Basic implementation: client code}
+\begin{frame}{Basic implementation: computer facade}
 \begin{columns}[T]
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-main.cpp
-\lstinputlisting{./examples/squareRecAdapter/main.cpp}
+computerFacade.h
+\lstinputlisting{./examples/computerFacade.h}
 \end{column}
 
 \begin{column}{.45\textwidth}
 \lstset{basicstyle=\tiny,style=myCustomCppStyle}
-\begin{itemize}
-\item Object adapter
-\end{itemize}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Structure of Adapter Pattern: Class adapter}
-	\begin{center}
-	\begin{tikzpicture}
- \umlemptyclass[x=0,y=0]{Client}
- \umlclass[x=4,y=0]{Client interface}{}{request()}
- \umlclass[x=9,y=0]{Adaptee}{}{specificRequest()}
- \umlclass[x=6.5,y=-4]{Adapter}{}{request()}
- \umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Client interface}
- \umlinherit[geometry=|-|]{Adapter}{Client interface}
- \umlinherit[geometry=|-|]{Adapter}{Adaptee}
- \umlnote[x=3,y=-5, width=100]{Adapter}{specificRequest()}
-	\end{tikzpicture}	
-	\end{center}
-\end{frame}
-
-\begin{frame}{Basic implementation: Rectangle class}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-rectangle.h
-\lstinputlisting{./examples/classAdapter/rectangle.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-rectangle.cpp
-\lstinputlisting{./examples/classAdapter/rectangle.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Basic implementation: Square class}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-square.h
-\lstinputlisting{./examples/classAdapter/square.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-square.cpp
-\lstinputlisting{./examples/classAdapter/square.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Basic implementation: Adapter class}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-adapter.h
-\lstinputlisting{./examples/classAdapter/adapter.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-adapter.cpp
-\lstinputlisting{./examples/classAdapter/adapter.cpp}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{Basic implementation: client code}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-	\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-	main.cpp
-	\lstinputlisting{./examples/classAdapter/main.cpp}
-\end{column}
-
-\begin{column}{.5\textwidth}
-	\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-	\begin{itemize}
-		\item This implementation uses inheritance: the adapter inherits interfaces from both objects at the same time.
-		\item The Class Adapter doesn’t need to wrap any objects because it inherits behaviors from both the client and the service. The adaptation happens within the overridden methods. The resulting adapter can be used in place of an existing client class.
-	\end{itemize}
+computerFacade.cpp
+\lstinputlisting{./examples/computerFacade.cpp}
 \end{column}
 \end{columns}
 \end{frame}
@@ -360,33 +285,22 @@ adapter.cpp
 \begin{frame}{Applicability}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Use the Adapter class when you want to use some existing class, but its interface isn’t compatible with the rest of your code.
-		\item The Adapter pattern lets you create a middle-layer class that serves as a translator between your code and a legacy class, a 3rd-party class or any other class with a weird interface.
-		\item Use the pattern when you want to reuse several existing subclasses that lack some common functionality that can’t be added to the superclass.
-		\item You could extend each subclass and put the missing functionality into new child classes. However, you’ll need to duplicate the code across all of these new classes, which smells really bad.
-		% The much more elegant solution would be to put the missing functionality into an adapter class. Then you would wrap objects with missing features inside the adapter, gaining needed features dynamically. For this to work, the target classes must have a common interface, and the adapter’s field should follow that interface. This approach looks very similar to the Decorator pattern.
+		\item  Use the Facade pattern when you need to have a limited but straightforward interface to a complex subsystem.
+		%Often, subsystems get more complex over time. Even applying design patterns typically leads to creating more classes. A subsystem may become more flexible and easier to reuse in various contexts, but the amount of configuration and boilerplate code it demands from a client grows ever larger. The Facade attempts to fix this problem by providing a shortcut to the most-used features of the subsystem which fit most client requirements.
+		\item Use the Facade when you want to structure a subsystem into layers.
+		%Create facades to define entry points to each level of a subsystem. You can reduce coupling between multiple subsystems by requiring them to communicate only through facades.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{How to Implement}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Make sure that you have at least two classes with incompatible interfaces:
-		\begin{itemize}
-		\item A useful service class, which you can’t change (often 3rd-party, legacy or with lots of existing dependencies).
-		\item One or several client classes that would benefit from using the service class.
-		\end{itemize}
-		\item Declare the client interface and describe how clients communicate with the service.
-		\item Create the adapter class and make it follow the client interface. Leave all the methods empty for now.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{How to Implement}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Add a field to the adapter class to store a reference to the service object. The common practice is to initialize this field via the constructor, but sometimes it’s more convenient to pass it to the adapter when calling its methods.
-		\item One by one, implement all methods of the client interface in the adapter class. The adapter should delegate most of the real work to the service object, handling only the interface or data format conversion.
-		\item Clients should use the adapter via the client interface. This will let you change or extend the adapters without affecting the client code.
+		\item Check whether it’s possible to provide a simpler interface than what an existing subsystem already provides. 
+		%You’re on the right track if this interface makes the client code independent from many of the subsystem’s classes.
+		\item Declare and implement this interface in a new facade class. The facade should redirect the calls from the client code to appropriate objects of the subsystem. The facade should be responsible for initializing the subsystem and managing its further life cycle unless the client code already does this.
+		\item To get the full benefit from the pattern, make all the client code communicate with the subsystem only via the facade. Now the client code is protected from any changes in the subsystem code.
+		%For example, when a subsystem gets upgraded to a new version, you will only need to modify the code in the facade.
+		\item If the facade becomes too big, consider extracting part of its behavior to a new, refined facade class.
 	\end{itemize}
 \end{frame}
 
@@ -394,14 +308,13 @@ adapter.cpp
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item  Single Responsibility Principle. You can separate the interface or data conversion code from the primary business logic of the program.
-				\item pen/Closed Principle. You can introduce new types of adapters into the program without breaking the existing client code, as long as they work with the adapters through the client interface.
+				\item You can isolate your code from the complexity of a subsystem.
 			\end{itemize}
 		\end{column}
 	
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item The overall complexity of the code increases because you need to introduce a set of new interfaces and classes. Sometimes it’s simpler just to change the service class so that it matches the rest of your code.
+				\item A facade can become a god object coupled to all classes of an app.
 			\end{itemize}
 		\end{column}
 	\end{columns}
@@ -410,17 +323,14 @@ adapter.cpp
 \begin{frame}{Relations with Other Patterns}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Bridge is usually designed up-front, letting you develop parts of an application independently of each other. On the other hand, Adapter is commonly used with an existing app to make some otherwise-incompatible classes work together nicely.
-		\item Adapter changes the interface of an existing object, while Decorator enhances an object without changing its interface. In addition, Decorator supports recursive composition, which isn’t possible when you use Adapter.
-		\item Adapter provides a different interface to the wrapped object, Proxy provides it with the same interface, and Decorator provides it with an enhanced interface.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Relations with Other Patterns}
-	\begin{itemize}
-		\setlength\itemsep{1em}
 		\item Facade defines a new interface for existing objects, whereas Adapter tries to make the existing interface usable. Adapter usually wraps just one object, while Facade works with an entire subsystem of objects.
-		\item Bridge, State, Strategy (and to some degree Adapter) have very similar structures. Indeed, all of these patterns are based on composition, which is delegating work to other objects. However, they all solve different problems. A pattern isn’t just a recipe for structuring your code in a specific way. It can also communicate to other developers the problem the pattern solves.
+		\item Abstract Factory can serve as an alternative to Facade when you only want to hide the way the subsystem objects are created from the client code.
+		\item Flyweight shows how to make lots of little objects, whereas Facade shows how to make a single object that represents an entire subsystem.
+		\item Facade and Mediator have similar jobs: they try to organize collaboration between lots of tightly coupled classes.
+		%Facade defines a simplified interface to a subsystem of objects, but it doesn’t introduce any new functionality. The subsystem itself is unaware of the facade. Objects within the subsystem can communicate directly.
+		%Mediator centralizes communication between components of the system. The components only know about the mediator object and don’t communicate directly.
+		\item A Facade class can often be transformed into a Singleton since a single facade object is sufficient in most cases.
+		\item Facade is similar to Proxy in that both buffer a complex entity and initialize it on its own. Unlike Facade, Proxy has the same interface as its service object, which makes them interchangeable.
 	\end{itemize}
 \end{frame}
 

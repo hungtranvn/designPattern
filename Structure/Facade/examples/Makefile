@@ -1,9 +1,9 @@
 CXXFLAGS += -g -Wall -std=c++17
 
-NAME = adapter
+NAME = facade
 TARGET = $(NAME).exe
 
-OBJECTS = main.o adapter.o rectangle.o square.o
+OBJECTS = main.o cpu.o hardDriver.o memory.o computerFacade.o
 
 all: $(TARGET)
 
