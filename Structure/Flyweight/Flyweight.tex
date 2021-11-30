@@ -155,152 +155,99 @@ decorate
 \section{Flyweight pattern}
 
 \begin{frame}{Problem Statement}
-	\begin{columns}[T]
-		\begin{column}{.5\textwidth}
-			\includegraphics[scale=0.6]{./images/problem.jpg}
-		\end{column}
-	
-		\begin{column}{.5\textwidth}
-			\begin{itemize}
-				\item You must make your code work with a broad set of objects that belong to a sophisticated library or framework.
-				\item You’d need to initialize all of those objects, keep track of dependencies, execute methods in the correct order, and so on.
-				\item As a result, the business logic of your classes would become tightly coupled to the implementation details of 3rd-party classes, making it hard to \textbf{comprehend and maintain}.
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
-
-\begin{frame}{Solution: Flyweight Pattern}
-	\begin{columns}[T]
-		\begin{column}{.5\textwidth}
-			\includegraphics[scale=0.6]{./images/solution.jpg}
-		\end{column}
-	
-		\begin{column}{.5\textwidth}
-			\begin{itemize}
-				\item A facade is a class that provides a simple interface to a complex subsystem.
-				\item Provide limited functionality in comparison to working with the subsystem directly
-				\item Having a facade is handy when you need to integrate your app with a sophisticated library that has dozens of features, but you just need a tiny bit of its functionality.
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
-
-\begin{frame}{The Intent of Facade Design Pattern}
-	\begin{center}
-	\textcolor{red}{\textbf{Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use.}}\\
-	\end{center}
-\end{frame}
-
-\begin{frame}{Structure of Facade Pattern: Object adapter}
-	\begin{center}
-	\begin{tikzpicture}
- 	\umlemptyclass[x=0,y=0]{Client}
- 	\umlclass[x=3,y=0]{Facade}{}{operation()}
- 	\umlclass[x=9,y=0]{AdditionalFacade}{}{addOperation()}
- 	\umlclass[x=0,y=-5]{SubSystem1}{}{}
- 	\umlclass[x=3,y=-5]{SubSystem2}{}{}
- 	\umlclass[x=6,y=-5]{SubSystem3}{}{}
- 	\umlclass[x=9,y=-5]{SubSystem4}{}{}
- 	\umluniassoc[pos=0.95, align=right, name=uniassoc]{Client}{Facade}
- 	\umluniassoc[pos=0.95, align=right, name=uniassoc]{Facade}{AdditionalFacade}
- 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{Facade}{SubSystem1}
- 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{Facade}{SubSystem2}
- 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{Facade}{SubSystem3}
- 	\umluniassoc[geometry=|-|, pos=0.95, align=right, name=uniassoc]{AdditionalFacade}{SubSystem4}
-	\end{tikzpicture}	
-	\end{center}
-\end{frame}
-
-\begin{frame}{Sequence Diagram}
 \begin{center}
-	\includegraphics[scale=0.25]{./images/sequence.png}
+	\includegraphics[scale=0.55]{./images/problem.jpg}
 \end{center}
 \end{frame}
 
-\begin{frame}{Basic implementation: cpu class}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-cpu.h
-\lstinputlisting{./examples/cpu.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-cpu.cpp
-\lstinputlisting{./examples/cpu.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{Problem Statement}
+	\includegraphics[scale=0.5]{./images/problem1.png}
 \end{frame}
 
-\begin{frame}{Basic implementation: memory class}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-memory.h
-\lstinputlisting{./examples/memory.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-memory.cpp
-\lstinputlisting{./examples/memory.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{Problem: Particle class}
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+			\includegraphics[scale=0.27]{./images/class2.png}
+		\end{column}
+	
+		\begin{column}{.5\textwidth}
+			\begin{itemize}
+				\item The color and sprite fields consume a lot more memory than other fields.
+				\item These two fields store almost identical data across all particles.
+				\item For example, all bullets have the same color and sprite.
+				\item Coordinates, movement vector and speed, are unique to each particle
+			\end{itemize}
+		\end{column}
+	\end{columns}
 \end{frame}
 
-\begin{frame}{Basic implementation: hard driver}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-hardDriver.h
-\lstinputlisting{./examples/hardDriver.h}
-\end{column}
-
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-hardDriver.cpp
-\lstinputlisting{./examples/hardDriver.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{Problem: Particle class}
+	\begin{itemize}
+		\item The intrinsic state: The constant data of an object, the other objects only can read.
+		\item The extrinsic state: The other objects can alter these states.
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Basic implementation: computer facade}
-\begin{columns}[T]
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-computerFacade.h
-\lstinputlisting{./examples/computerFacade.h}
-\end{column}
+\begin{frame}{Solution: Flyweight pattern}
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+			\includegraphics[scale=0.37]{./images/solution.png}
+		\end{column}
+	
+		\begin{column}{.5\textwidth}
+			\begin{itemize}
+				\item Stop storing the extrinsic state inside the object
+				\item Pass this state to specific methods which rely on it.
+				\item Only the intrinsic state stays within the object, letting you reuse it in different contexts
+				\item Only three different objects would suffice to represent all particles in the game: a bullet, a missile, and a piece of shrapnel.
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
 
-\begin{column}{.45\textwidth}
-\lstset{basicstyle=\tiny,style=myCustomCppStyle}
-computerFacade.cpp
-\lstinputlisting{./examples/computerFacade.cpp}
-\end{column}
-\end{columns}
+\begin{frame}{The Intent of Flyweight Design Pattern}
+	\begin{center}
+	\textcolor{red}{\textbf{Flyweight is a structural design pattern that lets you fit more objects into the available amount of RAM by sharing common parts of state between multiple objects instead of keeping all of the data in each object.}}\\
+	\end{center}
+\end{frame}
+
+\begin{frame}{Structure of Flyweight Pattern}
+	\begin{center}
+	\begin{tikzpicture}
+ 	\umlclass[x=1,y=0]{FlyweightFactory}{cached : flyweight[]}{GetFlyweight(key)}
+ 	\umlclass[x=7,y=0]{Flyweight}{}{Operation(extrinsicState)}
+ 	\umluniaggreg[]{FlyweightFactory}{Flyweight}
+ 	\umlclass[x=5,y=-3.5]{ConcreteFlyweight}{intrinsicState}{Operation(extrinsic)}
+ 	\umlclass[x=9.5,y=-3.5]{UnsharedFlyweight}{extrinsicState}{Operation(extrinsic)}
+ 	\umlinherit[geometry=|-|, pos=0.95, align=right, name=uniassoc]{ConcreteFlyweight}{Flyweight}
+ 	\umlinherit[geometry=|-|, pos=0.95, align=right, name=uniassoc]{UnsharedFlyweight}{Flyweight}
+ 	\umlclass[x=1,y=-5]{Client}{}{}
+ 	\umluniassoc[]{Client}{FlyweightFactory}
+ 	\umluniassoc[geometry=-|]{Client}{ConcreteFlyweight}
+ 	\umluniassoc[geometry=-|]{Client}{UnsharedFlyweight}
+	\end{tikzpicture}	
+	\end{center}
 \end{frame}
 
 \begin{frame}{Applicability}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item  Use the Facade pattern when you need to have a limited but straightforward interface to a complex subsystem.
-		%Often, subsystems get more complex over time. Even applying design patterns typically leads to creating more classes. A subsystem may become more flexible and easier to reuse in various contexts, but the amount of configuration and boilerplate code it demands from a client grows ever larger. The Facade attempts to fix this problem by providing a shortcut to the most-used features of the subsystem which fit most client requirements.
-		\item Use the Facade when you want to structure a subsystem into layers.
-		%Create facades to define entry points to each level of a subsystem. You can reduce coupling between multiple subsystems by requiring them to communicate only through facades.
+		\item  Use the Flyweight pattern only when your program must support a huge number of objects which barely fit into available RAM.
+		\item The benefit of applying the pattern depends heavily on how and where it’s used. It’s most useful when:
+		\item An application needs to spawn a huge number of similar objects
+		\item This drains all available RAM on a target device
+		\item The objects contain duplicate states which can be extracted and shared between multiple objects
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{How to Implement}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Check whether it’s possible to provide a simpler interface than what an existing subsystem already provides. 
-		%You’re on the right track if this interface makes the client code independent from many of the subsystem’s classes.
-		\item Declare and implement this interface in a new facade class. The facade should redirect the calls from the client code to appropriate objects of the subsystem. The facade should be responsible for initializing the subsystem and managing its further life cycle unless the client code already does this.
-		\item To get the full benefit from the pattern, make all the client code communicate with the subsystem only via the facade. Now the client code is protected from any changes in the subsystem code.
-		%For example, when a subsystem gets upgraded to a new version, you will only need to modify the code in the facade.
-		\item If the facade becomes too big, consider extracting part of its behavior to a new, refined facade class.
+		\item Divide fields of a class that will become a flyweight into two parts: the intrinsic state and the extrinsic state
+		\item Leave the fields that represent the intrinsic state in the class, but make sure they’re immutable. They should take their initial values only inside the constructor.
+		\item Go over methods that use fields of the extrinsic state. For each field used in the method, introduce a new parameter and use it instead of the field.
+		\item Optionally, create a factory class to manage the pool of flyweights. It should check for an existing flyweight before creating a new one. Once the factory is in place, clients must only request flyweights through it. They should describe the desired flyweight by passing its intrinsic state to the factory.
+		\item The client must store or calculate values of the extrinsic state (context) to be able to call methods of flyweight objects. For the sake of convenience, the extrinsic state along with the flyweight-referencing field may be moved to a separate context class.
 	\end{itemize}
 \end{frame}
 
@@ -308,13 +255,14 @@ computerFacade.cpp
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item You can isolate your code from the complexity of a subsystem.
+				\item You can save lots of RAM, assuming your program has tons of similar objects.
 			\end{itemize}
 		\end{column}
 	
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
-				\item A facade can become a god object coupled to all classes of an app.
+				\item You might be trading RAM over CPU cycles when some of the context data needs to be recalculated each time somebody calls a flyweight method.
+				\item The code becomes much more complicated. New team members will always be wondering why the state of an entity was separated in such a way.
 			\end{itemize}
 		\end{column}
 	\end{columns}
@@ -323,14 +271,11 @@ computerFacade.cpp
 \begin{frame}{Relations with Other Patterns}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Facade defines a new interface for existing objects, whereas Adapter tries to make the existing interface usable. Adapter usually wraps just one object, while Facade works with an entire subsystem of objects.
-		\item Abstract Factory can serve as an alternative to Facade when you only want to hide the way the subsystem objects are created from the client code.
+		\item You can implement shared leaf nodes of the Composite tree as Flyweights to save some RAM.
 		\item Flyweight shows how to make lots of little objects, whereas Facade shows how to make a single object that represents an entire subsystem.
-		\item Facade and Mediator have similar jobs: they try to organize collaboration between lots of tightly coupled classes.
-		%Facade defines a simplified interface to a subsystem of objects, but it doesn’t introduce any new functionality. The subsystem itself is unaware of the facade. Objects within the subsystem can communicate directly.
-		%Mediator centralizes communication between components of the system. The components only know about the mediator object and don’t communicate directly.
-		\item A Facade class can often be transformed into a Singleton since a single facade object is sufficient in most cases.
-		\item Facade is similar to Proxy in that both buffer a complex entity and initialize it on its own. Unlike Facade, Proxy has the same interface as its service object, which makes them interchangeable.
+		\item Flyweight would resemble Singleton if you somehow managed to reduce all shared states of the objects to just one flyweight object. But there are two fundamental differences between these patterns:
+		\item There should be only one Singleton instance, whereas a Flyweight class can have multiple instances with different intrinsic states.
+		\item The Singleton object can be mutable. Flyweight objects are immutable.
 	\end{itemize}
 \end{frame}
 
