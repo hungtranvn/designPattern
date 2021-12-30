@@ -11,6 +11,7 @@ private:
   std::string title_;
 };
 
+// listener classes
 class IObserver {
 public:
   virtual void OnJobPosted(const JobPost& job) = 0;
@@ -27,6 +28,8 @@ private:
   std::string name_;
 };
 
+
+// class to watch (subcriber)
 class IObservable {
 public:
   virtual void Attach(IObserver& observer) = 0;
