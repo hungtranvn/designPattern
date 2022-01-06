@@ -10,11 +10,13 @@ void doSomething(Rectangle& r) {
 }
 
 int main() {
-  Square s(2);
   Rectangle r(2,3);
   doSomething(r);
-  //doSomething(s);
-  Adapter a(s);
+  
+  Square s(2);
+  // ?doSomething(s);
+  
+  Adapter a(s); 
   doSomething(a);
   return 0;
 }
