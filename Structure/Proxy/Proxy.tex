@@ -224,7 +224,6 @@ decorate
 
 \begin{frame}{Applicability}
 	\begin{itemize}
-		\setlength\itemsep{1em}
 		\item Lazy initialization (virtual proxy). This is when you have a heavyweight service object that wastes system resources by being always up, even though you only need it from time to time.
 		% Instead of creating the object when the app launches, you can delay the object’s initialization to a time when it’s really needed.
 		\item Access control (protection proxy). This is when you want only specific clients to be able to use the service object; for instance, when your objects are crucial parts of an operating system and clients are various launched applications (including malicious ones).
