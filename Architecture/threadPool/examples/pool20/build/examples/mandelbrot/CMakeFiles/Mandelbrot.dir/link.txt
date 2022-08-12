@@ -1,0 +1,1 @@
+/usr/lib64/ccache/c++     CMakeFiles/Mandelbrot.dir/source/fractal.cpp.o CMakeFiles/Mandelbrot.dir/source/main.cpp.o  -o mandelbrot -lpthread 

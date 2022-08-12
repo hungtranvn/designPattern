@@ -1,0 +1,5 @@
+if(EXISTS "/home/hungtran/Workspace/cpp/designPattern/Architecture/threadPool/examples/pool20/build/test/ThreadPoolTests_tests-b858cb2.cmake")
+  include("/home/hungtran/Workspace/cpp/designPattern/Architecture/threadPool/examples/pool20/build/test/ThreadPoolTests_tests-b858cb2.cmake")
+else()
+  add_test(ThreadPoolTests_NOT_BUILT-b858cb2 ThreadPoolTests_NOT_BUILT-b858cb2)
+endif()

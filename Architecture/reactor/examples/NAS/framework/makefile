@@ -1,0 +1,64 @@
+#made by shlomi ol70
+BASE = ./
+
+COMMAND 			= $(BASE)command
+SOCKET 				= $(BASE)socket
+PLUGIN_LOADER 		= $(BASE)plugin_loader
+CONFIG_LOADER 		= $(BASE)config_loader
+NEW_FILE_NOTIFIER 	= $(BASE)new_file_notifier
+STDIN_HANDLER 		= $(BASE)stdin_handler
+
+WAITABLEQ 		= $(BASE)waitable_queue
+TASK			= $(BASE)task
+THREADPOOL 		= $(BASE)threadpool
+FDLISTENER 		= $(BASE)fdlistener
+REACTOR 		= $(BASE)reactor
+DIRMONITOR 		= $(BASE)dir_monitor
+
+LOGGER 			= $(BASE)logger
+WRITE_CMD 		= $(BASE)writer
+READ_CMD 		= $(BASE)reader
+
+MAIN 			= $(BASE)main
+
+PI = 0
+
+
+.PHONY: MAKEOTHER
+MAKEOTHER:
+	$(MAKE) -C $(LOGGER) PI=$(PI)
+	$(MAKE) -C $(TASK) PI=$(PI)
+	$(MAKE) -C $(FDLISTENER) PI=$(PI)
+	$(MAKE) -C $(REACTOR) PI=$(PI)
+	$(MAKE) -C $(COMMAND) PI=$(PI)
+	$(MAKE) -C $(SOCKET) PI=$(PI)
+	$(MAKE) -C $(WAITABLEQ) PI=$(PI)
+	$(MAKE) -C $(THREADPOOL) PI=$(PI)
+	$(MAKE) -C $(DIRMONITOR) PI=$(PI)
+	$(MAKE) -C $(STDIN_HANDLER) PI=$(PI)
+	$(MAKE) -C $(NEW_FILE_NOTIFIER) PI=$(PI)
+	$(MAKE) -C $(PLUGIN_LOADER) PI=$(PI)
+	$(MAKE) -C $(CONFIG_LOADER) PI=$(PI)
+	$(MAKE) -C $(WRITE_CMD) PI=$(PI)
+	$(MAKE) -C $(READ_CMD) PI=$(PI)
+	$(MAKE) -C $(MAIN) PI=$(PI)
+
+.PHONY: CLEAN
+CLEAN:
+	-$(MAKE) -C $(LOGGER) CLEAN
+	-$(MAKE) -C $(SOCKET) CLEAN
+	-$(MAKE) -C $(TASK) CLEAN
+	-$(MAKE) -C $(FDLISTENER) CLEAN
+	-$(MAKE) -C $(REACTOR) CLEAN
+	-$(MAKE) -C $(COMMAND) CLEAN
+	-$(MAKE) -C $(WAITABLEQ) CLEAN
+	-$(MAKE) -C $(THREADPOOL) CLEAN
+	-$(MAKE) -C $(DIRMONITOR) CLEAN
+	-$(MAKE) -C $(STDIN_HANDLER) CLEAN
+	-$(MAKE) -C $(NEW_FILE_NOTIFIER) CLEAN
+	-$(MAKE) -C $(PLUGIN_LOADER) CLEAN
+	-$(MAKE) -C $(CONFIG_LOADER) CLEAN
+	-$(MAKE) -C $(WRITE_CMD) CLEAN
+	-$(MAKE) -C $(READ_CMD) CLEAN
+	-$(MAKE) -C $(MAIN) CLEAN
+
